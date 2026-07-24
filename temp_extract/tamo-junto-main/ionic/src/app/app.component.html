@@ -1,0 +1,97 @@
+<ion-app>
+  <!-- Menu lateral responsivo -->
+  <ion-menu contentId="main-content" type="overlay" *ngIf="usuario" [disabled]="isDesktop">
+    <ion-content>
+      <ion-row class="ion-justify-content-center ion-align-items-center ion-text-center">
+        <ion-col size="8">
+          <a style="text-decoration: none;">
+            <ion-icon class="logo" src="../assets/logo.svg"></ion-icon>
+          </a>
+        </ion-col>
+      </ion-row>
+
+      <ion-list id="inbox-list">
+        <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
+          <ion-item 
+            class="no-ripple" 
+            lines="none" 
+            detail="false"
+            (click)="navegarPara(p.url)"
+            [ngClass]="{ 'selected': rotaAtiva === p.url }">
+            <ion-grid>
+              <ion-row class="ion-justify-content-center ion-align-items-center ion-text-center">
+                <ion-col size="12">
+                  <ion-icon aria-hidden="true" [src]="p.icon" [ios]="p.icon + '-outline'"
+                    [md]="p.icon + '-sharp'"></ion-icon>
+                </ion-col>
+                <ion-col size="12">
+                  <ion-label>{{ p.title }}</ion-label>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-item>
+        </ion-menu-toggle>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+
+  <!-- Split pane apenas para desktop -->
+  <ion-split-pane contentId="main-content" *ngIf="isDesktop && usuario">
+    <!-- Menu lateral para desktop -->
+    <ion-menu contentId="main-content" type="overlay">
+      <ion-content>
+        <ion-row class="ion-justify-content-center ion-align-items-center ion-text-center">
+          <ion-col size="8">
+            <a style="text-decoration: none;">
+              <ion-icon class="logo" src="../assets/logo.svg"></ion-icon>
+            </a>
+          </ion-col>
+        </ion-row>
+
+        <ion-list id="inbox-list">
+          <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
+            <ion-item 
+              class="no-ripple" 
+              lines="none" 
+              detail="false"
+              (click)="navegarPara(p.url)"
+              [ngClass]="{ 'selected': rotaAtiva === p.url }">
+              <ion-grid>
+                <ion-row class="ion-justify-content-center ion-align-items-center ion-text-center">
+                  <ion-col size="12">
+                    <ion-icon aria-hidden="true" [src]="p.icon" [ios]="p.icon + '-outline'"
+                      [md]="p.icon + '-sharp'"></ion-icon>
+                  </ion-col>
+                  <ion-col size="12">
+                    <ion-label>{{ p.title }}</ion-label>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-item>
+          </ion-menu-toggle>
+        </ion-list>
+      </ion-content>
+    </ion-menu>
+    
+    <!-- Conteúdo principal para desktop -->
+    <ion-content id="main-content">
+      <app-header *ngIf="usuario" [usuario]="usuario"></app-header>
+      <ion-content class="ion-padding">
+        <ion-router-outlet>
+        </ion-router-outlet>
+      </ion-content>
+    </ion-content>
+  </ion-split-pane>
+
+  <!-- Layout mobile: sem ion-content aninhado — cada página controla o scroll (corrige rolagem até o fim, ex.: dashboard MEI) -->
+  <div id="main-content" class="mobile-app-shell" *ngIf="!isDesktop">
+    <app-header [usuario]="usuario" *ngIf="usuario"></app-header>
+    <ion-router-outlet class="mobile-router-outlet"></ion-router-outlet>
+  </div>
+
+  <!-- Layout para desktop quando não há usuário (página de login) -->
+  <ion-content id="main-content" *ngIf="isDesktop && !usuario">
+    <ion-router-outlet>
+    </ion-router-outlet>
+  </ion-content>
+</ion-app>

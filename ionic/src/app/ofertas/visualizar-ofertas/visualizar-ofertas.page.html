@@ -1,0 +1,106 @@
+﻿<ion-header [translucent]="true">
+  <ion-toolbar class="toolbar-estilo">
+    <ion-buttons slot="start">
+      <ion-button (click)="voltarParaListarOfertas()">
+        <ion-icon aria-hidden="true" src="../assets/icon/ArrowBack.svg"></ion-icon>
+        Voltar
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Detalhes da Oferta</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" *ngIf="oferta; else loading" class="visualizar-oferta-content">
+  <div class="oferta-container">
+    <!-- Imagem da oferta -->
+    <div class="oferta-banner-container">
+      <ng-container *ngIf="oferta.imagem && oferta.imagem.length > 0; else imageSkeleton">
+        <img [src]="oferta.imagem[0].path" alt="{{ oferta.nomeProduto }}" class="oferta-banner" />
+      </ng-container>
+      <ng-template #imageSkeleton>
+        <div class="skeleton-banner"></div>
+      </ng-template>
+    </div>
+
+    <!-- Cabeçalho de texto -->
+    <div class="oferta-text-header">
+      <div class="modal-oferta-nome">{{ oferta.nomeProduto }}</div>
+      <p class="modal-oferta-sub" *ngIf="oferta.descricao">{{ oferta.descricao }}</p>
+    </div>
+
+    <!-- Tabela de Detalhes -->
+    <dl class="oferta-detalhes">
+      <div class="oferta-detalhes__row">
+        <dt>Categoria</dt>
+        <dd>{{ oferta?.categoria || 'Não informada' }}</dd>
+      </div>
+      <div class="oferta-detalhes__row">
+        <dt>Preço Original</dt>
+        <dd>{{ formatarPreco(oferta?.preco || 0) }}</dd>
+      </div>
+      <div class="oferta-detalhes__row">
+        <dt>Preço com Desconto</dt>
+        <dd class="valor-destaque">
+          {{ formatarPreco(oferta?.preco ? oferta.preco - (oferta.preco * (oferta.desconto / 100)) : 0) }}
+        </dd>
+      </div>
+      <div class="oferta-detalhes__row">
+        <dt>Validade</dt>
+        <dd [ngStyle]="{'color': ofertaExpirada() ? 'red' : 'inherit'}">
+          {{ oferta?.validade | date:'dd/MM/yyyy' }}
+        </dd>
+      </div>
+    </dl>
+
+    <!-- Botões de Ação -->
+    <div class="oferta-acoes">
+      <div class="tooltip-container" *ngIf="!isParceiro">
+        <ion-button
+          (click)="resgatarOferta(oferta.id!)"
+          [disabled]="!ofertaDisponivel()"
+          color="success"
+          expand="block"
+          class="btn-acao"
+        >
+          Resgatar
+        </ion-button>
+        <span *ngIf="ofertaExpirada()" class="tooltip-text">Oferta vencida!</span>
+        <span *ngIf="ofertaInativa() && !ofertaExpirada()" class="tooltip-text">Oferta indisponível.</span>
+      </div>
+
+      <div class="tooltip-container" *ngIf="!isParceiro">
+        <ion-button
+          expand="block"
+          color="primary"
+          (click)="compartilharOferta(oferta)"
+          [disabled]="!ofertaDisponivel()"
+          class="btn-acao"
+        >
+          Compartilhar
+        </ion-button>
+        <span *ngIf="!ofertaDisponivel()" class="tooltip-text">Oferta vencida ou indisponível.</span>
+      </div>
+
+      <!-- Mensagem para parceiros -->
+      <div *ngIf="isParceiro" class="parceiro-message">
+        <ion-text color="medium">
+          <p>Parceiros comerciais não podem resgatar ou compartilhar ofertas.</p>
+        </ion-text>
+      </div>
+    </div>
+  </div>
+
+  <ion-toast
+    [isOpen]="showToast"
+    [message]="toastMessage"
+    [color]="toastColor"
+    [duration]="3000"
+    (didDismiss)="resetToast()">
+  </ion-toast>
+</ion-content>
+
+<ng-template #loading>
+  <div class="loading-container">
+    <div class="loading-spinner"></div>
+  </div>
+</ng-template>

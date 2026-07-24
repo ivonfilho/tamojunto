@@ -1,0 +1,109 @@
+
+<ion-content [scrollY]="true" [scrollEvents]="true">
+  <div class="container">
+    <div class="header-section">
+      <h2>Planos Disponíveis</h2>
+      <p>Escolha o plano que melhor se adapta às suas necessidades</p>
+    </div>
+
+
+    <ion-grid>
+      <ion-row>
+        <!-- Card especial para 1 mês grátis -->
+        <ion-col size="12" size-md="4" *ngIf="freeTrialPlano && !isParceiro && mostrarFreeTrial">
+          <ion-card class="plano-card free-trial-card">
+            <ion-card-header class="card-header-free_trial">
+              <ion-card-title class="titulo-plano">1 Mês Grátis</ion-card-title>
+              <div class="preco-container">
+                <span class="preco-simbolo">R$</span>
+                <span class="preco-valor">0</span>
+                <span class="preco-periodo">/mês</span>
+              </div>
+              <div class="plano-tipo-badge">
+                <ion-chip color="success" size="small">
+                  <ion-label>Teste Grátis</ion-label>
+                </ion-chip>
+              </div>
+            </ion-card-header>
+            <ion-card-content>
+              <div class="beneficios">
+                <h4>Benefícios Inclusos:</h4>
+                <ul>
+                  <li *ngFor="let item of freeTrialPlano?.descricao">
+                    <ion-icon aria-hidden="true" src="../assets/icon/CheckmarkCircle.svg" color="success"></ion-icon>
+                    {{ item }}
+                  </li>
+                </ul>
+              </div>
+              <div class="card-actions">
+                <ion-button
+                  expand="block"
+                  (click)="selecionarPlano(freeTrialPlano)"
+                  class="btn-selecionar free-trial-btn"
+                  [disabled]="isFreeTrialButtonDisabled()"
+                >
+                  <ion-icon aria-hidden="true" src="../assets/icon/Card.svg" slot="start"></ion-icon>
+                  {{ getFreeTrialButtonText() }}
+                </ion-button>
+              </div>
+              <ion-note *ngIf="freeTrialJaUtilizado" color="medium" class="free-trial-info">
+                {{ getFreeTrialInfoMessage() }}
+              </ion-note>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+
+        <ion-col size="12" size-md="4" *ngFor="let plano of planos; let i = index" [hidden]="plano.tipo === 'FREE_TRIAL'">
+          <ion-card class="plano-card" [class.featured]="plano.tipo === 'PARCEIRO_GRATIS'">
+            <div class="card-badge" *ngIf="plano.tipo === 'PARCEIRO_GRATIS'">
+              <ion-badge color="warning">EXCLUSIVO PARCEIROS</ion-badge>
+            </div>
+            
+            <ion-card-header [class]="'card-header-' + plano.tipo.toLowerCase()">
+              <ion-card-title class="titulo-plano">{{ plano.titulo }}</ion-card-title>
+              <div class="preco-container">
+                <span class="preco-simbolo">R$</span>
+                <span class="preco-valor">{{ plano.valor | number: '1.0-0'}}</span>
+                <span class="preco-periodo" *ngIf="plano.tipo === 'MENSAL'">/mês</span>
+                <span class="preco-periodo" *ngIf="plano.tipo === 'ANUAL'">/ano</span>
+                <span class="preco-periodo" *ngIf="plano.tipo === 'FREE_TRIAL'">/7 dias</span>
+                <span class="preco-periodo" *ngIf="plano.tipo === 'PARCEIRO_GRATIS'">/ano</span>
+              </div>
+              
+              <div class="plano-tipo-badge">
+                <ion-chip [color]="getChipColor(plano.tipo)" size="small">
+                  <ion-label>{{ getTipoDisplay(plano.tipo) }}</ion-label>
+                </ion-chip>
+              </div>
+            </ion-card-header>
+
+            <ion-card-content>
+              <div class="beneficios">
+                <h4>Benefícios Inclusos:</h4>
+                <ul>
+                  <li *ngFor="let item of plano.descricao">
+                    <ion-icon aria-hidden="true" src="../assets/icon/CheckmarkCircle.svg" color="success"></ion-icon>
+                    {{ item }}
+                  </li>
+                </ul>
+              </div>
+
+              <div class="card-actions">
+                <ion-button 
+                  expand="block" 
+                  [color]="getButtonColor(plano.tipo)"
+                  (click)="selecionarPlano(plano)"
+                  [disabled]="plano.tipo === 'PARCEIRO_GRATIS' && planoParceiroAtivo"
+                  class="btn-selecionar">
+                  <ion-icon aria-hidden="true" src="../assets/icon/Card.svg" slot="start"></ion-icon>
+                  {{ getButtonText(plano.tipo) }}
+                </ion-button>
+              </div>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>
+

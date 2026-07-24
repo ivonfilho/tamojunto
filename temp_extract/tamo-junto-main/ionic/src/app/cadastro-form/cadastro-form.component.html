@@ -1,0 +1,193 @@
+<h2 [class.large-form]="isFormLarge">Cadastre-se e faça parte do nosso clube de benefícios</h2>
+<div class="form-container" [class.large-form]="isFormLarge">
+  <form [formGroup]="loginForm" class="form-group">
+    <div class="input-group">
+      <ion-label position="floating" style="margin-bottom: 1rem;">Tipo de Cadastro</ion-label>
+      <div class="input-group">
+        <ion-segment formControlName="tipoCadastro" (ionChange)="onTipoPessoaChange()">
+          <!-- MOTORISTA (PF) - COMENTADO TEMPORARIAMENTE -->
+          <!--<ion-segment-button value="PF">
+            <ion-label>Motorista</ion-label>
+          </ion-segment-button>-->
+          <ion-segment-button value="MEI">
+            <ion-label>MEI</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="PJ">
+            <ion-label>Parceiro</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+      </div>
+    </div>
+
+    <!-- MOTORISTA (PF) - COMENTADO TEMPORARIAMENTE -->
+    <!--<div class="input-group" *ngIf="isPessoaFisica()">
+      <ion-label position="floating">CPF</ion-label>
+      <ion-input
+        formControlName="cpf"
+        placeholder="Digite o seu CPF"
+        fill="outline"
+        type="text"
+        (ionInput)="applyMaskCPF($event)"
+        (ionBlur)="validateCPF()"
+        maxlength="14"
+        required
+      ></ion-input>
+      <span *ngIf="cpfInvalid" class="error-message">CPF inválido</span>
+    </div>-->
+
+    <div class="input-group" *ngIf="isMEI()">
+      <ion-label position="floating">CNPJ</ion-label>
+      <ion-input
+        formControlName="cnpj"
+        placeholder="Digite o seu CNPJ"
+        fill="outline"
+        type="text"
+        (ionInput)="applyMaskCNPJ($event)"
+        (ionBlur)="validateCNPJ()"
+        maxlength="18"
+        required
+      ></ion-input>
+    
+      <div *ngIf="consultandoCNPJ" style="margin-top: 8px; display: flex; align-items: center;">
+        <ion-spinner name="dots" color="primary"></ion-spinner>
+        <span style="margin-left: 8px;">Consultando CNPJ...</span>
+      </div>
+    
+      <span *ngIf="cnpjInvalid && !consultandoCNPJ && cnpjNaoMEI" class="error-message">Este CNPJ não é de MEI. Apenas MEIs podem se cadastrar nesta categoria.</span>
+      <span *ngIf="cnpjInvalid && !consultandoCNPJ && !cnpjNaoMEI" class="error-message">CNPJ inválido</span>
+    </div>
+
+    <div class="input-group" *ngIf="isMEI()">
+      <ion-label position="floating">Nome Fantasia</ion-label>
+      <ion-textarea
+        formControlName="nomeEmpresa"
+        fill="outline"
+        placeholder="Nome da empresa"
+        [autoGrow]="true"
+        rows="1"
+        class="nome-fantasia-input"
+      ></ion-textarea>
+    </div>
+
+    <div class="input-group" *ngIf="isMEI()">
+      <ion-label position="floating">Contato</ion-label>
+      <ion-input
+        formControlName="contato"
+        fill="outline"
+        placeholder="(00) 00000-0000"
+        type="tel"
+        inputmode="tel"
+        autocomplete="tel-national"
+        (ionInput)="applyMaskContato($event)"
+      ></ion-input>
+      <span *ngIf="loginForm.get('contato')?.touched && loginForm.get('contato')?.errors?.['telefoneBr']" class="error-message">
+        {{ loginForm.get('contato')?.errors?.['telefoneBr'] }}
+      </span>
+    </div>
+    
+    <div class="input-group" *ngIf="isPessoaJuridica()">
+      <ion-label position="floating">CNPJ</ion-label>
+      <ion-input
+        formControlName="cnpj"
+        placeholder="Digite o CNPJ da empresa"
+        fill="outline"
+        type="text"
+        (ionInput)="applyMaskCNPJ($event)"
+        (ionBlur)="validateCNPJ()"
+        maxlength="18"
+        required
+      ></ion-input>
+    
+      <div *ngIf="consultandoCNPJ" style="margin-top: 8px; display: flex; align-items: center;">
+        <ion-spinner name="dots" color="primary"></ion-spinner>
+        <span style="margin-left: 8px;">Consultando CNPJ...</span>
+      </div>
+    
+      <span *ngIf="cnpjInvalid && !consultandoCNPJ && empresaInativa" class="error-message">A empresa não está ativa. Verifique a situação cadastral.</span>
+      <span *ngIf="cnpjInvalid && !consultandoCNPJ && !empresaInativa" class="error-message">CNPJ inválido</span>
+    </div>
+
+    <div class="input-group" *ngIf="isPessoaJuridica()">
+      <ion-label position="floating">Nome Fantasia</ion-label>
+      <ion-textarea
+        formControlName="nomeEmpresa"
+        fill="outline"
+        placeholder="Nome da empresa"
+        [autoGrow]="true"
+        rows="1"
+        class="nome-fantasia-input"
+      ></ion-textarea>
+    </div>
+
+    <div class="input-group" *ngIf="isPessoaJuridica()">
+      <ion-label position="floating">Atividade principal</ion-label>
+      <ion-input formControlName="atividade" fill="outline" placeholder="Atividade principal" required></ion-input>
+    </div>
+
+    <div class="input-group" *ngIf="isPessoaJuridica()">
+      <ion-label position="floating">Website (opcional)</ion-label>
+      <ion-input formControlName="website" fill="outline" placeholder="Seu website" type="url"></ion-input>
+    </div>
+
+    <div class="input-group" *ngIf="isPessoaJuridica()">
+      <ion-label position="floating">Contato</ion-label>
+      <ion-input
+        formControlName="contato"
+        fill="outline"
+        placeholder="(00) 00000-0000"
+        type="tel"
+        inputmode="tel"
+        autocomplete="tel-national"
+        (ionInput)="applyMaskContato($event)"
+      ></ion-input>
+      <span *ngIf="loginForm.get('contato')?.touched && loginForm.get('contato')?.errors?.['telefoneBr']" class="error-message">
+        {{ loginForm.get('contato')?.errors?.['telefoneBr'] }}
+      </span>
+    </div>
+
+    <div class="input-group">
+      <ion-label position="floating">Nome</ion-label>
+      <ion-input formControlName="nome" fill="outline" placeholder="Nome e sobrenome" type="text" autocomplete="name"></ion-input>
+      <span *ngIf="loginForm.get('nome')?.touched && loginForm.get('nome')?.errors?.['nomeCompleto']" class="error-message">
+        Use nome e sobrenome apenas com letras (ex.: Maria Silva).
+      </span>
+    </div>
+    
+    <div class="input-group">
+      <ion-label position="floating">E-mail</ion-label>
+      <ion-input formControlName="email" fill="outline" placeholder="Seu e-mail" type="email" inputmode="email" autocomplete="email"></ion-input>
+      <span *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.errors?.['email']" class="error-message">
+        E-mail inválido. Verifique o formato.
+      </span>
+    </div>
+    
+    <div class="input-group">
+      <ion-label position="floating">Senha</ion-label>
+      <ion-input formControlName="senha" fill="outline" placeholder="Sua senha" type="password" autocomplete="new-password">
+        <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+      </ion-input>
+      <p class="field-hint">{{ senhaRegrasTexto }}</p>
+      <span *ngIf="loginForm.get('senha')?.touched && loginForm.get('senha')?.errors?.['senhaComplexidade']" class="error-message">
+        {{ senhaRegrasTexto }}
+      </span>
+    </div>
+    
+    <div class="input-group">
+      <ion-label position="floating">Confirmar senha</ion-label>
+      <ion-input formControlName="confirmacaoSenha" fill="outline" placeholder="Confirme sua senha" type="password" required>
+        <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+      </ion-input>
+    </div>
+
+    <ion-button (click)="cadastrar()" expand="full" [disabled]="spinner">
+      <ng-container *ngIf="!spinner; else loadingSpinner">
+        Cadastrar
+      </ng-container>
+      <ng-template #loadingSpinner>
+        <ion-spinner name="crescent"></ion-spinner>
+      </ng-template>
+    </ion-button>
+
+    <a (click)="alterarForm()" style="cursor: pointer;">Já tem uma conta?</a>
+  </form>
+</div>

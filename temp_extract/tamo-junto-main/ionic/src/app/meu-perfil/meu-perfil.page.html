@@ -1,0 +1,20 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Meu Perfil</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="perfil-container">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Meu Perfil</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="perfil-content">
+    <ion-button expand="block" fill="solid" color="primary" (click)="irParaHistoricoPedidos()">
+      <ion-icon slot="start" name="time-outline"></ion-icon>
+      Histórico de Pedidos
+    </ion-button>
+  </div>
+</ion-content>

@@ -1,0 +1,316 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+        <ion-button (click)="voltarParaListarOfertas()" fill="clear" class="back-button">
+          <ion-icon aria-hidden="true" src="../assets/icon/ArrowBack.svg" ></ion-icon>
+          <span>Voltar</span>
+        </ion-button>
+    </ion-buttons>
+    <ion-title class="ion-text-left">Cadastrar Ofertas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<div class="cadastro-oferta-container">
+  <form (ngSubmit)="cadastrarOferta()">
+      <ion-label>Nome do Produto</ion-label>
+      <ion-input  
+      type="text"
+      [(ngModel)]="oferta.nomeProduto"
+      name="nomeProduto" 
+      label-placement="floating" 
+      fill="outline" 
+      placeholder="Digite o nome do Produto" 
+      required
+      >
+    </ion-input>
+      
+      <ion-label>Descrição</ion-label>
+      <ion-textarea 
+       labelPlacement="floating" 
+       fill="outline" 
+       placeholder="Digite a descrição"
+       [(ngModel)]="oferta.descricao"
+        name="descricao"
+        rows="3"
+        [counter]="true" 
+        maxlength="180"
+        [counterFormatter]="counterFormatter"
+        required
+       >
+      </ion-textarea>
+    <div class="form-row">
+      <div class="form-group">
+        <ion-label>Categoria</ion-label>
+        <ion-select
+          [(ngModel)]="oferta.categoria"
+          name="categoria"
+          placeholder="Selecione a categoria"
+          label-placement="floating" 
+          fill="outline"
+          cancelText="Cancelar" 
+          okText="OK"
+          (ionChange)="onCategoriaChange()"
+          required>
+          <ion-select-option *ngFor="let categoria of categorias" [value]="categoria">
+            {{ categoria }}
+          </ion-select-option>
+          <!-- Opção para mostrar categoria personalizada se existir -->
+          <ion-select-option *ngIf="categoriaPersonalizada && categoriaPersonalizada.trim() !== ''" [value]="categoriaPersonalizada">
+            {{ categoriaPersonalizada }} (Personalizada)
+          </ion-select-option>
+        </ion-select>
+      </div>
+
+      <!-- Campo de categoria personalizada -->
+      <div class="form-group" *ngIf="mostrarCategoriaPersonalizada">
+        <ion-label>Categoria Personalizada</ion-label>
+        <ion-input
+          [(ngModel)]="categoriaPersonalizada"
+          name="categoriaPersonalizada"
+          placeholder="Digite a categoria"
+          label-placement="floating" 
+          fill="outline"
+          (ionInput)="onCategoriaPersonalizadaChange()"
+          required>
+        </ion-input>
+      </div>
+
+      <div class="form-group">
+        <ion-label>Produto é?</ion-label>
+        <div class="radio-group">
+          <label>
+            <input
+              type="radio"
+              name="tipoProduto"
+              [(ngModel)]="oferta.tipoProduto"
+              value="Físico"
+            />
+            Físico
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="tipoProduto"
+              [(ngModel)]="oferta.tipoProduto"
+              value="Digital"
+            />
+            Digital
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <ion-label>Endereço</ion-label>
+    <div class="form-row">
+      <div class="form-group">
+        <ion-label for="rua">Rua</ion-label>
+          <ion-input
+            id="rua"
+            type="text"
+            placeholder="Digite a rua"
+            [(ngModel)]="endereco.rua"
+            name="rua"
+            label-placement="floating" 
+            fill="outline"
+            required/>
+      </div>
+      <div class="form-group">
+        <ion-label for="bairro">Bairro</ion-label>
+        <ion-input
+          id="bairro"
+          type="text"
+          placeholder="Digite o bairro"
+          [(ngModel)]="endereco.bairro"
+          name="bairro"
+          label-placement="floating" 
+          fill="outline"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <ion-label for="cidade">Cidade</ion-label>
+        <ion-input
+          id="cidade"
+          type="text"
+          placeholder="Digite a cidade"
+          [(ngModel)]="endereco.cidade"
+          name="cidade"
+          label-placement="floating" 
+          fill="outline"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <ion-label for="estado">Estado</ion-label>
+          <ion-select
+            [(ngModel)]="endereco.estado"
+            name="estado"
+            placeholder="Selecione o estado"
+            fill="outline"
+          cancelText="Cancelar" 
+          okText="OK"
+            required>
+            <ion-select-option *ngFor="let estado of estados" [value]="estado">
+              {{ estado }}
+            </ion-select-option>
+          </ion-select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <ion-label>valor original da oferta (R$)</ion-label>
+        <ion-input
+          type="text"
+          (ionInput)="onPrecoInput($event)"
+          (ionBlur)="onPrecoBlur()"
+          [value]="precoInput"
+          name="preco"
+          required
+          placeholder="0,00"
+          label-placement="floating" 
+          fill="outline"
+          inputmode="decimal"
+        ></ion-input>
+      </div>
+    
+      <div class="form-group">
+        <ion-label>Desconto (%)</ion-label>
+        <ion-input
+          type="text"
+          (ionInput)="onDescontoInput($event)"
+          (ionBlur)="onDescontoBlur()"
+          [value]="descontoInput"
+          name="desconto"
+          required
+          placeholder="0%"
+          label-placement="floating" 
+          fill="outline"
+          inputmode="decimal"
+        ></ion-input>
+      </div>
+    
+      <div class="form-group">
+        <ion-label>Valor final da oferta (R$)</ion-label>
+        <ion-input  
+          type="text" 
+          [value]="valorFinalStr" 
+          readonly 
+          label-placement="floating" 
+          fill="outline"
+          class="valor-final"
+        ></ion-input>
+      </div>
+    </div>
+    
+      
+    <div class="form-row">
+      <div class="form-group oferta-relampago">
+        <ion-label>Tipo de Oferta:</ion-label>
+        <div class="checkbox-group">
+          <label>
+            <input
+              type="radio"
+              name="tipoOferta"
+              [(ngModel)]="oferta.tipoOferta"
+              value="relampago"
+              (change)="onTipoOfertaChange($event)"
+              />
+              Relâmpago
+            
+            <span class="tooltip">
+              As Ofertas Relâmpago são super ofertas que são válidas por no
+              máximo 7 dias
+            </span>
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="tipoOferta"
+              [(ngModel)]="oferta.tipoOferta"
+              value="normal"
+              (change)="onTipoOfertaChange($event)"
+            />
+            Normal
+          </label>
+        </div>
+      </div>
+    </div>
+    
+    <div class="form-row">
+      <div class="form-group">
+        <ion-label>Oferta válida por:</ion-label>
+        <ion-segment [(ngModel)]="validadeSelecionada" name="validade" (ionChange)="preencherDataValidade(validadeSelecionada)" [disabled]="tipoOfertaSelecionado === 'relampago'">
+          <ion-segment-button value="7 dias">
+            07 dias
+          </ion-segment-button>
+          <ion-segment-button value="15 dias" [disabled]="tipoOfertaSelecionado === 'relampago'">
+            15 dias
+          </ion-segment-button>
+          <ion-segment-button value="30 dias" [disabled]="tipoOfertaSelecionado === 'relampago'">
+            30 dias
+          </ion-segment-button>
+          <ion-segment-button value="60 dias" [disabled]="tipoOfertaSelecionado === 'relampago'">
+            60 dias
+          </ion-segment-button>
+        </ion-segment>
+      </div>
+      
+      <div class="form-group">
+        <ion-label>Data personalizada:</ion-label>
+        <div class="data-personalizada">
+          <ion-input type="date" [(ngModel)]="oferta.dataCriacao" name="dataCriacao" placeholder="dd/mm/aaaa" fill="outline" readonly/>
+          <span>até</span>
+          <ion-input type="date" [(ngModel)]="oferta.validade" name="validade" placeholder="dd/mm/aaaa" fill="outline"/>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Seção de Upload de Imagem -->
+    <div class="form-group">
+      <ion-label>Imagem da Oferta</ion-label>
+      <div class="upload-section">
+        <div class="file-input-container">
+          <input 
+            type="file" 
+            accept="image/*" 
+            (change)="onFileSelected($event)"
+            id="fileInput"
+            style="display: none;"
+          />
+          <ion-button 
+            fill="outline" 
+            (click)="triggerFileInput()"
+            class="upload-button"
+          >
+            <ion-icon name="camera-outline" slot="start"></ion-icon>
+            Selecionar Imagem
+          </ion-button>
+          <p class="upload-hint">Formatos aceitos: JPG, PNG, GIF. Máximo 5MB.</p>
+        </div>
+        
+        <!-- Preview da imagem selecionada -->
+        <div class="image-preview" *ngIf="imagemPreview">
+          <h4>Imagem Selecionada:</h4>
+          <div class="preview-container">
+            <img [src]="imagemPreview" alt="Preview da imagem" class="preview-image" />
+            <ion-button 
+              fill="clear" 
+              color="danger" 
+              size="small"
+              (click)="removerImagem()"
+              class="remove-image-btn"
+            >
+              <ion-icon name="close-circle"></ion-icon>
+            </ion-button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    <div class="button-group-submit">
+      <ion-button type="submit" class="submit-button">Cadastrar oferta</ion-button>
+      <ion-button expand="full" class="submit-button" (click)="voltarParaListarOfertas()">Cancelar</ion-button>
+    </div>    
+  </form>
+</div>

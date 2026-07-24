@@ -1,0 +1,11 @@
+<div *ngIf="mostrarAviso" class="parceiro-aviso-menu">
+  <ion-card color="warning" class="aviso-card">
+    <ion-card-content>
+      <ion-icon name="alert-circle" color="warning" style="font-size: 1.5rem;"></ion-icon>
+      <span class="aviso-texto">Ative o plano parceiro gratuito para acessar a plataforma!</span>
+      <ion-button expand="block" color="warning" (click)="ativarPlanoParceiro()">
+        Ativar plano parceiro
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+</div> 

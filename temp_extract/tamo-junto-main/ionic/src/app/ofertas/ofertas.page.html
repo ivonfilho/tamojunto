@@ -1,0 +1,147 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Minhas Ofertas</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="aplicarFiltro('normal')" class="ion-button">
+        <ion-label class="ion-label">Filtro oferta Normal</ion-label>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="aplicarFiltro('relampago')" class="ion-button">
+        <ion-label class="ion-label">Filtro oferta Relâmpago</ion-label>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end" *ngIf="parceiro">
+      <ion-button (click)="recarregarPagina()" class="ion-button">
+        <ion-label class="ion-label">cadastrar oferta</ion-label>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" [scrollY]="true" [scrollEvents]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Ofertas</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <!-- Pull-to-refresh para atualizar a lista -->
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="chevron-down-circle-outline"
+      pullingText="Puxe para atualizar"
+      refreshingSpinner="circles"
+      refreshingText="Atualizando...">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <ion-segment (ionChange)="aplicarFiltroStatus($event.detail.value?.toString() || 'todas')" *ngIf="parceiro">
+    <ion-segment-button value="ativa">
+      <ion-label>Ativa</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="inativa">
+      <ion-label>Inativa</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="expirada">
+      <ion-label>Expirada</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <!-- Lista de ofertas -->
+  <div class="offer-grid">
+    <ion-card *ngFor="let oferta of ofertasFiltradas" class="offer-card" [ngClass]="{'offer-relampago': (oferta.tipoOferta || '').toLowerCase() === 'relampago'}">
+      <div class="offer-card-content">
+        <div class="card-header-actions">
+          <ion-button 
+            fill="clear" 
+            class="edit-button" 
+            (click)="editarOferta(oferta.id!)" 
+            *ngIf="parceiro"
+            size="small">
+            <ion-icon slot="icon-only" aria-hidden="true" src="../assets/icon/PencilOutline.svg"></ion-icon>
+          </ion-button>
+
+          <app-excluir-oferta
+            *ngIf="parceiro"
+            [ofertaId]="oferta.id"
+            [ofertaNome]="oferta.nomeProduto"
+            (ofertaExcluida)="carregarOfertas()" 
+            class="excluirBotao">
+          </app-excluir-oferta>
+        </div>
+
+        <ion-chip color="light" class="offer-chip">
+          <ion-avatar>
+            <img
+              *ngIf="oferta.idParceiroNavigation?.fotoPerfil || oferta.idParceiroNavigation?.FotoPerfil; else defaultAvatar"
+              [src]="oferta.idParceiroNavigation?.fotoPerfil || oferta.idParceiroNavigation?.FotoPerfil"
+              alt="Foto de perfil do parceiro"
+            />
+            <ng-template #defaultAvatar>
+              <img
+                alt="Avatar padrão"
+                src="https://ionicframework.com/docs/img/demos/avatar.svg"
+              />
+            </ng-template>
+          </ion-avatar>
+          <ion-label class="offer-title">{{ oferta.idParceiroNavigation?.idEmpresaNavigation?.nome }}</ion-label>
+        </ion-chip>
+
+        <img 
+        *ngIf="oferta.imagem && oferta.imagem.length > 0; else placeholder"
+        [src]="oferta.imagem[0].path"
+        alt="Imagem da oferta"
+          class="offer-image"
+        />
+        <ng-template #placeholder>
+          <div class="placeholder-container">
+            <ion-icon aria-hidden="true" src="../assets/icon/ImageOutline.svg" class="placeholder-icon"></ion-icon>
+          </div>
+        </ng-template>
+
+        <ion-card-content class="offer-details">
+        <ion-card-subtitle>{{ oferta.dataCriacao | date }}</ion-card-subtitle>
+          <ion-card-title>{{ oferta.nomeProduto }}</ion-card-title>
+        <p>{{ oferta.descricao }}</p>
+        
+        <!-- Informações de preço -->
+        <div class="price-info" *ngIf="oferta.preco">
+          <div class="price-row">
+            <span class="price-label">Valor Inicial:</span>
+            <span class="price-value initial-price">{{ formatarValor(oferta.preco) }}</span>
+          </div>
+          
+          <div class="price-row" *ngIf="oferta.desconto && oferta.desconto > 0">
+            <span class="price-label">Desconto:</span>
+            <span class="price-value discount">{{ oferta.desconto }}%</span>
+          </div>
+          
+          <div class="price-row final-price-row">
+            <span class="price-label">Valor Final:</span>
+            <span class="price-value final-price">{{ formatarValor(calcularValorFinal(oferta)) }}</span>
+          </div>
+        </div>
+      </ion-card-content>
+
+        <ion-item *ngIf="parceiro" class="status-toggle">
+        <ion-label>Ativar Oferta</ion-label>
+        <ion-toggle 
+            [checked]="oferta.status === true" 
+          (ionChange)="alterarStatusOferta(oferta, $event)" >
+        </ion-toggle>
+      </ion-item>
+      
+        <div class="offer-button-container">
+          <ion-button expand="block" 
+                     [color]="(oferta.tipoOferta || '').toLowerCase() === 'relampago' ? 'warning' : 'success'" 
+                     [class]="'offer-button' + ((oferta.tipoOferta || '').toLowerCase() === 'relampago' ? ' offer-button-relampago' : '')" 
+                     (click)="verOferta(oferta.id!)">
+            <ion-icon [src]="(oferta.tipoOferta || '').toLowerCase() === 'relampago' ? '../assets/icon/Flash.svg' : '../assets/icon/Eye.svg'" slot="start" aria-hidden="true"></ion-icon>
+            Ver Oferta
+          </ion-button>
+        </div>
+      </div>
+    </ion-card>
+  </div>
+</ion-content>

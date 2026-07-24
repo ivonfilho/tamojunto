@@ -1,0 +1,5 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/786cc869-4fc8-430b-a005-db5bbcd89ff2/resourceGroups/TamoJuntoAPI20250407095946ResourceGroup/providers/Microsoft.Web/sites/TamoJuntoAPI20250407095946",
+    "appService.deploySubpath": ".",
+    "java.configuration.updateBuildConfiguration": "interactive"
+}

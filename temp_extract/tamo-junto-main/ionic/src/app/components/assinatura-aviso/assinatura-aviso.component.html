@@ -1,0 +1,49 @@
+<div class="assinatura-aviso-overlay" *ngIf="mostrarAviso && !carregando">
+  <div class="assinatura-aviso-modal">
+    <div class="aviso-header">
+      <h2>{{ getTituloAviso() }}</h2>
+      <button class="fechar-btn" (click)="fechar()">
+        <ion-icon aria-hidden="true" src="../assets/icon/Close.svg"></ion-icon>
+      </button>
+    </div>
+    
+    <div class="aviso-content">
+      <div class="aviso-icon">
+        <ion-icon 
+          [src]="statusAcesso?.tipo === 'teste_gratis' ? '../assets/icon/Gift.svg' : 
+                  statusAcesso?.tipo === 'plano_mensal' ? '../assets/icon/Card.svg' : 
+                  '../assets/icon/LockClosed.svg'"
+          aria-hidden="true">
+        </ion-icon>
+      </div>
+      
+      <p class="aviso-mensagem">{{ statusAcesso?.mensagem }}</p>
+      
+      <div class="aviso-acoes">
+        <button 
+          class="btn-principal" 
+          (click)="executarAcao()"
+          [ngClass]="{
+            'btn-teste-gratis': statusAcesso?.tipo === 'teste_gratis',
+            'btn-plano-mensal': statusAcesso?.tipo === 'plano_mensal',
+            'btn-login': statusAcesso?.tipo === 'login'
+          }">
+          {{ getTextoBotao() }}
+        </button>
+        
+        <button class="btn-secundario" (click)="fechar()" *ngIf="statusAcesso?.tipo !== 'login'">
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="assinatura-aviso-overlay" *ngIf="carregando">
+  <div class="assinatura-aviso-modal">
+    <div class="aviso-content">
+      <ion-spinner name="crescent"></ion-spinner>
+      <p>Verificando acesso...</p>
+    </div>
+  </div>
+</div> 

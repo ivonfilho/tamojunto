@@ -1,0 +1,6 @@
+@TamoJunto.Domain_HostAddress = http://localhost:5290
+
+GET {{TamoJunto.Domain_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

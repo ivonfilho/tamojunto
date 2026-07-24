@@ -1,0 +1,43 @@
+# Arquivos de build e desenvolvimento
+bin/
+obj/
+*.user
+*.suo
+*.cache
+*.log
+
+# Arquivos de configuração local
+appsettings.Development.json
+appsettings.Local.json
+
+# Arquivos de teste
+**/*.Test/
+**/*.Tests/
+**/*.Spec/
+
+# Arquivos temporários
+*.tmp
+*.temp
+.vs/
+.vscode/
+
+# Arquivos de sistema
+.DS_Store
+Thumbs.db
+
+# Arquivos de backup
+*.backup
+*.bak
+
+# Arquivos de documentação
+*.md
+README.md
+LICENSE
+
+# Arquivos de configuração do Git
+.git/
+.gitignore
+
+# Arquivos de configuração do Railway
+railway.json
+railway.env 

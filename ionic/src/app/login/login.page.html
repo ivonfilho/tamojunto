@@ -1,0 +1,19 @@
+<ion-content class="login-page-ion" [fullscreen]="true" [scrollY]="true">
+  <div class="container">
+    <div class="left">
+      <!-- Background handled by SCSS -->
+    </div>
+
+    <div class="right-content">
+      <div class="img-container">
+        <img src="../../assets/tamo-junto-logo.png" alt="Tamo Junto Logo" />
+      </div>
+
+      <div class="form-component">
+        <app-login-form (Cadastro)="alterarForm()" *ngIf="!cadastro"></app-login-form>
+        <app-cadastro-form (Cadastro)="alterarForm()" *ngIf="cadastro"></app-cadastro-form>
+      </div>
+    </div>
+  </div>
+</ion-content>
+

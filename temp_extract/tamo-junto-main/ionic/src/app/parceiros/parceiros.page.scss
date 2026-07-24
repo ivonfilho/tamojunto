@@ -1,0 +1,198 @@
+ion-list {
+  ion-item {
+    --padding-start: 0;
+    --inner-padding-end: 0;
+    --background-color:white !important;
+  }
+}
+
+
+
+//Botões
+
+.ion-button{
+margin-top: auto;
+border-radius: 5px;
+width: 100%;
+background-color: #4c439d;
+color: white;
+font-weight: bold;
+text-align: center;
+transition: background-color 0.3s, transform 0.2s;
+align-self: flex-end;
+
+  
+}
+
+.ion-button-export{
+  margin-top: auto;
+  border-radius: 5px;
+  width: 100%;
+  background-color: #4c439d !important;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  transition: background-color 0.3s, transform 0.2s;
+  align-self: flex-end;
+}
+
+//Filtros
+
+.ion-label-filters{
+  font-size: 18px;
+}
+
+.filters{
+    border-bottom: solid;
+    display: flex;
+    border-width: 1px;
+}
+
+ion-item{
+  --background: #fff;
+  --border-color: transparent;
+}
+
+.col-filters{
+  background-color: white !important;
+  display: flex;
+  align-items: flex-end;
+  /* align-content: center; */
+  flex-direction: row;
+}
+
+.col-filters-button{
+  background-color: white !important;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  /* align-content: center; */
+  flex-direction: row;
+}
+
+.select-filters{
+  margin-left: 15px;
+  
+}
+
+/* .input-filters{
+  font-size: 12px;
+  padding: 20px;
+} */
+
+.row-list{
+  display: flex;
+  justify-content: space-between;
+}
+
+.label-list{
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+}
+
+.table-header{
+  border: solid;
+  border-width: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: black;
+  background-color: #dedede !important;
+}
+
+.table-columns{
+  background-color: white !important;
+  border: solid;
+  border-width: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+}
+
+.actions-column{
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 1px;
+  border: solid;
+  border-width: 1px;
+}
+
+
+.table-badge{
+  text-transform: uppercase;
+  font-size: 12px;
+  padding: 5px;
+}
+
+.action-button{
+  background-color: #dedede;
+  border-radius: 5px;
+  margin: 0 2px;
+  left: 6px;
+}
+
+
+ion-card-header, ion-card-content {
+  background-color: white;
+}
+
+ion-button {
+ 
+}
+
+ion-col{
+  background-color: white !important;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-start;
+  margin-bottom: 20px;
+}
+
+ion-item h2 {
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+ion-item p {
+  margin: 5px 0;
+  font-size: 0.9rem;
+}
+
+.page-count{
+  display: flex;
+  align-items: center;
+}
+
+.text-success {
+  color: green;
+}
+
+.text-danger {
+  color: red;
+}
+
+.pagination {
+  margin-top: 15px;
+}
+
+.actions-column {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px; /* Adiciona espaço entre os botões */
+  border: solid;
+  border-width: 1px;
+}
+
+.action-button {
+  background-color: #dedede;
+  border-radius: 5px;
+  margin: 0 2px; /* Adiciona margem horizontal entre os botões */
+}

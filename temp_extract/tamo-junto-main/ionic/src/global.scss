@@ -1,0 +1,610 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "@ionic/angular/css/normalize.css";
+@import "@ionic/angular/css/structure.css";
+@import "@ionic/angular/css/typography.css";
+@import "@ionic/angular/css/display.css";
+
+/* Optional CSS utils that can be commented out */
+@import "@ionic/angular/css/padding.css";
+@import "@ionic/angular/css/float-elements.css";
+@import "@ionic/angular/css/text-alignment.css";
+@import "@ionic/angular/css/text-transformation.css";
+@import "@ionic/angular/css/flex-utils.css";
+
+/**
+ * Ionic Dark Mode
+ * -----------------------------------------------------
+ * For more info, please see:
+ * https://ionicframework.com/docs/theming/dark-mode
+ */
+
+/* @import "@ionic/angular/css/palettes/dark.always.css"; */
+/* @import "@ionic/angular/css/palettes/dark.class.css"; */
+// @import "@ionic/angular/css/palettes/dark.system.css";
+
+.large-modal {
+  --width: 85%;
+  --height: 90%;
+  --border-radius: 8px;
+}
+
+.large-modal .modal-wrapper {
+  max-width: none;
+  max-height: none;
+  width: var(--width);
+  height: var(--height);
+}
+
+/* Nitidez global; text-rendering auto evita glifos estranhos com Poppins/WebKit após repaint. */
+* {
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  text-rendering: auto;
+}
+
+/* Estilos para toolbar e botões - LETRAS BRANCAS */
+ion-toolbar {
+  ion-buttons {
+    ion-button {
+      --color: white !important;
+      color: white !important;
+      
+      ion-label {
+        color: white !important;
+      }
+    }
+  }
+}
+
+/* Garantir que labels dos botões sejam brancos */
+ion-button ion-label {
+  color: white !important;
+}
+
+// Prevenir scroll horizontal em telas pequenas
+@media (max-width: 767px) {
+  * {
+    max-width: 100vw;
+    box-sizing: border-box;
+  }
+  
+  ion-content {
+    // Mantem a rolagem vertical do app no mobile.
+    --overflow: auto;
+    overflow-x: hidden;
+  }
+  
+  body {
+    overflow-x: hidden;
+  }
+  
+  .container {
+    overflow-x: hidden;
+  }
+}
+
+/* Estilos para segmentos - melhor contraste */
+ion-segment {
+  ion-segment-button {
+    --color: #888;
+    --color-checked: white;
+    --indicator-color: var(--ion-color-primary);
+    --indicator-height: 3px;
+    
+    ion-label {
+      color: #888;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+    }
+    
+    &.segment-button-checked {
+      ion-label {
+        color: white !important;
+        font-weight: 700;
+      }
+    }
+  }
+}
+
+/* Melhorias específicas para modais */
+ion-modal {
+  --backdrop-opacity: 0.4;
+}
+
+ion-modal .modal-wrapper {
+  border-radius: 12px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Melhorias para inputs e labels - usando !important para sobrescrever CSS do Ionic */
+ion-label {
+  font-weight: 600 !important;
+  color: #fff !important;
+  text-transform: none !important;
+  letter-spacing: 0.025em !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  text-rendering: optimizeLegibility !important;
+}
+
+ion-input, ion-select, ion-textarea {
+  --color: #555 !important;
+  --placeholder-color: #999 !important;
+  font-weight: 400 !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  text-rendering: optimizeLegibility !important;
+}
+
+/* Melhorias para dispositivos móveis */
+@media (max-width: 768px) {
+  ion-label {
+    font-weight: 500 !important;
+    color: #fff !important;
+    font-size: 1rem !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    text-rendering: optimizeLegibility !important;
+  }
+  
+  ion-input, ion-select, ion-textarea {
+    font-size: 1.1rem !important;
+    font-weight: 400 !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    text-rendering: optimizeLegibility !important;
+  }
+}
+
+/* Melhorias para dispositivos de alta densidade */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  ion-label {
+    font-weight: 500 !important;
+    color: #555 !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    text-rendering: optimizeLegibility !important;
+  }
+  
+  ion-input, ion-select, ion-textarea {
+    font-weight: 400 !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    text-rendering: optimizeLegibility !important;
+  }
+}
+
+/* Melhorias específicas para iOS */
+.platform-ios {
+  ion-label {
+    font-weight: 500 !important;
+    color: #555 !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    text-rendering: optimizeLegibility !important;
+  }
+  
+  ion-input, ion-select, ion-textarea {
+    font-weight: 400 !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    text-rendering: optimizeLegibility !important;
+  }
+}
+
+/* Melhorias específicas para Android */
+.platform-android {
+  ion-label {
+    font-weight: 500 !important;
+    color: #555 !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    text-rendering: optimizeLegibility !important;
+  }
+  
+  ion-input, ion-select, ion-textarea {
+    font-weight: 400 !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    text-rendering: optimizeLegibility !important;
+  }
+}
+
+/* Regras específicas para o modal de perfil */
+app-profile-modal {
+  ion-label {
+    font-weight: 500 !important;
+    color: #666 !important;
+    font-size: 1rem !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    text-rendering: optimizeLegibility !important;
+  }
+  
+  ion-input, ion-select, ion-textarea {
+    font-size: 1.1rem !important;
+    font-weight: 400 !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    text-rendering: optimizeLegibility !important;
+  }
+  
+  .input-group ion-label {
+    font-weight: 500 !important;
+    color: #666 !important;
+    font-size: 1.1rem !important;
+  }
+  
+  .input-group ion-input,
+  .input-group ion-select {
+    font-size: 1.2rem !important;
+    font-weight: 400 !important;
+    --border-width: 1px !important;
+    --border-color: #ccc !important;
+  }
+}
+
+/* Regras específicas para mobile no modal de perfil */
+@media (max-width: 768px) {
+  app-profile-modal {
+    ion-label {
+      font-weight: 800 !important;
+      color: #000 !important;
+      font-size: 1.2rem !important;
+    }
+    
+    ion-input, ion-select, ion-textarea {
+      font-size: 1.3rem !important;
+      font-weight: 700 !important;
+    }
+    
+    .input-group ion-label {
+      font-weight: 800 !important;
+      color: #000 !important;
+      font-size: 1.3rem !important;
+    }
+    
+    .input-group ion-input,
+    .input-group ion-select {
+      font-size: 1.4rem !important;
+      font-weight: 700 !important;
+    }
+  }
+}
+
+/* Regras específicas para melhorar nitidez no modal de perfil */
+app-profile-modal .enhanced-label {
+  font-weight: 500 !important;
+  color: #666 !important;
+  font-size: 1.2rem !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  text-rendering: optimizeLegibility !important;
+}
+
+app-profile-modal .enhanced-input {
+  font-size: 1.3rem !important;
+  font-weight: 400 !important;
+  --border-width: 1px !important;
+  --border-color: #ccc !important;
+  --color: #555 !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  text-rendering: optimizeLegibility !important;
+}
+
+app-profile-modal .enhanced-button {
+  font-weight: 500 !important;
+  font-size: 1.2rem !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  text-rendering: optimizeLegibility !important;
+}
+
+/* Regras específicas para mobile no modal de perfil com prioridade máxima */
+@media (max-width: 768px) {
+  app-profile-modal .enhanced-label {
+    font-weight: 500 !important;
+    color: #666 !important;
+    font-size: 1.4rem !important;
+  }
+  
+  app-profile-modal .enhanced-input {
+    font-size: 1.5rem !important;
+    font-weight: 400 !important;
+  }
+  
+  app-profile-modal .enhanced-button {
+    font-weight: 500 !important;
+    font-size: 1.4rem !important;
+  }
+}
+
+/* Regras específicas para dispositivos de alta densidade no modal de perfil */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  app-profile-modal .enhanced-label {
+    font-weight: 500 !important;
+    color: #666 !important;
+  }
+  
+  app-profile-modal .enhanced-input {
+    font-weight: 400 !important;
+  }
+  
+  app-profile-modal .enhanced-button {
+    font-weight: 500 !important;
+  }
+}
+
+/* Regras específicas para o segmento de tipo de cadastro */
+ion-segment {
+  ion-segment-button {
+    ion-label {
+      font-weight: 500 !important;
+      color: #666 !important;
+      font-size: 1rem !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+      text-rendering: optimizeLegibility !important;
+    }
+  }
+}
+
+/* Regras específicas para mobile no segmento */
+@media (max-width: 768px) {
+  ion-segment {
+    ion-segment-button {
+      ion-label {
+        font-weight: 500 !important;
+        color: #666 !important;
+        font-size: 1.2rem !important;
+      }
+    }
+  }
+}
+
+/* Regras específicas para dispositivos de alta densidade no segmento */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  ion-segment {
+    ion-segment-button {
+      ion-label {
+        font-weight: 500 !important;
+        color: #666 !important;
+      }
+    }
+  }
+}
+
+/* Regras específicas para iOS no segmento */
+.platform-ios {
+  ion-segment {
+    ion-segment-button {
+      ion-label {
+        font-weight: 500 !important;
+        color: #666 !important;
+      }
+    }
+  }
+}
+
+/* Regras específicas para Android no segmento */
+.platform-android {
+  ion-segment {
+    ion-segment-button {
+      ion-label {
+      font-weight: 500 !important;
+      color: #666 !important;
+      }
+    }
+  }
+}
+
+/* Regras específicas para o segmento no modal de perfil */
+app-profile-modal ion-segment {
+  ion-segment-button {
+    ion-label {
+      font-weight: 500 !important;
+      color: #666 !important;
+      font-size: 1.1rem !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+      text-rendering: optimizeLegibility !important;
+    }
+  }
+}
+
+/* Regras específicas para mobile no segmento do modal de perfil */
+@media (max-width: 768px) {
+  app-profile-modal ion-segment {
+    ion-segment-button {
+      ion-label {
+        font-weight: 500 !important;
+        color: #666 !important;
+        font-size: 1.3rem !important;
+      }
+    }
+  }
+}
+
+/* Regras específicas para dispositivos de alta densidade no segmento do modal de perfil */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  app-profile-modal ion-segment {
+    ion-segment-button {
+      ion-label {
+        font-weight: 500 !important;
+        color: #666 !important;
+      }
+    }
+  }
+}
+
+/* Regras específicas para o segmento no modal de perfil com prioridade máxima */
+app-profile-modal ion-segment ion-segment-button ion-label {
+  font-weight: 500 !important;
+  color: #666 !important;
+  font-size: 1.2rem !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  text-rendering: optimizeLegibility !important;
+}
+
+/* Regras específicas para mobile no segmento do modal de perfil com prioridade máxima */
+@media (max-width: 768px) {
+  app-profile-modal ion-segment ion-segment-button ion-label {
+    font-weight: 500 !important;
+    color: #666 !important;
+    font-size: 1.4rem !important;
+  }
+}
+
+/* Regras específicas para dispositivos de alta densidade no segmento do modal de perfil com prioridade máxima */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  app-profile-modal ion-segment ion-segment-button ion-label {
+    font-weight: 500 !important;
+    color: #666 !important;
+  }
+}
+
+/* Regras específicas para iOS no segmento do modal de perfil com prioridade máxima */
+.platform-ios app-profile-modal ion-segment ion-segment-button ion-label {
+  font-weight: 500 !important;
+  color: #666 !important;
+}
+
+/* Regras específicas para Android no segmento do modal de perfil com prioridade máxima */
+.platform-android app-profile-modal ion-segment ion-segment-button ion-label {
+  font-weight: 500 !important;
+  color: #666 !important;
+}
+
+/* Regras específicas para todos os elementos do modal de perfil com prioridade máxima */
+app-profile-modal * {
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  text-rendering: optimizeLegibility !important;
+}
+
+/* Regras específicas para todos os labels do modal de perfil com prioridade máxima */
+app-profile-modal ion-label {
+  font-weight: 500 !important;
+  color: #666 !important;
+  font-size: 1.2rem !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  text-rendering: optimizeLegibility !important;
+}
+
+/* Regras específicas para todos os inputs do modal de perfil com prioridade máxima */
+app-profile-modal ion-input,
+app-profile-modal ion-select,
+app-profile-modal ion-textarea {
+  font-weight: 400 !important;
+  font-size: 1.3rem !important;
+  --color: #555 !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  text-rendering: optimizeLegibility !important;
+}
+
+/* Regras específicas para mobile em todos os elementos do modal de perfil com prioridade máxima */
+@media (max-width: 768px) {
+  app-profile-modal * {
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    text-rendering: optimizeLegibility !important;
+  }
+  
+  app-profile-modal ion-label {
+    font-weight: 500 !important;
+    color: #666 !important;
+    font-size: 1.4rem !important;
+  }
+  
+  app-profile-modal ion-input,
+  app-profile-modal ion-select,
+  app-profile-modal ion-textarea {
+    font-weight: 400 !important;
+    font-size: 1.5rem !important;
+  }
+}
+
+// Cores melhoradas para status dos cupons - aplicação global
+ion-chip[color="success"] {
+  --background: #059669 !important;
+  --color: #ffffff !important;
+  
+  ion-label {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+  }
+}
+
+ion-chip[color="danger"] {
+  --background: #dc2626 !important;
+  --color: #ffffff !important;
+  
+  ion-label {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+  }
+}
+
+ion-chip[color="primary"] {
+  --background: #2563eb !important;
+  --color: #ffffff !important;
+  
+  ion-label {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+  }
+}
+
+// Estilos para popover e alert (dropdowns de seleção)
+.popover-content,
+.alert-wrapper {
+  ion-list {
+    ion-item {
+      ion-label {
+        color: white !important;
+      }
+    }
+    
+    .alert-radio-label,
+    .alert-checkbox-label,
+    .select-interface-option {
+      color: white !important;
+    }
+  }
+}
+
+// Estilos específicos para o select do Ionic
+ion-select-popover {
+  ion-list {
+    background: var(--ion-color-primary);
+    
+    ion-item {
+      --background: var(--ion-color-primary);
+      --color: white;
+      
+      ion-label,
+      ion-radio-group ion-item ion-label {
+        color: white !important;
+      }
+    }
+  }
+}

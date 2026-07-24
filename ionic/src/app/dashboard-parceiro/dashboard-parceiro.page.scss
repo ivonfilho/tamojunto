@@ -1,0 +1,582 @@
+.dashboard-container {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  min-height: 100dvh;
+  min-height: 100svh;
+  padding-bottom: calc(6rem + env(safe-area-inset-bottom, 0px));
+
+  @media (max-width: 768px) {
+    min-height: 100dvh;
+    min-height: 100svh;
+  }
+}
+
+ion-content.dashboard-container {
+  --padding-bottom: calc(6rem + env(safe-area-inset-bottom, 0px));
+
+  @media (max-width: 768px) {
+    --padding-bottom: calc(10rem + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+.dashboard-header {
+  background: linear-gradient(135deg, var(--ion-color-primary) 0%, #667eea 100%);
+  padding: 40px 20px 30px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 20px;
+
+  .header-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: white;
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin: 0 0 10px 0;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      margin: 0;
+      font-weight: 300;
+    }
+  }
+
+  .header-decoration {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+
+    .decoration-circle {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      animation: float 6s ease-in-out infinite;
+
+      &:first-child {
+        width: 80px;
+        height: 80px;
+        top: 20px;
+        right: 20px;
+        animation-delay: 0s;
+      }
+
+      &:last-child {
+        width: 120px;
+        height: 120px;
+        top: 60px;
+        right: 100px;
+        animation-delay: 2s;
+      }
+    }
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  padding: 0 20px;
+  margin-bottom: 30px;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  border: none;
+  overflow: hidden;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+  }
+
+  ion-card-content {
+    padding: 25px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    position: relative;
+  }
+
+  .stat-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8fafc; // Subtle grey
+    border: 1px solid #e2e8f0;
+
+    ion-icon {
+      font-size: 28px;
+    }
+  }
+
+  .stat-info {
+    flex: 1;
+
+    h3 {
+      font-size: 0.85rem;
+      font-weight: normal;
+      color: #64748b; // Professional slate color
+      margin: 2px 0 0 0;
+    }
+
+    .stat-value {
+      font-size: 2.2rem;
+      color: #333;
+      font-weight: 800;
+      margin: 0;
+    }
+
+    .stat-change {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+
+      &.positive {
+        background: #e8f5e9;
+        color: #10b981;
+        border-radius: 8px;
+        padding: 4px 8px;
+      }
+
+      &.negative {
+        background: #ffebee;
+        color: #ef4444;
+        border-radius: 8px;
+        padding: 4px 8px;
+      }
+    }
+  }
+}
+
+.chart-section {
+  margin: 0 20px 30px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  border: none;
+  overflow: hidden;
+  background: white !important; // Forçar fundo branco
+
+  // Corrigir fundo do header
+  ion-card-header {
+    background: white !important;
+    border-bottom: 1px solid #e9ecef;
+  }
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 0;
+
+    .header-text {
+      h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #000 !important; // Mudar para cor escura
+        margin: 0 0 5px 0;
+      }
+
+      p {
+        font-size: 0.9rem;
+        color: #333 !important; // Mudar para cor escura
+        margin: 0;
+      }
+    }
+
+    .header-actions {
+      ion-button {
+        --color: #666;
+        font-weight: 600;
+      }
+    }
+  }
+
+  .chart-container {
+    height: 300px;
+    margin: 20px 0;
+
+    // Melhorar visualização da legenda no mobile
+    @media (max-width: 768px) {
+      ::ng-deep .apexcharts-legend {
+        .apexcharts-legend-series {
+          .apexcharts-legend-text {
+            color: #333 !important;
+            font-weight: 600;
+          }
+        }
+      }
+
+      // Garantir que os labels dos eixos sejam pretos
+      ::ng-deep .apexcharts-xaxis-label,
+      ::ng-deep .apexcharts-yaxis-label {
+        fill: #000 !important;
+      }
+
+      // Garantir que títulos e textos do gráfico sejam pretos
+      ::ng-deep .apexcharts-title-text,
+      ::ng-deep .apexcharts-subtitle-text {
+        fill: #000 !important;
+        color: #000 !important;
+      }
+
+      // Garantir que tooltips tenham texto preto
+      ::ng-deep .apexcharts-tooltip {
+        color: #000 !important;
+
+        .apexcharts-tooltip-title,
+        .apexcharts-tooltip-series-group {
+          color: #000 !important;
+        }
+      }
+
+      // Forçar todos os textos para preto
+      ::ng-deep text {
+        fill: #000 !important;
+        color: #000 !important;
+      }
+    }
+  }
+}
+
+.products-section {
+  margin: 0 20px 30px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  border: none;
+  overflow: hidden;
+  background: white !important; // Forçar fundo branco
+
+  // Corrigir fundo azul do header
+  ion-card-header {
+    background: white !important;
+    border-bottom: 1px solid #e9ecef;
+  }
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 0;
+    background-color: transparent !important;
+
+    .header-text {
+      h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #000 !important; // Mudar para cor escura
+        margin: 0 0 5px 0;
+      }
+
+      p {
+        font-size: 0.9rem;
+        color: #666 !important; // Mudar para cor escura
+        margin: 0;
+      }
+    }
+
+    ion-button {
+      --color: var(--ion-color-primary);
+      font-weight: 600;
+    }
+  }
+
+  .products-list {
+    .product-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 15px 0;
+      border-bottom: 1px solid #f0f0f0;
+      transition: all 0.3s ease;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      &:hover {
+        background: #f8f9fa;
+        border-radius: 12px;
+        padding: 15px;
+        margin: 0 -15px;
+      }
+
+      .product-rank {
+        .rank-number {
+          font-size: 1.2rem;
+          font-weight: 700;
+          color: var(--ion-color-primary);
+          background: #e0e7ff;
+          border-radius: 50%;
+          width: 32px;
+          height: 32px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+      }
+
+      .product-info {
+        flex: 1;
+
+        .product-name {
+          font-size: 1rem;
+          font-weight: 600;
+          color: #333;
+          margin: 0 0 5px 0;
+        }
+
+        .product-stats {
+          font-size: 0.85rem;
+          color: #666;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+        }
+      }
+
+      .product-amount {
+        text-align: right;
+        min-width: 120px;
+
+        .amount {
+          display: block;
+          font-size: 1.1rem;
+          font-weight: 700;
+          color: #333;
+          margin-bottom: 5px;
+        }
+
+        .progress-bar.modern {
+          background: #f1f1f1;
+          border-radius: 8px;
+          height: 10px;
+          width: 100%;
+          overflow: hidden;
+          margin-top: 6px;
+          box-shadow: 0 2px 8px rgba(255, 168, 0, 0.08);
+        }
+        .progress-fill.animate {
+          height: 100%;
+          border-radius: 8px;
+          background: linear-gradient(90deg, #ff9800 0%, #ffd600 100%);
+          transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+      }
+    }
+  }
+}
+
+.quick-actions {
+  padding: 0 20px 30px;
+
+  .section-title {
+    margin-bottom: 20px;
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #333;
+      margin: 0;
+    }
+  }
+
+  .actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+
+  .action-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    border: none;
+    overflow: hidden;
+    text-align: center;
+    cursor: pointer;
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+    }
+
+    ion-card-content {
+      padding: 30px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .action-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(var(--ion-color-primary-rgb), 0.1) 0%, rgba(var(--ion-color-primary-rgb), 0.2) 100%);
+      margin-bottom: 10px;
+
+      ion-icon {
+        font-size: 28px;
+      }
+    }
+
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #333;
+      margin: 0 0 5px 0;
+    }
+
+    p {
+      font-size: 0.9rem;
+      color: #666;
+      margin: 0;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  // Garantir scroll no mobile
+  ion-content {
+    --overflow: auto !important;
+    --scroll-y: true !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4rem; // Espaço extra para scroll
+  }
+
+  // Garantir que todos os textos dos gráficos sejam pretos no mobile
+  ::ng-deep .apexcharts-canvas {
+    .apexcharts-title-text,
+    .apexcharts-subtitle-text,
+    .apexcharts-legend-text,
+    .apexcharts-xaxis-label,
+    .apexcharts-yaxis-label {
+      fill: #000 !important;
+      color: #000 !important;
+    }
+
+    // Forçar todos os textos do gráfico para preto
+    text {
+      fill: #000 !important;
+      color: #000 !important;
+    }
+
+    // Títulos e subtítulos
+    .apexcharts-title-text,
+    .apexcharts-subtitle-text {
+      fill: #000 !important;
+      color: #000 !important;
+    }
+
+    // Labels dos eixos
+    .apexcharts-xaxis-label,
+    .apexcharts-yaxis-label {
+      fill: #000 !important;
+      color: #000 !important;
+    }
+
+    // Legendas
+    .apexcharts-legend-text {
+      fill: #000 !important;
+      color: #000 !important;
+    }
+  }
+
+  .dashboard-header {
+    padding: 30px 15px 25px;
+
+    .header-content h1 {
+      font-size: 2rem;
+    }
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+    padding: 0 15px;
+    gap: 15px;
+  }
+
+  .chart-section,
+  .products-section {
+    margin: 0 15px 20px;
+    background-color: transparent !important;
+  }
+
+  .quick-actions {
+    padding: 0 15px 20px;
+
+    .actions-grid {
+      grid-template-columns: 1fr;
+      gap: 15px;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .stats-grid, .products-section, .chart-section {
+    margin: 0 4px 16px 4px;
+    padding: 0;
+  }
+  .stat-card ion-card-content {
+    padding: 14px;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.stat-card,
+.chart-section,
+.products-section,
+.action-card {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.stat-card:nth-child(1) { animation-delay: 0.1s; }
+.stat-card:nth-child(2) { animation-delay: 0.2s; }
+.stat-card:nth-child(3) { animation-delay: 0.3s; }
+.stat-card:nth-child(4) { animation-delay: 0.4s; }
+.action-card:nth-child(1) { animation-delay: 0.5s; }
+.action-card:nth-child(2) { animation-delay: 0.6s; }
+.action-card:nth-child(3) { animation-delay: 0.7s; }
+
+// Removido para evitar conflito com as cores específicas das seções
+// .section-header .header-text h2, .section-title h2 {
+//   color: #ff9800;
+//   font-weight: 800;
+//   letter-spacing: 0.5px;
+//   text-shadow: 0 1px 2px rgba(255, 168, 0, 0.08);
+// }

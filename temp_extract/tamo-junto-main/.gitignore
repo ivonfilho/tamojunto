@@ -1,0 +1,27 @@
+/TamoJunto.API/bin
+/TamoJunto.API/obj
+
+/TamoJunto.Domain/bin
+/TamoJunto.Domain/obj
+
+/TamoJunto.Infra/bin
+/TamoJunto.Infra/obj
+
+.vs
+.idea
+/node_modules
+/TamoJunto.API/wwwroot
+/TamoJunto.API/wwwroot/assets/icon/Chat.svg
+/TamoJunto.API/wwwroot/assets/icon/CircleUser.svg
+/TamoJunto.API/wwwroot/assets/icon/CreditCard.svg
+/TamoJunto.API/wwwroot/assets/icon/PictureInPicture.svg
+/TamoJunto.API/wwwroot/assets/icon/Receipt.svg
+/TamoJunto.API/wwwroot/assets/icon/ShoppingBag.svg
+/TamoJunto.API/wwwroot/assets/icon/ThumbsUp.svg
+/TamoJunto.API/wwwroot/index.html
+
+# Variáveis de ambiente (não versionar credenciais)
+.env
+.env.local
+.env.*.local
+/TamoJunto.API/railway.env

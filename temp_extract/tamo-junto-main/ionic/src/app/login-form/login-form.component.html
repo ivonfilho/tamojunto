@@ -1,0 +1,48 @@
+<h2>Faça login na sua conta</h2>
+<div class="form-container">
+  <form [formGroup]="loginForm" class="form-group">
+    <div class="input-group">
+      <ion-label position="floating"
+        [class.ng-invalid]="loginForm.get('email')?.touched && loginForm.get('email')?.invalid">E-mail</ion-label>
+
+      <ion-input formControlName="email" fill="outline" placeholder="Seu e-mail" type="email" required></ion-input>
+
+      <div *ngIf="submitted || (loginForm.get('email')?.touched && loginForm.get('email')?.invalid)"
+        class="error-messages">
+        <small *ngIf="loginForm.get('email')?.errors?.required" class="text-error">
+          <ion-icon name="alert-circle-outline"></ion-icon>
+          O e-mail é obrigatório.</small>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <ion-label position="floating"
+        [class.ng-invalid]="loginForm.get('senha')?.touched && loginForm.get('senha')?.invalid">Senha</ion-label>
+      <ion-input formControlName="senha" fill="outline" placeholder="Sua senha" type="password" required>
+        <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+      </ion-input>
+
+      <div *ngIf="submitted || (loginForm.get('senha')?.touched && loginForm.get('senha')?.invalid)"
+        class="error-messages">
+        <small *ngIf="loginForm.get('senha')?.errors?.required" class="text-error">
+          <ion-icon name="alert-circle-outline"></ion-icon>
+          A senha é obrigatória.</small>
+      </div>
+    </div>
+
+    <ion-button (click)="login()" expand="full" [disabled]="spinner">
+      <ng-container *ngIf="!spinner; else loadingSpinner">
+        Entrar
+      </ng-container>
+      <ng-template #loadingSpinner>
+        <ion-spinner name="crescent"></ion-spinner>
+      </ng-template>
+    </ion-button>
+
+    <div class="forgot-password-options">
+      <a (click)="irParaRecuperarEmail()" style="cursor: pointer;">{{ labelEsqueciSenha }}</a>
+      <a (click)="reenviarConfirmacaoEmail()" style="cursor: pointer;">{{ labelReenviarConfirmacao }}</a>
+    </div>
+    <p>Não tem uma conta? <a (click)="alterarForm()" style="cursor: pointer;">Cadastre-se</a></p>
+  </form>
+</div>

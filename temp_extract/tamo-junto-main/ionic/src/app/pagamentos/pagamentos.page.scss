@@ -1,0 +1,289 @@
+.container {
+  padding: 20px;
+  background: linear-gradient(135deg, var(--ion-color-primary) 0%, var(--ion-color-primary)100%);
+  min-height: 100vh;
+  height: auto !important; // Permitir altura automática para scroll
+  padding-bottom: 4rem; // Espaço extra para scroll
+}
+
+// Garantir que o ion-content seja scrollável
+ion-content {
+  --overflow: auto;
+  --scroll-y: true;
+}
+
+// Correções específicas para scroll no mobile
+@media (max-width: 768px) {
+  .container {
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+    height: auto !important;
+    min-height: 100vh;
+  }
+  
+  ion-content {
+    --overflow: auto !important;
+    --scroll-y: true !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+.header-section {
+  text-align: center;
+  margin-bottom: 30px;
+  color: white;
+
+  h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  }
+
+  p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    margin: 0;
+  }
+}
+
+.plano-card {
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  background: white;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+  }
+
+  &.featured {
+    border: 3px solid #ffc409;
+    transform: scale(1.02);
+    
+    &:hover {
+      transform: scale(1.02) translateY(-5px);
+    }
+  }
+}
+
+.card-badge {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  z-index: 10;
+  
+  ion-badge {
+    font-size: 0.75rem;
+    padding: 6px 12px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+}
+
+ion-card-header {
+  padding: 30px 20px 20px;
+  text-align: center;
+  position: relative;
+  border-bottom: 1px solid #f0f0f0;
+
+  &.card-header-mensal {
+    background: linear-gradient(135deg, #667eea 0%, var(--ion-color-primary)  100%);
+    color: white;
+    
+    .titulo-plano {
+      color: white !important;
+    }
+  }
+
+  &.card-header-anual {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+  }
+
+  &.card-header-free_trial {
+    background: linear-gradient(135deg, #DE4DBF 0%, #594FB9 100%);
+    color: white;
+  }
+
+  &.card-header-parceiro_gratis {
+    background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+    color: #333;
+  }
+}
+
+.titulo-plano {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+  margin-top: 35px; 
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  
+  
+  .plano-card.featured & {
+    margin-top: 40px; 
+  }
+}
+
+.preco-container {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  margin-bottom: 15px;
+  gap: 5px;
+}
+
+.preco-simbolo {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.preco-valor {
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.preco-periodo {
+  font-size: 1rem;
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+.plano-tipo-badge {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+ion-card-content {
+  padding: 25px 20px;
+}
+
+.beneficios {
+  margin-bottom: 25px;
+
+  h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 15px;
+    text-align: center;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+    color: #666;
+    line-height: 1.4;
+
+    ion-icon {
+      margin-right: 10px;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+  }
+}
+
+.card-actions {
+  .btn-selecionar {
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 1rem;
+    height: 50px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    }
+    
+    // Estilo para botão desabilitado (plano já ativado)
+    &[disabled] {
+      opacity: 0.6;
+      cursor: not-allowed;
+      
+      &:hover {
+        transform: none;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      }
+    }
+  }
+}
+
+.free-trial-btn {
+  background: linear-gradient(135deg, #DE4DBF 0%, #594FB9 100%) !important;
+  color: #fff !important;
+  border: none;
+}
+
+.free-trial-info {
+  display: block;
+  margin-top: 12px;
+  text-align: center;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+// Responsividade
+@media (max-width: 768px) {
+  .container {
+    padding: 15px;
+  }
+
+  .header-section h2 {
+    font-size: 2rem;
+  }
+
+  .preco-valor {
+    font-size: 2.5rem;
+  }
+
+  .plano-card {
+    margin-bottom: 15px;
+  }
+}
+
+// Animações
+
+.free-trial-btn {
+  background: linear-gradient(135deg, #DE4DBF 0%, #594FB9 100%) !important;
+  color: #fff !important;
+  border: none;
+}
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.plano-card {
+  animation: fadeInUp 0.6s ease-out;
+  
+  &:nth-child(1) { animation-delay: 0.1s; }
+  &:nth-child(2) { animation-delay: 0.2s; }
+  &:nth-child(3) { animation-delay: 0.3s; }
+  &:nth-child(4) { animation-delay: 0.4s; }
+}
+  

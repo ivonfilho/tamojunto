@@ -1,0 +1,31 @@
+# Excluir pastas e arquivos desnecessários
+**/bin/
+**/obj/
+**/publish/
+**/railway-publish/
+# **/wwwroot/  # Permitir arquivos web estáticos
+**/assets/
+**/imagens/
+**/svg/
+**/uploads/
+**/ionic/
+**/node_modules/
+**/.git/
+**/.vscode/
+**/*.md
+**/*.apk
+**/*.png
+**/*.jpg
+**/*.jpeg
+**/*.gif
+**/*.webp
+**/*.zip
+**/*.rar
+**/*.7z
+**/.angular/
+**/cache/
+**/*.exe
+**/*.pdb
+**/*.user
+**/*.backup
+**/*.log 
