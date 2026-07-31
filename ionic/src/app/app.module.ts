@@ -34,7 +34,7 @@ registerLocaleData(localePt, 'pt-BR');
   declarations: [AppComponent, HeaderComponent, ProfileModalComponent],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(),
+    IonicModule.forRoot({ mode: 'md' }), // Forçando 'md' para manter o mesmo visual em Desktop e Celular (iOS/Android)
     AppRoutingModule,
     HttpClientModule,
     FormsModule,

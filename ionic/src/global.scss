@@ -157,18 +157,143 @@ ion-segment {
 
 /* Melhorias específicas para modais */
 ion-modal {
-  --backdrop-opacity: 0.4;
-  --width: 85%;
-  --border-radius: 8px;
+    --backdrop-opacity: 0.4;
+    --width: 85%;
+    --border-radius: 8px;
+    --width: 90%;
+    --max-width: 500px;
+    --height: 80%;
+    --border-radius: 20px;
 }
 
 ion-modal .modal-wrapper {
   border-radius: 12px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  bottom: initial !important;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  border: none;
+  overflow: hidden;
+  margin: 0;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+  }
+
+  ion-card-content {
+    padding: 25px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .stat-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8fafc; // Subtle grey
+    border: 1px solid #e2e8f0;
+
+    ion-icon {
+      font-size: 24px;
+    }
+  }
+
+  .stat-info {
+    flex: 1;
+
+    h3 {
+      font-size: 0.85rem;
+      font-weight: normal;
+      color: #64748b;
+      margin: 2px 0 0 0;
+    }
+
+    .stat-value {
+      font-size: 1.8rem;
+      color: #1e293b;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .stat-change {
+      font-size: 0.8rem;
+      font-weight: 500;
+
+      &.positive {
+        background: #e8f5e9;
+        color: #10b981;
+        border-radius: 8px;
+        padding: 2px 8px;
+        margin-top: 4px;
+        font-weight: 600;
+      }
+
+      &.negative {
+        background: #ffebee;
+        color: #ef4444;
+        border-radius: 8px;
+        padding: 2px 8px;
+        margin-top: 4px;
+        font-weight: 600;
+      }
+    }
+  }
+}
+
+/* Modais sempre em tela cheia no mobile (com arredondamentos removidos) */
+@media (max-width: 768px) {
+  ion-modal {
+    --width: 100% !important;
+    --height: 100% !important;
+    --max-width: 100% !important;
+    --max-height: 100% !important;
+    --border-radius: 0 !important;
+    align-items: flex-start !important;
+  }
+
+  ion-modal::part(content) {
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 0 !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+  }
+
+  .large-modal {
+    --width: 100% !important;
+    --height: 100% !important;
+    --border-radius: 0 !important;
+  }
 }
 
 /* Melhorias para inputs e labels - usando !important para sobrescrever CSS do Ionic */
+ion-card.card-dash {
+  background: var(--h-scrollbar-thumb);
+  background-clip: padding-box;
+  border-radius: 12px;
+}
 
+ion-card, .table-card {
+  background: var(--h-scrollbar-thumb);
+  background-clip: padding-box;
+  border-radius: 12px;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  border: none;
+  overflow: hidden;
+}
 /* Melhorias para dispositivos móveis */
 
 /* Melhorias para dispositivos de alta densidade */
@@ -199,15 +324,15 @@ app-profile-modal {
 @media (max-width: 768px) {
   app-profile-modal {
     ion-label {
-      font-weight: 800 !important;
-      color: #000 !important;
-      font-size: 1.2rem !important;
+      font-weight: 500 !important;
+      color: #666 !important;
+      font-size: 1rem !important;
     }
 
     .input-group ion-label {
-      font-weight: 800 !important;
-      color: #000 !important;
-      font-size: 1.3rem !important;
+      font-weight: 500 !important;
+      color: #666 !important;
+      font-size: 1rem !important;
     }
   }
 }
@@ -246,17 +371,17 @@ app-profile-modal .enhanced-button {
   app-profile-modal .enhanced-label {
     font-weight: 500 !important;
     color: #666 !important;
-    font-size: 1.4rem !important;
+    font-size: 1rem !important;
   }
 
   app-profile-modal .enhanced-input {
-    font-size: 1.5rem !important;
+    font-size: 1rem !important;
     font-weight: 400 !important;
   }
 
   app-profile-modal .enhanced-button {
     font-weight: 500 !important;
-    font-size: 1.4rem !important;
+    font-size: 1rem !important;
   }
 }
 
@@ -297,7 +422,7 @@ ion-segment {
       ion-label {
         font-weight: 500 !important;
         color: #666 !important;
-        font-size: 1.2rem !important;
+        font-size: 1rem !important;
       }
     }
   }
@@ -360,7 +485,7 @@ app-profile-modal ion-segment {
       ion-label {
         font-weight: 500 !important;
         color: #666 !important;
-        font-size: 1.3rem !important;
+        font-size: 1rem !important;
       }
     }
   }
@@ -393,7 +518,7 @@ app-profile-modal ion-segment ion-segment-button ion-label {
   app-profile-modal ion-segment ion-segment-button ion-label {
     font-weight: 500 !important;
     color: #666 !important;
-    font-size: 1.4rem !important;
+    font-size: 1rem !important;
   }
 }
 
@@ -598,6 +723,22 @@ ion-select-popover {
   object-fit: contain;
 }
 
+/* Modais e páginas com toolbar-estilo padronizados com roxo */
+ion-toolbar.toolbar-estilo {
+  --background: var(--ion-color-primary) !important;
+  --color: white !important;
+  color: white !important;
+
+  ion-title,
+  ion-button,
+  ion-icon,
+  ion-back-button,
+  .back-button-text {
+    --color: white !important;
+    color: white !important;
+  }
+}
+
 .left {
   display: block !important;
   background-size: cover !important;
@@ -782,11 +923,11 @@ ion-input {
 
 /* --- app/cadastro-form/cadastro-form.component.scss --- */
 app-cadastro-form {
-  ion-radio-group{
+  ion-radio-group {
     --background: #fff;
   }
 
-  ion-item{
+  ion-item {
     --background: #fff;
     --border-color: transparent;
   }
@@ -851,8 +992,6 @@ app-cadastro-form {
   --highlight-color-valid: transparent;
 }
 
-
-
 /* --- app/login-form/login-form.component.scss --- */
 ion-label.ng-invalid,
 .error-messages {
@@ -914,9 +1053,6 @@ ion-label.ng-invalid,
     width: 100% !important;
   }
 }
-
-
-
 
 /* --- app/login/login.page.scss --- */
 .right-content {
@@ -982,8 +1118,6 @@ ion-label.ng-invalid,
     }
   }
 }
-
-
 
 /* --- app/cadastro-oferta/cadastro-oferta.component.scss --- */
 .cadastro-oferta-container {
@@ -1175,8 +1309,6 @@ ion-label.ng-invalid,
   }
 }
 
-
-
 /* --- app/header/profile-modal/profile-modal.component.scss --- */
 app-profile-modal {
   ion-item {
@@ -1338,7 +1470,6 @@ app-profile-modal {
       --indicator-color: var(--ion-color-primary);
       --background: #f5f5f5;
 
-
       ion-label {
         color: #333;
         font-weight: 500;
@@ -1387,10 +1518,10 @@ app-profile-modal {
 }
 
 .labels-extras {
-    font-weight: 500;
-    margin-bottom: 10px;
-    margin-top: 20px;
+  font-weight: 500;
+  margin-bottom: 10px;
+  margin-top: 20px;
 }
 .no-margin {
-  margin: 0!important;
+  margin: 0 !important;
 }

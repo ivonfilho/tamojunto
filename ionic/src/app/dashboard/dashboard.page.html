@@ -14,7 +14,7 @@
 
 
 
-<ion-content [fullscreen]="true" [scrollY]="true" [scrollEvents]="true" class="dashboard-container">
+<ion-content [scrollY]="true" [scrollEvents]="true" class="dashboard-container">
   <!-- Loading Overlay -->
   <div *ngIf="isLoading" class="loading-overlay">
     <ion-spinner name="crescent"></ion-spinner>
@@ -263,14 +263,12 @@
 <ion-modal
   [isOpen]="cupomDetalhes !== null"
   (didDismiss)="fecharDetalhesCupom()"
-  [breakpoints]="[0, 1]"
-  [initialBreakpoint]="1"
   class="cupom-detalhes-modal">
 
   <ng-template>
     <ion-header>
       <ion-toolbar class="toolbar-estilo">
-        <ion-title>Detalhes do Cupom</ion-title>
+        <ion-title>Cupom Expandido</ion-title>
         <ion-buttons slot="end">
           <ion-button (click)="fecharDetalhesCupom()">
             <ion-icon aria-hidden="true" src="../assets/icon/Close.svg"></ion-icon>

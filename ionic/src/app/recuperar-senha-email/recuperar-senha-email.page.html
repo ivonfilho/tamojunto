@@ -1,72 +1,52 @@
-<ion-header>
-  <ion-toolbar class="toolbar-estilo">
-    <ion-title>Recuperar Senha</ion-title>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/login"></ion-back-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content class="ion-padding">
+<ion-content class="login-page-ion" [scrollY]="true">
   <div class="container">
-    <div class="logo-container">
-      <img src="assets/logo.png" alt="TamoJunto" class="logo">
-    </div>
-
-    <div class="form-container">
-      <h2>Recuperar Senha por Email</h2>
-      <p class="description">Digite seu email cadastrado e enviaremos uma nova senha temporária.</p>
-
-      <form [formGroup]="recuperarForm" (ngSubmit)="enviarEmail()">
-        <div style="margin-bottom: 20px;">
-          <ion-input
-            label="Email"
-            labelPlacement="stacked"
-            fill="outline"
-            type="email"
-            formControlName="email"
-            placeholder="Digite seu email"
-            [class.ion-invalid]="recuperarForm.get('email')?.invalid && recuperarForm.get('email')?.touched">
-          </ion-input>
-        </div>
-
-        <div class="error-message" *ngIf="recuperarForm.get('email')?.invalid && recuperarForm.get('email')?.touched">
-          <span *ngIf="recuperarForm.get('email')?.errors?.['required']">Email é obrigatório</span>
-          <span *ngIf="recuperarForm.get('email')?.errors?.['email']">Email inválido</span>
-        </div>
-
-        <ion-button
-          expand="block"
-          type="submit"
-          [disabled]="recuperarForm.invalid || loading"
-          class="submit-button">
-          <ion-spinner *ngIf="loading" name="crescent"></ion-spinner>
-          <span *ngIf="!loading">Enviar Nova Senha</span>
-        </ion-button>
-      </form>
-
-      <div class="alternative-options">
-        <p>Ou</p>
-        <ion-button
-          expand="block"
-          fill="outline"
-          (click)="irParaRecuperarSms()"
-          class="alternative-button">
-          Recuperar por Telefone
-        </ion-button>
+    <div class="left"></div>
+    <div class="right-content">
+      <div class="img-container">
+        <img src="../../assets/tamo-junto-logo.png" class="logo cursor-pointer" (click)="voltarParaLogin()" />
       </div>
+      
+      <div class="form-component">
+        <h2>Recuperar Senha</h2>
+        <div class="form-container premium-form">
+          <form [formGroup]="recuperarForm" (ngSubmit)="enviarEmail()" class="form-group">
+            <p class="form-subtitle">Digite seu email para receber uma nova senha temporária</p>
+            
+            <div class="input-group">
+              <ion-input 
+                label="E-mail"
+                labelPlacement="stacked"
+                formControlName="email" 
+                fill="outline" 
+                placeholder="seu@email.com" 
+                type="email" 
+                required
+                [class.ng-invalid]="recuperarForm.get('email')?.touched && recuperarForm.get('email')?.invalid">
+              </ion-input>
+              
+              <div *ngIf="recuperarForm.get('email')?.invalid && recuperarForm.get('email')?.touched" class="error-messages">
+                <small *ngIf="recuperarForm.get('email')?.errors?.['required']" class="text-error">
+                  <ion-icon name="alert-circle-outline"></ion-icon> O email é obrigatório.
+                </small>
+                <small *ngIf="recuperarForm.get('email')?.errors?.['email']" class="text-error">
+                  <ion-icon name="alert-circle-outline"></ion-icon> Digite um email válido.
+                </small>
+              </div>
+            </div>
 
-      <div class="back-to-login">
-        <ion-button
-          fill="clear"
-          (click)="voltarParaLogin()"
-          class="back-button">
-          ← Voltar para Login
-        </ion-button>
+            <ion-button expand="full" type="submit" [disabled]="recuperarForm.invalid || loading">
+              <ion-spinner *ngIf="loading" name="crescent"></ion-spinner>
+              <ng-container *ngIf="!loading">Enviar Nova Senha</ng-container>
+            </ion-button>
+
+            <div class="forgot-password-options mt-15">
+              <a (click)="irParaRecuperarSms()" class="cursor-pointer">Recuperar por Telefone</a>
+            </div>
+
+            <p><a (click)="voltarParaLogin()" class="cursor-pointer">Voltar para Login</a></p>
+          </form>
+        </div>
       </div>
     </div>
   </div>
 </ion-content>
-
-
-

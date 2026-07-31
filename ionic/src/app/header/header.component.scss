@@ -165,8 +165,8 @@
     --min-height: 2.5rem;
     --max-width: 2.5rem;
     --max-height: 2.5rem;
-    --background: var(--ion-color-primary);
-    --color: white;
+    --background: transparent;
+    --color: var(--ion-color-primary);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -198,7 +198,7 @@
     
     // Estados de hover e focus
     &:hover {
-      --background: var(--ion-color-primary-shade);
+      --background: rgba(89, 79, 185, 0.1);
       transform: scale(1.05);
       transition: all 0.2s ease;
     }

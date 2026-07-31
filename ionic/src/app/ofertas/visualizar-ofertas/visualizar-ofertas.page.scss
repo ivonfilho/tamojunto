@@ -1,4 +1,4 @@
-﻿.ion-page, ion-content {
+.ion-page, ion-content {
   --overflow: auto;
   --scroll-y: true;
 }
@@ -17,21 +17,21 @@ ion-content {
 
 :host {
   ion-toolbar {
-    --background: #ffffff;
-    --color: var(--ion-color-text-primary);
+    --background: var(--ion-color-primary);
+    --color: #ffffff;
 
     ion-title {
-      color: var(--ion-color-text-primary);
+      color: #ffffff;
       font-weight: 600;
     }
 
     ion-buttons ion-button {
-      --color: var(--ion-color-text-primary) !important;
-      color: var(--ion-color-text-primary) !important;
+      --color: #ffffff !important;
+      color: #ffffff !important;
 
       ion-icon,
       ion-label {
-        color: var(--ion-color-text-primary) !important;
+        color: #ffffff !important;
       }
     }
   }

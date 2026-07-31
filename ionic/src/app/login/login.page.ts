@@ -139,4 +139,8 @@ export class LoginPage implements OnInit, OnDestroy {
   goToConnectivityTest() {
     this.router.navigate(['/connectivity-test']);
   }
+  
+  goToHome() {
+    window.location.href = '/';
+  }
 }

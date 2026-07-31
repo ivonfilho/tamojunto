@@ -389,6 +389,7 @@ ion-content.dashboard-container {
 
 .quick-actions {
   padding: 0 20px 30px;
+  margin: 0;
 
   .section-title {
     margin-bottom: 20px;
@@ -415,6 +416,7 @@ ion-content.dashboard-container {
     overflow: hidden;
     text-align: center;
     cursor: pointer;
+    margin: 0;
 
     &:hover {
       transform: translateY(-5px);
@@ -539,7 +541,7 @@ ion-content.dashboard-container {
 
 @media (max-width: 600px) {
   .stats-grid, .products-section, .chart-section {
-    margin: 0 4px 16px 4px;
+    margin: 0 15px 16px 15px;
     padding: 0;
   }
   .stat-card ion-card-content {

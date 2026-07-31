@@ -110,6 +110,17 @@ export class AssinaturaService {
 
     try {
       console.log('[AssinaturaService] Buscando assinaturas...');
+      
+      try {
+        const verif = await this.pagamentoService.verificarAssinaturaAtiva().toPromise();
+        if (verif && verif.hasActiveSubscription) {
+          console.log('[AssinaturaService] Assinatura ativa confirmada pela API. Acesso liberado.');
+          return { podeAcessar: true };
+        }
+      } catch (err) {
+        console.log('[AssinaturaService] Erro na verificação pela API:', err);
+      }
+
       const assinaturas = await this.pagamentoService.minhasAssinaturas().toPromise();
       console.log('[AssinaturaService] Assinaturas encontradas:', assinaturas);
       

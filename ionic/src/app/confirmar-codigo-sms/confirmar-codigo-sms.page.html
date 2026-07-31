@@ -1,66 +1,60 @@
-<ion-content>
+<ion-content class="login-page-ion" [scrollY]="true">
   <div class="container">
     <div class="left"></div>
     <div class="right-content">
       <div class="img-container">
-        <img src="../../assets/tamo-junto-logo.png" />
+        <img src="../../assets/tamo-junto-logo.png" class="logo cursor-pointer" (click)="voltarParaLogin()" />
       </div>
       
-      <div class="form-container">
-        <h2>Confirmar Código SMS</h2>
-        <p class="subtitle">Digite o código de 6 dígitos enviado para seu telefone</p>
-        
-        <form [formGroup]="confirmarForm" class="form-group">
-          <div class="input-group">
-            <ion-input 
-              label="Código de Verificação"
-              labelPlacement="stacked"
-              formControlName="codigo" 
-              fill="outline" 
-              placeholder="000000" 
-              type="text" 
-              maxlength="6"
-              (ionInput)="formatarCodigo($event)"
-              required>
-            </ion-input>
+      <div class="form-component">
+        <h2>Confirmar Código</h2>
+        <div class="form-container premium-form">
+          <form [formGroup]="confirmarForm" class="form-group">
+            <p class="form-subtitle">Digite o código de 6 dígitos recebido</p>
             
-            <div *ngIf="submitted || (confirmarForm.get('codigo')?.touched && confirmarForm.get('codigo')?.invalid)"
-              class="error-messages">
-              <small *ngIf="confirmarForm.get('codigo')?.errors?.['required']" class="text-error">
-                <ion-icon name="alert-circle-outline"></ion-icon>
-                O código é obrigatório.
-              </small>
-              <small *ngIf="confirmarForm.get('codigo')?.errors?.['pattern']" class="text-error">
-                <ion-icon name="alert-circle-outline"></ion-icon>
-                Digite um código de 6 dígitos.
-              </small>
+            <div class="input-group">
+              <ion-input 
+                label="Código de Verificação"
+                labelPlacement="stacked"
+                formControlName="codigo" 
+                fill="outline" 
+                placeholder="000000" 
+                type="text" 
+                maxlength="6"
+                (ionInput)="formatarCodigo($event)"
+                required
+                [class.ng-invalid]="confirmarForm.get('codigo')?.touched && confirmarForm.get('codigo')?.invalid">
+              </ion-input>
+              
+              <div *ngIf="submitted || (confirmarForm.get('codigo')?.touched && confirmarForm.get('codigo')?.invalid)" class="error-messages">
+                <small *ngIf="confirmarForm.get('codigo')?.errors?.['required']" class="text-error">
+                  <ion-icon name="alert-circle-outline"></ion-icon> O código é obrigatório.
+                </small>
+                <small *ngIf="confirmarForm.get('codigo')?.errors?.['pattern']" class="text-error">
+                  <ion-icon name="alert-circle-outline"></ion-icon> Digite os 6 dígitos corretamente.
+                </small>
+              </div>
             </div>
-          </div>
 
-          <ion-button (click)="confirmarCodigo()" expand="full" [disabled]="spinner">
-            <ng-container *ngIf="!spinner; else loadingSpinner">
-              Confirmar Código
-            </ng-container>
-            <ng-template #loadingSpinner>
-              <ion-spinner name="crescent"></ion-spinner>
-            </ng-template>
-          </ion-button>
+            <ion-button (click)="confirmarCodigo()" expand="full" [disabled]="spinner">
+              <ng-container *ngIf="!spinner; else loadingSpinner">
+                Confirmar Código
+              </ng-container>
+              <ng-template #loadingSpinner>
+                <ion-spinner name="crescent"></ion-spinner>
+              </ng-template>
+            </ion-button>
 
-          <div class="back-links">
-            <a (click)="reenviarCodigo()" style="cursor: pointer;" [class.disabled]="reenviando">
-              <ion-icon name="refresh-outline"></ion-icon>
-              {{ reenviando ? 'Reenviando...' : 'Reenviar Código' }}
-            </a>
-            <a (click)="voltarParaRecuperacao()" style="cursor: pointer;">
-              <ion-icon name="arrow-back-outline"></ion-icon>
-              Voltar
-            </a>
-            <a (click)="voltarParaLogin()" style="cursor: pointer;">
-              <ion-icon name="home-outline"></ion-icon>
-              Voltar para Login
-            </a>
-          </div>
-        </form>
+            <div class="forgot-password-options mt-15">
+              <a (click)="reenviarCodigo()" class="cursor-pointer">
+                {{ reenviando ? 'Reenviando...' : 'Reenviar Código' }}
+              </a>
+            </div>
+
+            <p><a (click)="voltarParaRecuperacao()" class="cursor-pointer">Voltar</a></p>
+            <p><a (click)="voltarParaLogin()" class="cursor-pointer">Voltar para Login</a></p>
+          </form>
+        </div>
       </div>
     </div>
   </div>

@@ -35,7 +35,7 @@ ion-col {
 }
 
 ion-row:nth-child(even) {
-  background-color: #f9f9f9;
+
 }
 
 
@@ -511,7 +511,7 @@ ion-row:not(.header) {
     padding-top: 10px;
     padding-bottom: 10px;
     font-size: 13px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+
     white-space: nowrap;
   }
 }
@@ -519,12 +519,6 @@ ion-row:not(.header) {
 // ——— Tabelas HTML (cupons / ofertas) ———
 .table-card {
   margin: 0 0 8px;
-  background: #fff;
-  border-radius: 14px;
-  box-shadow:
-    0 1px 3px rgba(76, 67, 157, 0.08),
-    0 4px 14px rgba(0, 0, 0, 0.06);
-  border: 1px solid rgba(76, 67, 157, 0.12);
   overflow: hidden;
 }
 

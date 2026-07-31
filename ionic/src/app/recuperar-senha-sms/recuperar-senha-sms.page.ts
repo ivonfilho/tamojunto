@@ -115,4 +115,8 @@ export class RecuperarSenhaSmsPage implements OnInit {
   voltarParaLogin() {
     this.router.navigate(['']);
   }
+
+  irParaRecuperarEmail() {
+    this.router.navigate(['/recuperar-senha-email']);
+  }
 }

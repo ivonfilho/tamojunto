@@ -11,8 +11,20 @@
           <ion-icon aria-hidden="true" src="../assets/icon/Menu.svg"></ion-icon>
         </ion-button>
         
-        <!-- Campo de pesquisa centralizado -->
-        <div class="search-container">
+        <div class="button-group" *ngIf="!isDesktop" style="display: flex;">
+          <ion-button class="header-button" (click)="isSearchModalOpen = true" style="margin-left: -5px;">
+            <ion-icon aria-hidden="true" src="../assets/icon/Search.svg"></ion-icon>
+          </ion-button>
+          <ion-button class="header-button" (click)="openNotificationModal()">
+            <ion-icon aria-hidden="true" src="../assets/icon/Bell.svg"></ion-icon>
+            <ion-badge *ngIf="unreadNotificationsCount > 0" color="danger">
+              {{ unreadNotificationsCount }}
+            </ion-badge>
+          </ion-button>
+        </div>
+        
+        <!-- Campo de pesquisa centralizado (Desktop) -->
+        <div class="search-container" *ngIf="isDesktop">
           <ion-searchbar 
             placeholder="Buscar..." 
             class="centered-search"
@@ -25,7 +37,7 @@
         
         <!-- Componentes do lado direito -->
         <div class="right-components">
-          <div class="button-group">
+          <div class="button-group" *ngIf="isDesktop">
             <ion-button class="header-button" (click)="openNotificationModal()">
               <ion-icon aria-hidden="true" src="../assets/icon/Bell.svg"></ion-icon>
               <ion-badge *ngIf="unreadNotificationsCount > 0" color="danger">
@@ -93,4 +105,30 @@
       </div>
     </div>
   </ion-toolbar>
+
+  <!-- Modal de Busca no Mobile -->
+  <ion-modal [isOpen]="isSearchModalOpen" (didDismiss)="isSearchModalOpen = false">
+    <ng-template>
+      <ion-header class="ion-no-border">
+        <ion-toolbar>
+          <ion-searchbar 
+            placeholder="Buscar..." 
+            class="centered-search search-modal-input"
+            [(ngModel)]="searchTerm"
+            (ionInput)="onSearchInput($event)"
+            (ionClear)="onSearchClear()"
+            debounce="300"
+            showCancelButton="always"
+            cancelButtonText="Cancelar"
+            (ionCancel)="isSearchModalOpen = false">
+          </ion-searchbar>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="search-modal-content">
+        <div style="padding: 20px; text-align: center; color: #666;" *ngIf="!searchTerm">
+          Digite para pesquisar ofertas ou cupons.
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 </ion-header>

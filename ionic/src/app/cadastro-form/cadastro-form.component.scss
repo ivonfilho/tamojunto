@@ -6,6 +6,16 @@
   display: block;
 }
 
+p {
+  font-size: 15px !important;
+  text-align: center;
+  a {
+    font-size: 15px !important;
+    color: rgb(89, 79, 185);
+    text-decoration: none;
+  }
+}
+
 // Estilos específicos para o componente de cadastro
 :host {
   display: block;

@@ -27,6 +27,7 @@ export class HeaderComponent implements OnInit, OnChanges {
   fotoPerfilMenuOpen: boolean = false;
   isDesktop: boolean = false;
   searchTerm: string = '';
+  isSearchModalOpen: boolean = false;
 
   constructor(
     private authService: AuthService,

@@ -4,9 +4,11 @@
     <ion-content>
       <ion-row class="ion-justify-content-center ion-align-items-center ion-text-center">
         <ion-col size="8">
-          <a style="text-decoration: none; cursor: pointer;" (click)="navegarPara(isParceiro ? '/dashboard-parceiro' : '/dashboard')">
-            <ion-icon class="logo" src="../assets/logo.svg"></ion-icon>
-          </a>
+          <ion-menu-toggle auto-hide="false">
+            <a style="text-decoration: none; cursor: pointer;" (click)="navegarPara(isParceiro ? '/dashboard-parceiro' : '/dashboard')">
+              <ion-icon class="logo" src="../assets/logo.svg"></ion-icon>
+            </a>
+          </ion-menu-toggle>
         </ion-col>
       </ion-row>
 

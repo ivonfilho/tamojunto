@@ -4,9 +4,15 @@ ion-card{
 }
 .cupom-detalhe {
   display: flex;
+  flex-direction: column;
   padding: 16px;
   border-radius: 8px;
   margin: 16px;
+  
+  @media (min-width: 768px) {
+    flex-direction: row;
+    justify-content: space-between;
+  }
 
   h2 {
     color: rgb(23, 21, 21) !important;
@@ -31,7 +37,7 @@ ion-card{
   .qr-code {
     text-align: center;
     margin-top: 30px;
-    margin-left: 330px;
+    margin-left: 0;
 
     img {
       max-width: 250px;

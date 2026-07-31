@@ -69,6 +69,16 @@ ion-list-header{
         text-align: center;
         justify-content: center;
         font-size: 0.85rem;
+        --border-width: 0;
+        --inner-border-width: 0;
+        border-bottom: 2px solid transparent;
+        font-weight: 500;
+        cursor: pointer;
+
+        &.active-tab {
+          border-bottom: 2px solid var(--ion-color-primary);
+          color: var(--ion-color-primary);
+        }
       }
     }
   }

@@ -26,21 +26,6 @@
     <div class="content">
       <div *ngIf="activeTab === 'info'">
         <form [formGroup]="profileSettingsForm" class="form-group">
-          <div class="input-group">
-            <ion-label position="floating">Tipo de Cadastro <span class="required-mark" aria-hidden="true">*</span></ion-label>
-            <ion-segment formControlName="tipoCadastro" (ionChange)="onTipoPessoaChange()" [disabled]="!podeAlterarTipo" class="tipo-perfil-segment">
-              <ion-segment-button value="MEI">
-                <ion-label>MEI</ion-label>
-              </ion-segment-button>
-              <ion-segment-button value="PJ">
-                <ion-label>Parceiro</ion-label>
-              </ion-segment-button>
-            </ion-segment>
-            <div *ngIf="!podeAlterarTipo" class="info-message">
-              <small>Seu tipo de cadastro é: <strong>{{ getTipoDescricao(usuarioTipoAtual) }}</strong></small>
-            </div>
-          </div>
-
           <div class="input-group" *ngIf="usuarioTipoAtual === 'PF'">
             <ion-input
               formControlName="cpf"

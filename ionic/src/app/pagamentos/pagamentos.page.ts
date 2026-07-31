@@ -25,6 +25,7 @@ export class PagamentosPage implements OnInit {
   isParceiro: boolean = false;
   isMEI: boolean = false; // Adicionado para verificar se o usuário é MEI
   planoParceiroAtivo: boolean = false; // Verifica se plano parceiro está ativo
+  possuiAssinaturaAtiva: boolean = false;
   planoMensalAtivo: boolean = false; // Verifica se plano mensal está ativo
   planoAnualAtivo: boolean = false; // Verifica se plano anual está ativo
 
@@ -108,6 +109,8 @@ export class PagamentosPage implements OnInit {
 
   async verificarRedirecionamentoAssinatura() {
     try {
+      if (this.possuiAssinaturaAtiva || this.planoParceiroAtivo) return;
+
       const status = await this.assinaturaService.podeAcessarSistema();
       if (!status.podeAcessar) {
         const alert = await this.alertCtrl.create({
@@ -128,6 +131,7 @@ export class PagamentosPage implements OnInit {
       console.log('Verificação de assinatura ativa:', response);
       
       if (response && response.hasActiveSubscription) {
+        this.possuiAssinaturaAtiva = true;
         const assinatura = response.activeSubscription;
         const plano = assinatura.plano;
         
