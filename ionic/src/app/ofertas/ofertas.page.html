@@ -1,29 +1,22 @@
-﻿<ion-header [translucent]="true">
-  <ion-toolbar class="toolbar-estilo">
-    <ion-title>Minhas Ofertas</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="aplicarFiltro('normal')" class="header-action-btn">
-        <ion-icon src="../assets/icon/Filter.svg" slot="start"></ion-icon>
-        <span class="btn-text">Normal</span>
-      </ion-button>
-      <ion-button (click)="aplicarFiltro('relampago')" class="header-action-btn">
-        <ion-icon src="../assets/icon/Flash.svg" slot="start"></ion-icon>
-        <span class="btn-text">Rel&acirc;mpago</span>
-      </ion-button>
-      <ion-button (click)="recarregarPagina()" class="header-action-btn" *ngIf="parceiro">
-        <ion-icon src="../assets/icon/AddCircleOutline.svg" slot="start"></ion-icon>
-        <span class="btn-text">Cadastrar</span>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
 
 <ion-content [fullscreen]="true" [scrollY]="true" [scrollEvents]="true">
-  <ion-header collapse="condense" class="header-2">
-    <ion-toolbar class="toolbar-estilo">
-      <ion-title size="large">Ofertas</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="dashboard-header">
+    <div class="header-content">
+      <h1>Ofertas</h1>
+      <div class="header-breadcrumbs">
+        <ion-breadcrumbs>
+          <ion-icon slot="separator" name="chevron-forward-outline"></ion-icon>
+          <ion-breadcrumb routerLink="/dashboard"><ion-icon src="../assets/icon/HomeOutline.svg" slot="start" style="margin-right: 4px; filter: brightness(0) invert(1);"></ion-icon> </ion-breadcrumb>
+          <ion-breadcrumb class="breadcrumb-active">Ofertas</ion-breadcrumb>
+          <ion-breadcrumb class="demo-2" *ngIf="textoDescritivo" class="breadcrumb-active">{{ textoDescritivo }}</ion-breadcrumb>
+        </ion-breadcrumbs>
+      </div>
+    </div>
+    <div class="header-decoration">
+      <div class="decoration-circle"></div>
+      <div class="decoration-circle"></div>
+    </div>
+  </div>
 
   <!-- Pull-to-refresh para atualizar a lista -->
   <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
@@ -35,40 +28,62 @@
     </ion-refresher-content>
   </ion-refresher>
 
-  <ion-segment (ionChange)="aplicarFiltroStatus($event.detail.value?.toString() || 'todas')" *ngIf="parceiro">
-    <ion-segment-button value="ativa">
-      <ion-label>Ativa</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="inativa">
-      <ion-label>Inativa</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="expirada">
-      <ion-label>Expirada</ion-label>
-    </ion-segment-button>
-  </ion-segment>
+  <div style="margin: 0 auto; padding: 24px 32px 0 32px; width: 100%;">
+    <ion-select label="Filtrar por categoria" labelPlacement="stacked" fill="outline" [(ngModel)]="categoriaSelecionada" (ionChange)="filtrarPorCategoria($event.detail.value)">
+      <ion-select-option value="">Todas as categorias</ion-select-option>
+      <ion-select-option *ngFor="let cat of categorias" [value]="cat">{{ cat }}</ion-select-option>
+    </ion-select>
+  </div>
+
+  <div class="top-controls-container" style="padding-top: 16px;">
+    <div class="tabs-container">
+      <ion-segment mode="md" [value]="tipoFiltro" (ionChange)="aplicarFiltroStatus($event.detail.value?.toString() || 'todas')">
+        <ion-segment-button value="todas" layout="icon-top">
+          <ion-icon src="../assets/icon/Menu.svg" class="hide-on-mobile"></ion-icon>
+          <div class="top-badge hide-on-desktop">{{ totalOfertas }}</div>
+          <ion-label><span class="tab-text">Todas</span> <ion-badge class="tab-badge hide-on-mobile">{{ totalOfertas }}</ion-badge></ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="ativa" layout="icon-top">
+          <ion-icon src="../assets/icon/CheckmarkCircle.svg" class="hide-on-mobile"></ion-icon>
+          <div class="top-badge hide-on-desktop">{{ ofertasAtivas }}</div>
+          <ion-label><span class="tab-text">Ativas</span> <ion-badge class="tab-badge hide-on-mobile">{{ ofertasAtivas }}</ion-badge></ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="inativa" layout="icon-top">
+          <ion-icon src="../assets/icon/CloseCircle.svg" class="hide-on-mobile"></ion-icon>
+          <div class="top-badge hide-on-desktop">{{ ofertasInativas }}</div>
+          <ion-label><span class="tab-text">Inativas</span> <ion-badge class="tab-badge badge-blue hide-on-mobile">{{ ofertasInativas }}</ion-badge></ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="expirada" layout="icon-top">
+          <ion-icon src="../assets/icon/TimeOutline.svg" class="hide-on-mobile"></ion-icon>
+          <div class="top-badge hide-on-desktop">{{ ofertasExpiradas }}</div>
+          <ion-label><span class="tab-text">Expiradas</span> <ion-badge class="tab-badge hide-on-mobile" *ngIf="ofertasExpiradas > 0">{{ ofertasExpiradas }}</ion-badge></ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </div>
+
+    <div class="actions-container">
+      <div class="filter-toggles">
+        <button class="btn-filter-toggle btn-normal" [class.active]="tipoFiltroTipo === 'Normal'" (click)="filtrarTipoOferta('Normal')">
+          <ion-icon src="../assets/icon/Filter.svg"></ion-icon>
+          <span class="hide-on-mobile">Normal</span>
+        </button>
+        <button class="btn-filter-toggle btn-relampago" [class.active]="tipoFiltroTipo === 'Relampago'" (click)="filtrarTipoOferta('Relampago')">
+          <ion-icon src="../assets/icon/Flash.svg"></ion-icon>
+          <span class="hide-on-mobile">Relâmpago</span>
+        </button>
+        <button *ngIf="termoAtivo || categoriaSelecionada || filtroTipo || tipoFiltro !== 'todas'" class="btn-filter-toggle" (click)="limparBusca()" style="color: #ef4444; border-color: #fca5a5; background: #fef2f2;">
+          <ion-icon src="../assets/icon/Close.svg" style="filter: brightness(0) saturate(100%) invert(35%) sepia(87%) saturate(2333%) hue-rotate(345deg) brightness(98%) contrast(92%);"></ion-icon>
+          <span class="hide-on-mobile">Limpar</span>
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- Lista de ofertas -->
   <div class="offer-grid">
-    <ion-card *ngFor="let oferta of ofertasFiltradas" class="offer-card" [ngClass]="{'offer-relampago': (oferta.tipoOferta || '').toLowerCase() === 'relampago'}">
+    <ion-card *ngFor="let oferta of ofertasFiltradas" class="offer-card" [ngClass]="{'offer-relampago': (oferta.tipoOferta || '').toLowerCase().replace('â', 'a') === 'relampago'}">
       <div class="offer-card-content">
-        <div class="card-header-actions">
-          <ion-button
-            fill="clear"
-            class="edit-button"
-            (click)="editarOferta(oferta.id!)"
-            *ngIf="parceiro"
-            size="small">
-            <ion-icon slot="icon-only" aria-hidden="true" src="../assets/icon/PencilOutline.svg"></ion-icon>
-          </ion-button>
 
-          <app-excluir-oferta
-            *ngIf="parceiro"
-            [ofertaId]="oferta.id"
-            [ofertaNome]="oferta.nomeProduto"
-            (ofertaExcluida)="carregarOfertas()"
-            class="excluirBotao">
-          </app-excluir-oferta>
-        </div>
 
         <ion-chip color="light" class="offer-chip">
           <ion-avatar>
@@ -133,10 +148,10 @@
 
         <div class="offer-button-container">
           <ion-button expand="block"
-                     [color]="(oferta.tipoOferta || '').toLowerCase() === 'relampago' ? 'warning' : 'success'"
-                     [class]="'offer-button' + ((oferta.tipoOferta || '').toLowerCase() === 'relampago' ? ' offer-button-relampago' : '')"
+                     [color]="(oferta.tipoOferta || '').toLowerCase().replace('â', 'a') === 'relampago' ? 'warning' : 'success'"
+                     [class]="'offer-button' + ((oferta.tipoOferta || '').toLowerCase().replace('â', 'a') === 'relampago' ? ' offer-button-relampago' : '')"
                      (click)="verOferta(oferta.id!)">
-            <ion-icon [src]="(oferta.tipoOferta || '').toLowerCase() === 'relampago' ? '../assets/icon/Flash.svg' : '../assets/icon/Eye.svg'" slot="start" aria-hidden="true"></ion-icon>
+            <ion-icon [src]="(oferta.tipoOferta || '').toLowerCase().replace('â', 'a') === 'relampago' ? '../assets/icon/Flash.svg' : '../assets/icon/Eye.svg'" slot="start" aria-hidden="true"></ion-icon>
             Ver Oferta
           </ion-button>
         </div>

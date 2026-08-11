@@ -2,7 +2,7 @@
 ion-header {
   ::ng-deep {
     ion-toolbar {
-      --min-height: 56px;
+      min-height: 5px;
       display: flex !important;
       align-items: center !important;
       flex-direction: row !important;
@@ -219,3 +219,175 @@ ion-content {
 .upload-button { width: 100%; max-width: 300px; --background: var(--ion-color-primary); --color: white; --border-radius: 8px; padding-top: 15px; padding-bottom: 15px; font-weight: 600; text-transform: none; }
 .upload-hint { font-size: 13px; color: #666; text-align: center; margin: 0; line-height: 1.4; }
 
+/* Variáveis de cor (exemplo, ajuste para o seu tema) */
+$ion-color-primary: #3880ff;
+$ion-color-dark: #1e1e1e;
+$ion-color-light: #ffffff;
+
+.labels-extras {
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: var(--ion-color-step-600, #666);
+}
+
+.upload-section-cover {
+  width: 100%;
+  height: 200px; /* Altura fixa para o banner, ajuste conforme necessário */
+  border-radius: 8px;
+  border: 2px dashed var(--ion-color-step-300, #ccc); /* Borda pontilhada quando vazio */
+  background-color: var(--ion-color-step-100, #f4f4f4);
+
+  /* Comportamento do Background (Cover e Centralizado) */
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  /* Flexbox para centralizar o conteúdo (botão de upload) */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  position: relative; /* Necessário para o botão flutuante absoluto */
+  transition: all 0.3s ease;
+  overflow: hidden; /* Garante que o botão flutuante não escape */
+
+  /* Estado quando a imagem está carregada */
+  &.has-image {
+    border: none; /* Remove a borda pontilhada */
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1); // Sutil sombra interna
+  }
+
+  &:hover:not(.has-image) {
+    background-color: var(--ion-color-step-150, #e8e8e8);
+    border-color: var(--ion-color-primary);
+  }
+}
+
+/* Estilos do conteúdo central quando não há imagem */
+.upload-placeholder-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  pointer-events: none; // Evita cliques no texto/hint, apenas no container pai
+}
+
+.upload-button-centered {
+  --border-color: var(--ion-color-step-600, #666);
+  --color: var(--ion-color-step-800, #333);
+  margin: 0;
+}
+
+.upload-hint {
+  font-size: 12px;
+  color: var(--ion-color-step-500, #999);
+  margin: 0;
+}
+
+/* Estilo do Botão Flutuante (igual ao exemplo das montanhas) */
+.floating-edit-button {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+
+  background-color: rgba($ion-color-dark, 0.8); // Fundo escuro semi-transparente
+  color: $ion-color-light;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  backdrop-filter: blur(4px); // Efeito de desfoque no fundo (glassmorphism)
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+
+  pointer-events: none; // Clica no container pai, não nele diretamente
+
+  ion-icon {
+    font-size: 18px;
+  }
+}
+
+
+.editar-oferta-container {
+  width: 100%;
+  margin: 0 auto;
+  padding: 2em;
+  overflow-y: auto;
+  min-height: 100vh;
+
+  &::-webkit-scrollbar { width: 0; background: transparent; }
+  scrollbar-width: none;
+
+  h1 {
+    font-size: 24px;
+    color: var(--ion-color-segundary);
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+}
+/* Segment de Validade - Solu��o com Shadow DOM Native */
+.validade-segment {
+  background: transparent !important;
+  display: flex;
+  gap: 10px;
+
+  ion-segment-button {
+    --indicator-color: transparent; /* Remove a linha nativa */
+    margin: 0;
+    flex: 1;
+    font-weight: 600;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    transition: border-color 0.2s ease;
+
+    /* Fundo e texto do bot�o DESMARCADO (injetado no Shadow DOM) */
+    &::part(native) {
+      background-color: #ffffff;
+      color: #222222;
+      border-radius: 7px;
+    }
+
+    /* Fundo e texto do bot�o SELECIONADO */
+    &.segment-button-checked {
+      border-color: var(--ion-color-primary, #4c439d);
+
+      &::part(native) {
+        background-color: var(--ion-color-primary, #4c439d);
+        color: #ffffff;
+      }
+    }
+
+    /* Hover nos bot�es desmarcados */
+    &:hover:not(.segment-button-checked)::part(native) {
+      background-color: #f3f4f6;
+    }
+
+    /* Estado desabilitado (Oferta Rel�mpago) */
+    &.segment-button-disabled,
+    &[disabled] {
+      opacity: 0.6;
+      border-color: #e5e7eb;
+
+      &::part(native) {
+        background-color: #f8f9fa;
+        color: #b0b0b0;
+      }
+    }
+  }
+}
+
+.data-personalizada {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+
+  ion-input {
+    flex: 1;
+  }
+}

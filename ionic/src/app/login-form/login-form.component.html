@@ -1,5 +1,5 @@
-<h2>Faça login na sua conta</h2>
-<div class="form-container premium-form">
+<h2 class="titulo-logins">Faça login na sua conta</h2>
+<div class="form-container premium-form container-entrar">
   <form [formGroup]="loginForm" class="form-group">
     <div class="input-group">
       <ion-input label="E-mail" label-placement="stacked" formControlName="email" fill="outline" placeholder="Seu e-mail" type="email" required
@@ -39,7 +39,8 @@
     <div class="forgot-password-options">
       <a (click)="irParaRecuperarEmail()" style="cursor: pointer;">{{ labelEsqueciSenha }}</a>
       <a (click)="reenviarConfirmacaoEmail()" style="cursor: pointer;">{{ labelReenviarConfirmacao }}</a>
+      <p>Não tem uma conta? <a (click)="alterarForm()" style="cursor: pointer;">Cadastre-se</a></p>
     </div>
-    <p>Não tem uma conta? <a (click)="alterarForm()" style="cursor: pointer;">Cadastre-se</a></p>
+
   </form>
 </div>

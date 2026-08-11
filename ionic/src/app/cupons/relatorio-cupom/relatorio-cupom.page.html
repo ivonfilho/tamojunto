@@ -1,25 +1,26 @@
-<ion-header [translucent]="true">
+﻿<ion-header [translucent]="true" class="sem-min-height">
   <ion-toolbar class="toolbar-estilo">
     <ion-buttons slot="start">
       <ion-button (click)="voltarParaListaCupons()">
-        <ion-icon aria-hidden="true" src="../assets/icon/ArrowBack.svg" slot="icon-only"></ion-icon>
+        <ion-icon aria-hidden="true" src="../assets/icon/ArrowBack.svg" style="filter: brightness(0) invert(1);" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
     <ion-title>Relatório dos Cupons</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="exportarCSV()" fill="clear" color="success" size="small" style="margin-right: 5px;" title="Exportar CSV">
-        <ion-icon aria-hidden="true" src="../assets/icon/FileText.svg" slot="icon-only"></ion-icon>
+      <ion-button (click)="exportarCSV()" class="export-btn" title="Exportar CSV">
+        <ion-icon aria-hidden="true" src="../assets/icon/FileText.svg" slot="start" style="filter: brightness(0) invert(1);"></ion-icon>
+        <span class="export-text" style="color: white !important;">CSV</span>
       </ion-button>
-      <ion-button (click)="exportarPDF()" fill="clear" color="success" size="small" title="Exportar PDF">
-        <ion-icon aria-hidden="true" src="../assets/icon/DocumentOutline.svg" slot="icon-only"></ion-icon>
+      <ion-button (click)="exportarPDF()" class="export-btn" title="Exportar PDF">
+        <ion-icon aria-hidden="true" src="../assets/icon/DocumentOutline.svg" slot="start" style="filter: brightness(0) invert(1);"></ion-icon>
+        <span class="export-text" style="color: white !important;">PDF</span>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <div style="padding: 16px;">
-  </div>
+
   <ion-grid>
 
     <!-- Filtros -->
@@ -28,21 +29,18 @@
         <ion-card-title class="label-list" style="color: #475569; font-weight: 600;">Filtros de Busca</ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <form [formGroup]="filtrosForm" (ngSubmit)="filtrar()" class="ion-padding premium-form">
+        <form [formGroup]="filtrosForm" class="ion-padding premium-form">
           <div style="margin-bottom: 16px;">
             <ion-input formControlName="nomeProduto" label="Nome do Produto" labelPlacement="stacked" fill="outline" placeholder="Buscar por nome"></ion-input>
           </div>
           <div style="margin-bottom: 16px;">
             <ion-select formControlName="categoria" label="Categoria" labelPlacement="stacked" fill="outline" interface="popover" placeholder="Selecione uma categoria">
+              <ion-select-option [value]="null">Todas as categorias</ion-select-option>
               <ion-select-option *ngFor="let categoria of categorias" [value]="categoria">
                 {{ categoria }}
               </ion-select-option>
             </ion-select>
           </div>
-
-          <ion-button expand="block" type="submit" class="ion-button-filter">Aplicar Filtros</ion-button>
-          <ion-button expand="block" fill="outline" color="medium" (click)="limparFiltros()" class="col-filters-button">Limpar Filtros</ion-button>
-
         </form>
       </ion-card-content>
     </ion-card>
@@ -108,13 +106,9 @@
             </thead>
             <tbody>
               <tr *ngFor="let cupom of paginatedOfertas">
-                <td class="td-strong">{{ cupom.ofertaParceiro?.nomeProduto || 'N/A' }}</td>
+                <td class="td-strong">{{ cupom.nomeProduto || 'N/A' }}</td>
                 <td class="col-numeric">
-                  {{
-                    totalPorProduto[cupom.ofertaParceiro?.nomeProduto]
-                      ? (totalPorProduto[cupom.ofertaParceiro?.nomeProduto] | brlCurrency)
-                      : '—'
-                  }}
+                  {{ cupom.quantidade }} ({{ cupom.valorTotal ? (cupom.valorTotal | brlCurrency) : 'R$ 0,00' }})
                 </td>
                 <td class="col-action">
                   <ion-button size="small" fill="outline" class="btn-detalhes-oferta" (click)="abrirModalOferta(cupom)">
@@ -163,7 +157,7 @@
             <ion-icon
               aria-hidden="true"
               class="modal-oferta-close-icon"
-              src="../assets/icon/Close.svg"
+              src="../assets/icon/Close.svg" style="filter: brightness(0) invert(1);"
               slot="icon-only"
             ></ion-icon>
           </ion-button>
@@ -206,28 +200,10 @@
         <div class="oferta-detalhes__row">
           <dt>Total vendido</dt>
           <dd>
-            {{
-              totalPorProduto[c.ofertaParceiro?.nomeProduto]
-                ? (totalPorProduto[c.ofertaParceiro?.nomeProduto] | brlCurrency)
-                : '—'
-            }}
+            {{ c.quantidade }} ({{ c.valorTotal ? (c.valorTotal | brlCurrency) : 'R$ 0,00' }})
           </dd>
-        </div>
-        <div class="oferta-detalhes__row">
-          <dt>Código do cupom</dt>
-          <dd><span class="code-pill">{{ gerarId(c.id) }}</span></dd>
-        </div>
-        <div class="oferta-detalhes__row">
-          <dt>Resgate</dt>
-          <dd>{{ c.dataResgate | date:'dd/MM/yyyy HH:mm' }}</dd>
-        </div>
-        <div class="oferta-detalhes__row">
-          <dt>Data de uso</dt>
-          <dd>{{ c.dataUtilizacao ? (c.dataUtilizacao | date:'dd/MM/yyyy') : '—' }}</dd>
         </div>
       </dl>
     </ion-content>
   </ng-template>
 </ion-modal>
-
-

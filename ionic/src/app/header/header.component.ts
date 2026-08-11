@@ -7,6 +7,8 @@ import { FotoPerfilService } from '../services/foto-perfil.service';
 import { ProfileModalComponent } from './profile-modal/profile-modal.component';
 import { Router } from '@angular/router';
 import { ApiConnectivityService } from '../services/api-connectivity.service';
+import { OfertaService } from '../services/oferta.service';
+import { ParceiroService } from '../services/parceiro.service';
 import {
   readStoredFotoPerfil,
   writeStoredFotoPerfil,
@@ -19,7 +21,9 @@ import {
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit, OnChanges {
+  @Input() title: string = 'Tamo Junto';
   @Input() usuario: any;
+  @Input() isParceiro: boolean = false;
   isProfileMenuOpen = false;
   unreadNotificationsCount = 0;
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
@@ -28,6 +32,10 @@ export class HeaderComponent implements OnInit, OnChanges {
   isDesktop: boolean = false;
   searchTerm: string = '';
   isSearchModalOpen: boolean = false;
+  isSearching: boolean = false;
+  resultadosBusca: any[] = [];
+  todasOfertas: any[] = [];
+  hasMoreResults: boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -38,6 +46,8 @@ export class HeaderComponent implements OnInit, OnChanges {
     private alertController: AlertController,
     private router: Router,
     private apiConnectivity: ApiConnectivityService,
+    private ofertaService: OfertaService,
+    private parceiroService: ParceiroService
   ) { }
 
   ngOnInit() {
@@ -48,6 +58,9 @@ export class HeaderComponent implements OnInit, OnChanges {
       this.carregarNotificacoes();
       this.carregarImagemPerfil();
     }
+    
+    // Pré-carrega as ofertas para a busca
+    this.carregarOfertasParaBusca();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -125,8 +138,15 @@ export class HeaderComponent implements OnInit, OnChanges {
     }
     
     if (menu) {
-      console.log('[HeaderComponent] 🍔 Abrindo menu sanduíche');
-      menu.open();
+      menu.isOpen().then((isOpen: boolean) => {
+        if (isOpen) {
+          console.log('[HeaderComponent] 🍔 Fechando menu sanduíche');
+          menu.close();
+        } else {
+          console.log('[HeaderComponent] 🍔 Abrindo menu sanduíche');
+          menu.open();
+        }
+      });
     } else {
       console.warn('[HeaderComponent] ⚠️ Menu não encontrado no DOM');
     }
@@ -235,17 +255,18 @@ carregarNotificacoes() {
   }
 }
 
-async openProfileOptionsModal(): Promise<void> {
-  const modal = await this.modalController.create({
-    component: ProfileModalComponent,
-    componentProps: {
-      usuario: this.usuario,
-    },
-    cssClass: 'large-modal',
-  });
+  async openProfileOptionsModal(): Promise<void> {
+    this.isProfileMenuOpen = false;
+    const modal = await this.modalController.create({
+      component: ProfileModalComponent,
+      componentProps: {
+        usuario: this.usuario,
+      },
+      cssClass: 'large-modal',
+    });
 
-  await modal.present();
-}
+    await modal.present();
+  }
 
 openFilePicker() {
   this.fileInput.nativeElement.click();
@@ -369,33 +390,126 @@ async confirmRemoveProfilePhoto() {
   await alert.present();
 }
 
-/**
- * Manipula a entrada de busca
- */
-onSearchInput(event: any) {
-  const term = event.detail.value?.trim() || '';
-  
-  if (term.length >= 2) {
-    // Determina para qual página navegar baseado no termo de busca
-    const termLower = term.toLowerCase();
-    
-    // Se o termo contém palavras relacionadas a cupons, vai para cupons
-    if (termLower.includes('cupom') || termLower.includes('cupons') || termLower.includes('voucher')) {
-      this.router.navigate(['/cupons'], { queryParams: { busca: term } });
+  /**
+   * Carrega ofertas para realizar a busca no modal
+   */
+  carregarOfertasParaBusca() {
+    if (this.isParceiro && this.usuario && (this.usuario.Id || this.usuario.id)) {
+      const idUsuario = this.usuario.Id || this.usuario.id;
+      this.parceiroService.buscarParceiroPorUsuario(idUsuario).subscribe(parceiro => {
+        if (parceiro && parceiro.idParceiro) {
+          this.ofertaService.listarOfertasPorParceiro(parceiro.idParceiro).subscribe({
+            next: (ofertas) => {
+              this.todasOfertas = ofertas || [];
+            },
+            error: (err) => console.error('[Header] Erro ao carregar ofertas do parceiro para busca:', err)
+          });
+        }
+      });
     } else {
-      // Caso contrário, vai para ofertas
-      this.router.navigate(['/ofertas'], { queryParams: { busca: term } });
+      this.ofertaService.listarOfertas().subscribe({
+        next: (ofertas) => {
+          this.todasOfertas = ofertas || [];
+        },
+        error: (err) => console.error('[Header] Erro ao carregar ofertas para busca:', err)
+      });
     }
   }
-}
+
+  /**
+   * Manipula a entrada de busca
+   */
+  onSearchInput(event: any) {
+    const term = event.detail.value?.trim().toLowerCase() || '';
+    this.searchTerm = term;
+    
+    if (term.length >= 2) {
+      this.isSearching = true;
+      
+      const filterData = () => {
+        // Busca correspondência exata no titulo, descricao e nome da empresa
+        const filtered = this.todasOfertas.filter(o => 
+          (o.nomeProduto && o.nomeProduto.toLowerCase().includes(term)) ||
+          (o.descricao && o.descricao.toLowerCase().includes(term)) ||
+          (o.idParceiroNavigation?.idEmpresaNavigation?.nome && o.idParceiroNavigation.idEmpresaNavigation.nome.toLowerCase().includes(term))
+        );
+        
+        const results = filtered.map(item => ({
+          ...item,
+          tipoBusca: item.tipoItem === 'CUPOM' ? 'CUPOM' : 'OFERTA'
+        }));
+        
+        if (results.length > 4) {
+          this.resultadosBusca = results.slice(0, 4);
+          this.hasMoreResults = true;
+        } else {
+          this.resultadosBusca = results;
+          this.hasMoreResults = false;
+        }
+        
+        this.isSearching = false;
+      };
+
+      if (this.todasOfertas.length === 0) {
+        this.ofertaService.listarOfertas().subscribe({
+          next: (ofertas) => {
+            this.todasOfertas = ofertas || [];
+            filterData();
+          },
+          error: (err) => {
+            console.error('[Header] Erro ao carregar ofertas:', err);
+            this.isSearching = false;
+          }
+        });
+      } else {
+        setTimeout(filterData, 300); // Debounce visual
+      }
+    } else {
+      this.resultadosBusca = [];
+      this.hasMoreResults = false;
+      this.isSearching = false;
+    }
+  }
+
+  fecharBusca() {
+    this.isSearchModalOpen = false;
+    this.searchTerm = '';
+    this.resultadosBusca = [];
+  }
+
+  buscarMais(tipo: string) {
+    const termo = this.searchTerm;
+    this.fecharBusca();
+    this.router.navigate(['/ofertas'], { queryParams: { busca: termo } });
+  }
+
+  goToItem(item: any) {
+    this.fecharBusca();
+    if (item.tipoBusca === 'CUPOM' || item.tipoItem === 'CUPOM') {
+      this.router.navigate(['/cupom', item.id]);
+    } else {
+      this.router.navigate([this.isParceiro ? '/editar-oferta' : '/oferta', item.id]);
+    }
+  }
+  
+  calcularDescontoCard(valor: number, desconto: number): number {
+    return valor - (valor * desconto / 100);
+  }
 
 /**
  * Limpa a busca quando o usuário limpa o campo
  */
 onSearchClear() {
   this.searchTerm = '';
-  // Opcional: remover query params da URL
-  const currentUrl = this.router.url.split('?')[0];
-  this.router.navigate([currentUrl]);
+  this.resultadosBusca = [];
+  this.hasMoreResults = false;
+  this.isSearching = false;
 }
+
+  goToHome() {
+    this.router.navigate([this.isParceiro ? '/dashboard-parceiro' : '/dashboard']);
+    setTimeout(() => {
+      window.dispatchEvent(new CustomEvent('scrollToTop'));
+    }, 100);
+  }
 }

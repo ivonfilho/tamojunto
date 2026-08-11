@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+﻿import { Component, OnInit, Input } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import type { SegmentValue } from '@ionic/core';
 import { Router } from '@angular/router';
@@ -65,6 +65,10 @@ export class RelatorioCupomPage implements OnInit {
   ngOnInit() {
     this.isMobileView = this.isMobile();
     this.obterParceiroEListarDados();
+
+    this.filtrosForm.valueChanges.subscribe(() => {
+      this.filtrar();
+    });
   }
 
   mudarAbaRelatorio(valor: any) {
@@ -168,17 +172,21 @@ get ofertasAgrupadas() {
   for (const c of this.cuponsFiltrados) {
     if (c.ofertaParceiro) {
       const nome = c.ofertaParceiro.nomeProduto;
+      const isUtilizado = c.status === 'UTILIZADO';
+      const valorCupom = isUtilizado ? this.getValorFinalCupom(c) : 0;
+      const qtde = isUtilizado ? 1 : 0;
+
       if (!grupos.has(nome)) {
         grupos.set(nome, {
            nomeProduto: nome,
-           oferta: c.ofertaParceiro,
-           quantidade: 1,
-           valorTotal: this.getValorFinalCupom(c)
+           ofertaParceiro: c.ofertaParceiro,
+           quantidade: qtde,
+           valorTotal: valorCupom
         });
       } else {
         const g = grupos.get(nome);
-        g.quantidade++;
-        g.valorTotal += this.getValorFinalCupom(c);
+        g.quantidade += qtde;
+        g.valorTotal += valorCupom;
       }
     }
   }

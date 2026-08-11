@@ -1,4 +1,4 @@
-ion-card{
+ion-card {
   background-color: #fff;
   margin-top: 2%;
 }
@@ -8,7 +8,7 @@ ion-card{
   padding: 16px;
   border-radius: 8px;
   margin: 16px;
-  
+
   @media (min-width: 768px) {
     flex-direction: row;
     justify-content: space-between;
@@ -51,7 +51,7 @@ ion-card{
       text-decoration: none;
       color: #007bff;
     }
-    p{
+    p {
       font-size: 12px;
     }
   }
@@ -63,4 +63,293 @@ ion-card{
   margin-top: 50px;
 }
 
+.cupom-expandido {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  max-width: 500px;
+  margin: 0 auto;
 
+  .cupom-header-expandido {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 16px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 12px;
+    overflow-y: visible !important;
+    overflow-x: hidden;
+    overflow: visible;
+
+    .valor-expandido,
+    .data-expandido {
+      text-align: center;
+      flex: 1;
+
+      .label {
+        display: block;
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 8px;
+        font-weight: 500;
+      }
+
+      .valor-texto,
+      .data-texto {
+        font-size: 24px;
+        color: var(--ion-color-primary);
+        font-weight: 700;
+        display: block;
+      }
+    }
+  }
+
+  .preco-original-expandido {
+    display: block;
+    margin-top: 8px;
+    font-size: 14px;
+    color: #777;
+    text-decoration: line-through;
+    font-weight: 600;
+  }
+
+  .desconto-texto-expandido {
+    display: block;
+    margin-top: 4px;
+    font-size: 14px;
+    color: var(--ion-color-primary);
+    font-weight: 700;
+  }
+
+  .parceiro-expandido {
+    text-align: center;
+    background: #f8f9fa;
+    padding: 16px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    border: 2px solid #e9ecef;
+
+    strong {
+      font-size: 18px;
+      color: #333;
+      font-weight: 600;
+      display: block;
+      line-height: 1.4;
+    }
+  }
+
+  .linha-pontilhada-expandida {
+    height: 2px;
+    background: repeating-linear-gradient(
+      to right,
+      #ddd 0,
+      #ddd 8px,
+      transparent 8px,
+      transparent 16px
+    );
+    margin: 20px 0;
+  }
+
+  .cupom-body-expandido {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 16px;
+    background: #f8f9fa;
+    border-radius: 12px;
+
+    .usuario-expandido,
+    .codigo-expandido {
+      text-align: center;
+      flex: 1;
+
+      .label {
+        display: block;
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 8px;
+        font-weight: 500;
+      }
+
+      strong {
+        font-size: 16px;
+        color: #333;
+        font-weight: 600;
+        display: block;
+      }
+    }
+  }
+
+  .cupom-footer-expandido {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    gap: 20px;
+
+    .col-left-expandido {
+      flex: 1;
+
+      .categoria-expandido,
+      .validade-expandido,
+      .codigo-footer-expandido {
+        margin-bottom: 12px;
+        padding: 12px;
+        background: #f8f9fa;
+        border-radius: 8px;
+
+        .label {
+          display: block;
+          font-size: 12px;
+          color: #666;
+          margin-bottom: 4px;
+          font-weight: 500;
+        }
+
+        strong {
+          font-size: 14px;
+          color: #333;
+          font-weight: 600;
+          display: block;
+        }
+      }
+
+      .categoria-expandido {
+        .categoria-texto {
+          display: block;
+          font-size: 12px;
+          color: #666;
+          margin-bottom: 4px;
+        }
+
+        .valor-categoria {
+          font-size: 16px;
+          color: var(--ion-color-primary);
+          font-weight: 700;
+        }
+      }
+    }
+
+    .qr-code-expandido {
+      flex-shrink: 0;
+      text-align: center;
+      width: 120px;
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      background: white;
+      border: 2px solid #e9ecef;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        border-radius: 8px;
+      }
+
+      p {
+        color: #666;
+        font-style: italic;
+        text-align: center;
+        margin: 0;
+        font-size: 12px;
+      }
+    }
+  }
+
+  .atencao-expandido {
+    background: #fff3cd;
+    border: 2px solid #ffeaa7;
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+    color: #856404;
+    font-size: 14px;
+
+    strong {
+      color: #856404;
+      font-weight: 600;
+    }
+  }
+}
+
+// Responsividade do modal expandido
+@media (max-width: 767px) {
+  .cupom-expandido-modal {
+    --width: 95%;
+    --height: 85%;
+  }
+
+  .col-left-expandido {
+    display: flex;
+    flex-direction: column;
+    align-content: space-around;
+    justify-content: space-between;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .cupom-expandido {
+    padding: 16px;
+
+    .cupom-header-expandido {
+      .valor-texto,
+      .data-texto {
+        font-size: 20px;
+      }
+    }
+
+    .parceiro-expandido strong {
+      font-size: 16px;
+    }
+
+    .cupom-footer-expandido {
+      flex-direction: column;
+      align-items: center;
+
+      .qr-code-expandido {
+        width: 100%;
+        height: auto;
+        margin-top: 16px;
+      }
+    }
+  }
+}
+.cupom-expandido {
+  .cupom-footer-expandido {
+    .col-left-expandido {
+      .categoria-expandido {
+        .categoria-texto {
+          display: block;
+          font-size: 12px;
+          color: #666;
+          margin-bottom: 4px;
+          white-space: normal;
+          word-wrap: break-word;
+          word-break: break-word;
+          line-height: 1.3;
+          max-height: 2.6em;
+          overflow: hidden;
+        }
+
+        .valor-categoria {
+          font-size: 16px;
+          color: var(--ion-color-primary);
+          font-weight: 700;
+        }
+      }
+    }
+  }
+}
+
+
+.produto-expandido,
+.usuario-expandido,
+.codigo-expandido {
+  display: flex;
+  flex-direction: column;
+}

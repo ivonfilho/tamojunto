@@ -1,7 +1,7 @@
 <ion-content [fullscreen]="true" class="dashboard-container">
   <div class="dashboard-header">
     <div class="header-content">
-      <h1>Dinheiro no bolso</h1>
+      <h1 (click)="scrollToTop()" style="cursor: pointer;">Dinheiro no bolso</h1>
       <p>Monitore seu desempenho e gerencie suas ofertas</p>
     </div>
     <div class="header-decoration">
@@ -14,8 +14,8 @@
   <div class="stats-grid">
     <ion-card class="stat-card">
       <ion-card-content>
-        <div class="stat-icon" style="background: var(--ion-color-success); border: none;">
-          <ion-icon aria-hidden="true" src="../assets/icon/TrendingUp.svg" style="color: white;"></ion-icon>
+        <div class="stat-icon" style="background: var(--ion-color-tertiary); border: none;">
+          <ion-icon aria-hidden="true" src="../assets/icon/TrendingUp.svg" style="filter: brightness(0) invert(1);"></ion-icon>
         </div>
         <div class="stat-info">
           <p class="stat-value">{{ totalVendas | brlCurrency }}</p>
@@ -30,7 +30,7 @@
     <ion-card class="stat-card">
       <ion-card-content>
         <div class="stat-icon" style="background: var(--ion-color-primary); border: none;">
-          <ion-icon src="../assets/icon/Card.svg" style="color: white;"></ion-icon>
+          <ion-icon src="../assets/icon/Card.svg" style="filter: brightness(0) invert(1);"></ion-icon>
         </div>
         <div class="stat-info">
           <p class="stat-value">{{ totalCuponsUtilizados }}</p>
@@ -43,7 +43,7 @@
     <ion-card class="stat-card">
       <ion-card-content>
         <div class="stat-icon" style="background: var(--ion-color-warning); border: none;">
-          <ion-icon src="../assets/icon/Storefront.svg" style="color: white;"></ion-icon>
+          <ion-icon src="../assets/icon/Storefront.svg" style="filter: brightness(0) invert(1);"></ion-icon>
         </div>
         <div class="stat-info">
           <p class="stat-value">{{ totalOfertasAtivas }}</p>
@@ -56,7 +56,7 @@
     <ion-card class="stat-card">
       <ion-card-content>
         <div class="stat-icon" style="background: var(--ion-color-danger); border: none;">
-          <ion-icon src="../assets/icon/Time.svg" style="color: white;"></ion-icon>
+          <ion-icon src="../assets/icon/Time.svg" style="filter: brightness(0) invert(1);"></ion-icon>
         </div>
         <div class="stat-info">
           <p class="stat-value">{{ totalCuponsPendentes }}</p>
@@ -83,7 +83,7 @@
         </div>
       </div>
     </ion-card-header>
-    
+
     <ion-card-content>
       <div class="chart-container">
         <apx-chart
@@ -106,7 +106,7 @@
           <h2>Vendas por Produto</h2>
           <p>Produtos mais vendidos no período</p>
         </div>
-        <ion-button fill="clear" size="small" color="#fff" routerLink="/ofertas" >
+        <ion-button fill="clear" size="small" color="#fff" routerLink="/ofertas-parceiro" >
           Ver todas
           <ion-icon src="assets/icon/ArrowForward.svg" slot="end"></ion-icon>
         </ion-button>
@@ -119,7 +119,7 @@
           <div class="product-rank">
             <span class="rank-number">{{ i + 1 }}</span>
           </div>
-          
+
           <div class="product-info">
             <h4 class="product-name">{{ v.nomeProduto }}</h4>
             <div class="product-stats">
@@ -146,7 +146,7 @@
     <div class="section-title">
       <h2>Ações Rápidas</h2>
     </div>
-    
+
     <div class="actions-grid">
       <ion-card class="action-card" routerLink="/cadastro-oferta">
         <ion-card-content>
@@ -158,7 +158,7 @@
         </ion-card-content>
       </ion-card>
 
-      <ion-card class="action-card" routerLink="/ofertas">
+      <ion-card class="action-card" routerLink="/ofertas-parceiro">
         <ion-card-content>
           <div class="action-icon">
             <ion-icon src="../assets/icon/Storefront.svg" color="success"></ion-icon>

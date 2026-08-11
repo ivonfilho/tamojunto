@@ -1,17 +1,25 @@
-<ion-header>
-  <ion-toolbar class="toolbar-estilo">
-    <ion-title>Detalhes da Oferta</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="voltarParaListarOfertas()">
-        <ion-icon aria-hidden="true" src="../assets/icon/Close.svg"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content [fullscreen]="true" *ngIf="oferta; else loading" class="visualizar-oferta-content">
-  <div class="oferta-container">
-    <!-- Imagem da oferta -->
+<ion-content [fullscreen]="true" class="visualizar-oferta-content">
+  <ng-container *ngIf="oferta; else loading">
+    <div class="dashboard-header">
+      <div class="header-content">
+        <h1>{{ oferta.nomeProduto || 'Detalhes da Oferta' }}</h1>
+        <p>{{ oferta.descricao || 'Confira os detalhes dessa oferta' }}</p>
+        <div class="header-breadcrumbs">
+          <ion-breadcrumbs>
+            <ion-icon slot="separator" name="chevron-forward-outline"></ion-icon>
+            <ion-breadcrumb routerLink="/dashboard"><ion-icon src="../../assets/icon/HomeOutline.svg" slot="start" style="margin-right: 4px; filter: brightness(0) invert(1);"></ion-icon> </ion-breadcrumb>
+            <ion-breadcrumb (click)="voltarParaListarOfertas()">Ofertas</ion-breadcrumb>
+            <ion-breadcrumb class="breadcrumb-active">Detalhes</ion-breadcrumb>
+          </ion-breadcrumbs>
+        </div>
+      </div>
+      <div class="header-decoration">
+        <div class="decoration-circle"></div>
+        <div class="decoration-circle"></div>
+      </div>
+    </div>
+    <div class="oferta-container" style="border-radius: 24px 24px 0 0; margin-top: -24px; position: relative; z-index: 5; background: white; padding-top: 20px;">
+      <!-- Imagem da oferta -->
     <div class="oferta-banner-container">
       <ng-container *ngIf="oferta.imagem && oferta.imagem.length > 0; else imageSkeleton">
         <img [src]="oferta.imagem[0].path" alt="{{ oferta.nomeProduto }}" class="oferta-banner" />
@@ -21,11 +29,7 @@
       </ng-template>
     </div>
 
-    <!-- Cabeçalho de texto -->
-    <div class="oferta-text-header">
-      <div class="modal-oferta-nome">{{ oferta.nomeProduto }}</div>
-      <p class="modal-oferta-sub" *ngIf="oferta.descricao">{{ oferta.descricao }}</p>
-    </div>
+
 
     <!-- Tabela de Detalhes -->
     <dl class="oferta-detalhes">
@@ -70,7 +74,7 @@
       <div class="tooltip-container" *ngIf="!isParceiro">
         <ion-button
           expand="block"
-          color="primary"
+          color="tertiary"
           (click)="compartilharOferta(oferta)"
           [disabled]="!ofertaDisponivel()"
           class="btn-acao"
@@ -87,7 +91,8 @@
         </ion-text>
       </div>
     </div>
-  </div>
+    </div>
+  </ng-container>
 
   <ion-toast
     [isOpen]="showToast"

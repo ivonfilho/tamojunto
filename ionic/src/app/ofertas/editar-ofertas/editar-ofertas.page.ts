@@ -37,9 +37,28 @@ export class EditarOfertasPage implements OnInit {
 
   categorias: string[] = [...CATEGORIAS_OFERTA];
 
+  // Novas propriedades para Validade e Tipo de Oferta
+  validadeSelecionada: string = '7 dias';
+  diasValidade: number = 7;
+  tipoOfertaSelecionado: string = '';
+  dataCriacaoFormatada: string = '';
+
   // Propriedades para categoria personalizada
   categoriaPersonalizada: string = '';
   mostrarCategoriaPersonalizada: boolean = false;
+
+  ofertaOriginalStr: string = '';
+
+  obterEstadoAtual(): string {
+    return JSON.stringify({
+      oferta: this.oferta,
+      precoInput: this.precoInput,
+      descontoInput: this.descontoInput,
+      imagemSelecionada: this.imagemSelecionada ? this.imagemSelecionada.name : null,
+      validadeSelecionada: this.validadeSelecionada,
+      categoriaPersonalizada: this.categoriaPersonalizada
+    });
+  }
 
   // Strings mostradas nos inputs (iniciam vazias)
   precoInput: string = '';
@@ -71,8 +90,53 @@ export class EditarOfertasPage implements OnInit {
           if (this.oferta.validade) {
             const data = new Date(this.oferta.validade);
             this.oferta.validade = data.toISOString().split('T')[0];
+            
+            // Lógica do segment de validade
+            const dataCriacao = this.oferta.dataCriacao ? new Date(this.oferta.dataCriacao) : new Date();
+            this.dataCriacaoFormatada = dataCriacao.toISOString().split('T')[0];
+            
+            const diffTime = Math.abs(data.getTime() - dataCriacao.getTime());
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            if ([7, 15, 30, 60].includes(diffDays)) {
+                this.validadeSelecionada = diffDays + ' dias';
+            } else {
+                this.validadeSelecionada = ''; // Personalizado
+            }
           }
           
+          if (this.oferta.tipoOferta) {
+            this.tipoOfertaSelecionado = this.oferta.tipoOferta.toLowerCase();
+            if (this.tipoOfertaSelecionado === 'relampago' || this.tipoOfertaSelecionado === 'relâmpago') {
+              this.tipoOfertaSelecionado = 'relampago';
+              this.oferta.tipoOferta = 'relampago'; // match the select value in HTML
+              this.validadeSelecionada = '7 dias';
+              this.diasValidade = 7;
+            } else if (this.tipoOfertaSelecionado === 'normal') {
+              this.tipoOfertaSelecionado = 'normal';
+              this.oferta.tipoOferta = 'normal';
+            }
+          }
+
+          // Carrega preview da imagem caso ela exista
+          let imgPath = null;
+          if (this.oferta.imagem && this.oferta.imagem.length > 0 && (this.oferta.imagem[0] as any).path) {
+            imgPath = (this.oferta.imagem[0] as any).path;
+          } else if (this.oferta.imagemPaths && this.oferta.imagemPaths.length > 0 && this.oferta.imagemPaths[0]) {
+            imgPath = this.oferta.imagemPaths[0];
+          }
+          
+          if (imgPath) {
+            if (!imgPath.startsWith('http') && !imgPath.startsWith('data:')) {
+              // Ensure it doesn't double slash
+              const cleanPath = imgPath.startsWith('/') ? imgPath.substring(1) : imgPath;
+              imgPath = (this.ofertaService as any).URL_API + '/' + cleanPath;
+            }
+            this.imagemPreview = imgPath;
+          }
+
+          console.log('Estado final da oferta após carregamento:', this.oferta);
+
           this.oferta.preco = this.formatarParaNumero(this.oferta.preco);
           this.oferta.desconto = this.formatarParaNumero(this.oferta.desconto);
           
@@ -81,6 +145,9 @@ export class EditarOfertasPage implements OnInit {
           
           this.calcularValorFinal();
           this.verificarCategoriaPersonalizada();
+          
+          // Salva o estado original para comparar no cancelar()
+          this.ofertaOriginalStr = this.obterEstadoAtual();
         },
         error: (err) => {
           console.error('Erro ao buscar oferta:', err);
@@ -120,6 +187,40 @@ export class EditarOfertasPage implements OnInit {
     this.oferta.categoria = this.categoriaPersonalizada;
     console.log('Categoria personalizada atualizada:', this.oferta.categoria);
     console.log('Valor da oferta.categoria:', this.oferta.categoria);
+  }
+
+  // --- Novos Métodos para Tipo de Oferta e Validade ---
+  onTipoOfertaChange(event: Event): void {
+    this.tipoOfertaSelecionado = (event.target as HTMLInputElement).value;
+    this.oferta.tipoOferta = this.tipoOfertaSelecionado === 'relampago' ? 'Relâmpago' : 'Normal';
+
+    if (this.tipoOfertaSelecionado === 'relampago') {
+      this.diasValidade = 7;
+      this.validadeSelecionada = '7 dias';
+      this.preencherDataValidade('7 dias');
+    }
+  }
+
+  preencherDataValidade(validadeSelecionada: string): void {
+    let dias: number;
+    switch (validadeSelecionada) {
+      case '7 dias': dias = 7; break;
+      case '15 dias': dias = 15; break;
+      case '30 dias': dias = 30; break;
+      case '60 dias': dias = 60; break;
+      default: dias = 0;
+    }
+
+    if (dias > 0) {
+      const baseDate = this.oferta.dataCriacao ? new Date(this.oferta.dataCriacao) : new Date();
+      const validade = new Date(baseDate);
+      validade.setDate(baseDate.getDate() + dias);
+
+      const ano = validade.getFullYear();
+      const mes = (validade.getMonth() + 1).toString().padStart(2, '0');
+      const dia = validade.getDate().toString().padStart(2, '0');
+      this.oferta.validade = `${ano}-${mes}-${dia}`;
+    }
   }
 
   // Método para verificar se a categoria atual é personalizada
@@ -521,6 +622,11 @@ export class EditarOfertasPage implements OnInit {
 
 
   async cancelar() {
+    if (this.obterEstadoAtual() === this.ofertaOriginalStr) {
+      this.router.navigate(['/ofertas']);
+      return;
+    }
+
     const alerta = await this.alertController.create({
       header: 'Cancelar Edição',
       message: 'Deseja descartar as alterações?',

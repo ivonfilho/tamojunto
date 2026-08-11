@@ -36,49 +36,44 @@ ion-list-header{
 .modal-container {
   display: flex;
   height: 100%;
-  flex-direction: row;
-
-  // Mobile: layout vertical (tabs em cima, conteúdo embaixo)
-  @media (max-width: 768px) {
-    flex-direction: column;
-    height: auto;
-    min-height: 100%;
-  }
+  flex-direction: column;
+  background-color: #fff;
 }
 
-.sidebar {
-  width: 25%;
-  min-width: 200px;
-  border-right: 1px solid #ccc;
-  background-color: #f9f9f9;
-  flex-shrink: 0;
+.top-tabs {
+  width: 100%;
+  background-color: #f4f6f8;
+  border-bottom: 2px solid #e0e0e0;
 
-  // Mobile: sidebar vira tabs horizontais no topo
-  @media (max-width: 768px) {
-    width: 100%;
-    min-width: unset;
-    border-right: none;
-    border-bottom: 1px solid #ccc;
+  ion-list {
+    display: flex;
+    flex-direction: row;
+    background: transparent;
+    padding: 0;
+    margin: 0;
 
-    ion-list {
-      display: flex;
-      flex-direction: row;
+    ion-item {
+      flex: 1;
+      text-align: center;
+      justify-content: center;
+      --background: transparent;
+      --border-width: 0;
+      border-radius: 0;
+      margin-bottom: 0;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #666;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s ease;
 
-      ion-item {
-        flex: 1;
-        text-align: center;
-        justify-content: center;
-        font-size: 0.85rem;
-        --border-width: 0;
-        --inner-border-width: 0;
-        border-bottom: 2px solid transparent;
-        font-weight: 500;
-        cursor: pointer;
+      &::part(native):hover {
+        background: rgba(0, 84, 233, 0.05);
+      }
 
-        &.active-tab {
-          border-bottom: 2px solid var(--ion-color-primary);
-          color: var(--ion-color-primary);
-        }
+      &.active-tab {
+        border-bottom: 3px solid #0054e9;
+        color: #0054e9;
       }
     }
   }
@@ -86,7 +81,7 @@ ion-list-header{
   @media (max-width: 480px) {
     ion-list {
       ion-item {
-        font-size: 0.75rem;
+        font-size: 0.8rem;
         padding: 8px 4px;
       }
     }
@@ -94,21 +89,18 @@ ion-list-header{
 }
 
 .content {
-  width: 75%;
-  padding: 16px;
+  width: 100%;
+  padding: 32px;
   background: #fff;
   overflow-y: auto;
   flex: 1;
 
-  // Mobile: ocupa largura total
   @media (max-width: 768px) {
-    width: 100%;
-    padding: 12px;
-    max-width: 100%;
+    padding: 16px;
   }
 
   @media (max-width: 480px) {
-    padding: 8px;
+    padding: 12px;
   }
 }
 

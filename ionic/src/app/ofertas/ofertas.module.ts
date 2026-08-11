@@ -21,6 +21,6 @@ import { PipesModule } from '../pipes/pipes.module';
     HttpClientModule,
     PipesModule
   ],
-  declarations: [OfertasPage, ExcluirOfertaComponent]
+  declarations: [OfertasPage]
 })
 export class OfertasPageModule {}

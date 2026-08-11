@@ -150,6 +150,8 @@ ion-content.dashboard-container {
     display: flex;
     align-items: center;
     gap: 20px;
+    position: relative;
+    flex-direction: row;
   }
 
   .stat-icon {
@@ -443,7 +445,7 @@ ion-content.dashboard-container {
       overflow: hidden;
       transition: all 0.3s ease;
       margin-bottom: 1rem;
-      height: 460px; // Diminuir altura dos cards
+      //height: 460px; // Diminuir altura dos cards
       display: flex;
       flex-direction: column;
 
@@ -464,7 +466,7 @@ ion-content.dashboard-container {
 
         .offer-button-relampago {
           --background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-          --color: white;
+          --color: white !important;
           --box-shadow: 0 4px 15px rgba(251, 191, 36, 0.4);
 
           &:hover {
@@ -597,13 +599,13 @@ ion-content.dashboard-container {
 
         .offer-button-container {
           padding: 0 1rem 1rem 1rem;
-          margin-top: auto; // Empurra o botão para baixo
+          margin-top: 10px; // Empurra o botão para baixo
           flex-shrink: 0; // Não encolher
 
           .offer-button {
             border-radius: 15px;
             font-weight: 600;
-            height: 44px; // Manter altura otimizada
+            //height: 44px; // Manter altura otimizada
             --box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
             width: 100%; // Largura total
 
@@ -1159,7 +1161,7 @@ ion-icon[name="refresh"].spin {
             padding: 0 0.75rem 0.75rem 0.75rem;
 
             .offer-button {
-              height: 42px;
+              //height: 42px;
               font-size: 0.9rem;
             }
           }
@@ -1197,7 +1199,7 @@ ion-icon[name="refresh"].spin {
       }
 
       .offer-card {
-        height: 380px; // Altura ajustada para mobile
+        //height: 380px; // Altura ajustada para mobile
 
         .offer-card-content {
           .offer-chip {
@@ -1249,7 +1251,7 @@ ion-icon[name="refresh"].spin {
             padding: 0 0.5rem 0.5rem 0.5rem;
 
             .offer-button {
-              height: 40px;
+              //height: 40px;
               font-size: 0.8rem;
             }
           }
@@ -1992,5 +1994,46 @@ ion-chip[color="primary"] {
       margin: 0 !important;
     }
   }
+}
+
+
+.price-info {
+  margin-top: 8px;
+  padding: 8px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 8px;
+  border-left: 4px solid var(--ion-color-primary);
+}
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.price-row:last-child {
+  margin-bottom: 0;
+}
+.price-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #6c757d;
+}
+.price-value {
+  font-size: 14px;
+  font-weight: 600;
+}
+.price-value.initial-price {
+  color: #6c757d;
+  text-decoration: line-through;
+}
+.price-value.discount {
+  color: var(--ion-color-danger);
+}
+.price-value.final-price {
+  color: var(--ion-color-success);
+  font-size: 16px;
+}
+.offer-relampago .price-info {
+  border-left-color: #fbbf24 !important;
 }
 

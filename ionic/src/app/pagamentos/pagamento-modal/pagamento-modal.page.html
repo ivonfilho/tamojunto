@@ -1,13 +1,17 @@
-<ion-header>
-    <ion-toolbar class="toolbar-estilo">
-      <ion-title>Pagamento</ion-title>
-      <ion-buttons slot="end">
-        <ion-button (click)="fecharModal()">Fechar</ion-button>
-      </ion-buttons>
-    </ion-toolbar>
-  </ion-header>
-
-  <ion-content>
+<ion-content>
+  <div class="dashboard-header" style="border-radius: 0 0 24px 24px; margin-bottom: 24px;">
+    <div class="header-content">
+      <h1>Pagamento</h1>
+      <p>Insira os dados do seu cartão</p>
+    </div>
+    <div class="header-decoration">
+      <div class="decoration-circle"></div>
+      <div class="decoration-circle"></div>
+    </div>
+    <ion-button (click)="fecharModal()" fill="clear" style="position: absolute; top: 10px; right: 10px; --color: white;">
+      <ion-icon aria-hidden="true" src="../assets/icon/Close.svg" style="filter: brightness(0) invert(1);"></ion-icon>
+    </ion-button>
+  </div>
     <ion-list>
       <ion-item>
         <ion-label position="stacked">Número do Cartão</ion-label>

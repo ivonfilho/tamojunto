@@ -5,25 +5,25 @@
       <div class="img-container">
         <img src="../../assets/tamo-junto-logo.png" class="logo cursor-pointer" (click)="voltarParaLogin()" />
       </div>
-      
+
       <div class="form-component">
-        <h2>Recuperar Senha</h2>
+        <h2 class="titulo-logins">Recuperar Senha</h2>
         <div class="form-container premium-form">
           <form [formGroup]="recuperarForm" (ngSubmit)="enviarEmail()" class="form-group">
             <p class="form-subtitle">Digite seu email para receber uma nova senha temporária</p>
-            
+
             <div class="input-group">
-              <ion-input 
+              <ion-input
                 label="E-mail"
                 labelPlacement="stacked"
-                formControlName="email" 
-                fill="outline" 
-                placeholder="seu@email.com" 
-                type="email" 
+                formControlName="email"
+                fill="outline"
+                placeholder="seu@email.com"
+                type="email"
                 required
                 [class.ng-invalid]="recuperarForm.get('email')?.touched && recuperarForm.get('email')?.invalid">
               </ion-input>
-              
+
               <div *ngIf="recuperarForm.get('email')?.invalid && recuperarForm.get('email')?.touched" class="error-messages">
                 <small *ngIf="recuperarForm.get('email')?.errors?.['required']" class="text-error">
                   <ion-icon name="alert-circle-outline"></ion-icon> O email é obrigatório.

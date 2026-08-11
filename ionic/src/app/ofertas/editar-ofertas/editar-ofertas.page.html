@@ -1,9 +1,9 @@
-<ion-header [translucent]="true">
+<ion-header [translucent]="true" class="sem-min-height">
   <ion-toolbar class="toolbar-estilo">
     <ion-buttons slot="start">
       <ion-button (click)="cancelar()" fill="clear" class="back-button">
-        <ion-icon  aria-hidden="true" src="../assets/icon/ArrowBack.svg"></ion-icon>
-        <span>Voltar</span>
+        <ion-icon aria-hidden="true" src="../assets/icon/ArrowBack.svg"
+          style="filter: brightness(0) invert(1);"></ion-icon>
       </ion-button>
     </ion-buttons>
     <ion-title class="ion-text-left">Editar Oferta</ion-title>
@@ -11,139 +11,199 @@
 </ion-header>
 
 <ion-content>
-  <ion-grid style="padding-left: 20px; padding-right: 20px; margin-top: 20px;">
-    <ion-row>
-      <ion-col size="12">
-        <ion-input label="Nome do Produto *" labelPlacement="stacked" fill="outline" [(ngModel)]="oferta.nomeProduto" required></ion-input>
-        <ion-text color="danger" *ngIf="errors.nomeProduto">
+  <div class="editar-oferta-container">
+
+    <!-- Card 1: Imagem da Oferta -->
+    <ion-card class="card-dash-praque-tanta-div stat-card">
+      <ion-card-header class="header-card">
+        <ion-card-title class="label-list">Imagem da Oferta</ion-card-title>
+      </ion-card-header>
+      <ion-card-content style="padding-top: 16px;">
+        <div class="upload-section-cover" [class.has-image]="imagemPreview"
+          [style.background-image]="imagemPreview ? 'url(' + imagemPreview + ')' : null"
+          style="width: 100%; height: 200px; border-radius: 8px; border: 2px dashed #ccc; background-color: #f4f4f4; background-size: cover; background-position: center; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+
+          <input type="file" accept="image/*" (change)="onFileSelected($event)" id="fileInputEditar" #fileInput
+            style="display: none;" />
+
+          <!-- Estado 1: SEM IMAGEM -->
+          <div class="upload-placeholder" *ngIf="!imagemPreview" (click)="fileInput.click()"
+            style="display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%; justify-content: center; cursor: pointer;">
+            <ion-button type="button" fill="outline" class="upload-button"
+              (click)="$event.stopPropagation(); fileInput.click()" style="--border-color: #666; --color: #333;">
+              <ion-icon name="camera-outline" slot="start"></ion-icon>
+              Selecionar Imagem
+            </ion-button>
+            <p class="upload-hint" style="font-size: 12px; color: #999; margin-top: 10px;">Formatos aceitos: JPG, PNG,
+              GIF. Máx 5MB.</p>
+          </div>
+
+          <!-- Estado 2: COM IMAGEM -->
+          <div class="floating-buttons" *ngIf="imagemPreview"
+            style="position: absolute; bottom: 12px; right: 12px; display: flex; gap: 8px;">
+            <button type="button" (click)="fileInput.click()"
+              style="background-color: rgba(30, 30, 30, 0.8); color: white; border: none; padding: 6px 12px; border-radius: 20px; font-size: 13px; font-weight: 500; display: flex; align-items: center; gap: 4px; cursor: pointer; backdrop-filter: blur(4px);">
+              <ion-icon src="../assets/icon/CameraOutline.svg"></ion-icon>
+              Alterar
+            </button>
+            <button type="button" (click)="removerImagem()"
+              style="background-color: rgba(235, 68, 90, 0.9); color: white; border: none; padding: 6px 12px; border-radius: 20px; font-size: 13px; font-weight: 500; display: flex; align-items: center; gap: 4px; cursor: pointer; backdrop-filter: blur(4px);">
+              <ion-icon src="../assets/icon/Trash.svg"></ion-icon>
+              Excluir
+            </button>
+          </div>
+
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Card 2: Informações do Produto -->
+    <ion-card class="card-dash-praque-tanta-div stat-card">
+      <ion-card-header class="header-card">
+        <ion-card-title class="label-list">Informações do Produto</ion-card-title>
+      </ion-card-header>
+      <ion-card-content style="padding-top: 16px;">
+        <ion-input label="Nome do Produto *" labelPlacement="stacked" fill="outline" [(ngModel)]="oferta.nomeProduto"
+          required></ion-input>
+        <ion-text color="danger" *ngIf="errors?.nomeProduto">
           <p>{{ errors.nomeProduto }}</p>
         </ion-text>
-      </ion-col>
 
-      <ion-col size="12">
-        <ion-select label="Categoria *" placeholder="Selecione a categoria" labelPlacement="stacked" fill="outline" [(ngModel)]="oferta.categoria" required (ionChange)="onCategoriaChange()">
-          <ion-select-option *ngFor="let categoria of categorias" [value]="categoria">
-            {{ categoria }}
-          </ion-select-option>
-          <ion-select-option *ngIf="categoriaPersonalizada && categoriaPersonalizada.trim() !== ''" [value]="categoriaPersonalizada">
-            {{ categoriaPersonalizada }} (Personalizada)
-          </ion-select-option>
-        </ion-select>
-        <ion-text color="danger" *ngIf="errors.categoria">
-          <p>{{ errors.categoria }}</p>
-        </ion-text>
-      </ion-col>
+        <div class="form-row">
+          <div class="form-group">
+            <ion-select label="Categoria *" placeholder="Selecione a categoria" labelPlacement="stacked" fill="outline"
+              [(ngModel)]="oferta.categoria" required (ionChange)="onCategoriaChange()">
+              <ion-select-option *ngFor="let categoria of categorias" [value]="categoria">
+                {{ categoria }}
+              </ion-select-option>
+              <ion-select-option *ngIf="categoriaPersonalizada && categoriaPersonalizada.trim() !== ''"
+                [value]="categoriaPersonalizada">
+                {{ categoriaPersonalizada }} (Personalizada)
+              </ion-select-option>
+            </ion-select>
+            <ion-text color="danger" *ngIf="errors?.categoria">
+              <p>{{ errors.categoria }}</p>
+            </ion-text>
+          </div>
 
-      <!-- Campo de categoria personalizada -->
-      <ion-col size="12" *ngIf="mostrarCategoriaPersonalizada">
-        <ion-input label="Categoria Personalizada *" labelPlacement="stacked" fill="outline"
-          [(ngModel)]="categoriaPersonalizada"
-          placeholder="Digite a categoria"
-          (ionInput)="onCategoriaPersonalizadaChange()"
-          required>
-        </ion-input>
-        <ion-text color="danger" *ngIf="errors.categoriaPersonalizada">
-          <p>{{ errors.categoriaPersonalizada }}</p>
-        </ion-text>
-      </ion-col>
+          <div class="form-group" *ngIf="mostrarCategoriaPersonalizada">
+            <ion-input label="Categoria Personalizada *" labelPlacement="stacked" fill="outline"
+              [(ngModel)]="categoriaPersonalizada" placeholder="Digite a categoria"
+              (ionInput)="onCategoriaPersonalizadaChange()" required>
+            </ion-input>
+            <ion-text color="danger" *ngIf="errors?.categoriaPersonalizada">
+              <p>{{ errors.categoriaPersonalizada }}</p>
+            </ion-text>
+          </div>
 
-      <ion-col size="6">
-        <ion-select label="Tipo de Produto *" placeholder="Selecione o tipo" labelPlacement="stacked" fill="outline" [(ngModel)]="oferta.tipoProduto" required>
-          <ion-select-option value="Físico">Físico</ion-select-option>
-          <ion-select-option value="Digital">Digital</ion-select-option>
-          <ion-select-option value="undefined">Indefinido</ion-select-option>
-        </ion-select>
-        <ion-text color="danger" *ngIf="errors.tipoProduto">
-          <p>{{ errors.tipoProduto }}</p>
-        </ion-text>
-      </ion-col>
+          <div class="form-group">
+            <ion-select label="Tipo de Produto *" placeholder="Selecione o tipo" labelPlacement="stacked" fill="outline"
+              [(ngModel)]="oferta.tipoProduto" required>
+              <ion-select-option value="Físico">Físico</ion-select-option>
+              <ion-select-option value="Digital">Digital</ion-select-option>
+              <ion-select-option value="undefined">Indefinido</ion-select-option>
+            </ion-select>
+            <ion-text color="danger" *ngIf="errors?.tipoProduto">
+              <p>{{ errors.tipoProduto }}</p>
+            </ion-text>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
 
-      <ion-col size="6">
-        <ion-input label="Preço *" labelPlacement="stacked" fill="outline"
-          type="text"
-          [value]="precoInput"
-          [ngModel]="precoInput"
-          required
-          (ionInput)="onPrecoInput($event)"
-          (ionBlur)="onPrecoBlur()"
-        ></ion-input>
-        <ion-text color="danger" *ngIf="errors.preco">
-          <p>{{ errors.preco }}</p>
-        </ion-text>
-      </ion-col>
+    <!-- Card 3: Valores e Descontos -->
+    <ion-card class="card-dash-praque-tanta-div stat-card">
+      <ion-card-header class="header-card">
+        <ion-card-title class="label-list">Valores e Descontos</ion-card-title>
+      </ion-card-header>
+      <ion-card-content style="padding-top: 16px;">
+        <div class="form-row">
+          <div class="form-group">
+            <ion-input label="Preço *" labelPlacement="stacked" fill="outline" type="text" [value]="precoInput"
+              [ngModel]="precoInput" required (ionInput)="onPrecoInput($event)" (ionBlur)="onPrecoBlur()"></ion-input>
+            <ion-text color="danger" *ngIf="errors?.preco">
+              <p>{{ errors.preco }}</p>
+            </ion-text>
+          </div>
 
-      <ion-col size="6">
-        <ion-input label="Desconto (%)" labelPlacement="stacked" fill="outline"
-            type="text"
-            [value]="descontoInput"
-            [ngModel]="descontoInput"
-            (ionInput)="onDescontoInput($event)"
-            (ionBlur)="onDescontoBlur()"
-          ></ion-input>
-      </ion-col>
+          <div class="form-group">
+            <ion-input label="Desconto (%)" labelPlacement="stacked" fill="outline" type="text" [value]="descontoInput"
+              [ngModel]="descontoInput" (ionInput)="onDescontoInput($event)" (ionBlur)="onDescontoBlur()"></ion-input>
+          </div>
 
-      <ion-col size="6">
-        <ion-input label="Valor Final" labelPlacement="stacked" fill="outline" type="text" [value]="formatarParaBRL(valorFinal)" readonly></ion-input>
-      </ion-col>
+          <div class="form-group">
+            <ion-input label="Valor Final" labelPlacement="stacked" fill="outline" type="text"
+              [value]="formatarParaBRL(valorFinal)" readonly></ion-input>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
 
-      <ion-col size="12">
-        <ion-input label="Validade *" labelPlacement="stacked" fill="outline" type="date" [(ngModel)]="oferta.validade" required></ion-input>
-        <ion-text color="danger" *ngIf="errors.validade">
-          <p>{{ errors.validade }}</p>
-        </ion-text>
-      </ion-col>
-    </ion-row>
+    <!-- Card 4: Tipo de Oferta e Validade -->
+    <ion-card class="card-dash-praque-tanta-div stat-card">
+      <ion-card-header class="header-card">
+        <ion-card-title class="label-list">Tipo de Oferta e Validade</ion-card-title>
+      </ion-card-header>
+      <ion-card-content style="padding-top: 16px;">
+        <div class="form-row">
+          <div class="form-group">
+            <ion-select label="Tipo de Oferta *" placeholder="Selecione o tipo de oferta"
+              [(ngModel)]="oferta.tipoOferta" name="tipoOferta" labelPlacement="stacked" fill="outline"
+              cancelText="Cancelar" okText="OK" (ionChange)="onTipoOfertaChange($event)" required>
+              <ion-select-option value="relampago">Relâmpago (Válida por no máximo 7 dias)</ion-select-option>
+              <ion-select-option value="normal">Normal</ion-select-option>
+            </ion-select>
+          </div>
+        </div>
 
-    <!-- SeÃ§Ã£o de Upload/Troca de Imagem -->
-    <ion-row>
-      <ion-col size="12">
-        <div class="labels-extras">Imagem da Oferta</div>
-        <div class="upload-section" style="display: flex; flex-direction: column; align-items: center; gap: 15px;">
-          <input
-            type="file"
-            accept="image/*"
-            (change)="onFileSelected($event)"
-            id="fileInputEditar"
-            style="display: none;"
-          />
-          <ion-button fill="outline" (click)="triggerFileInput()" class="upload-button">
-            <ion-icon name="camera-outline" slot="start"></ion-icon>
-            Selecionar nova imagem
-          </ion-button>
-          <p class="upload-hint">Formatos: JPG, PNG, GIF • Máx. 5MB</p>
+        <div class="form-row" style="margin-top: 16px;">
+          <div class="form-group">
+            <div class="labels-extras" style="margin-bottom: 8px; font-weight: 500; color: #666;">Oferta válida por:
+            </div>
+            <ion-segment class="validade-segment" [(ngModel)]="validadeSelecionada" name="validade"
+              (ionChange)="preencherDataValidade(validadeSelecionada)"
+              [disabled]="tipoOfertaSelecionado === 'relampago'">
+              <ion-segment-button value="7 dias">
+                07 dias
+              </ion-segment-button>
+              <ion-segment-button value="15 dias" [disabled]="tipoOfertaSelecionado === 'relampago'">
+                15 dias
+              </ion-segment-button>
+              <ion-segment-button value="30 dias" [disabled]="tipoOfertaSelecionado === 'relampago'">
+                30 dias
+              </ion-segment-button>
+              <ion-segment-button value="60 dias" [disabled]="tipoOfertaSelecionado === 'relampago'">
+                60 dias
+              </ion-segment-button>
+            </ion-segment>
+          </div>
 
-          <div class="image-preview" *ngIf="imagemPreview">
-            <ion-text>PrÃ©-visualizaÃ§Ã£o:</ion-text>
-            <div class="preview-container">
-              <img [src]="imagemPreview" alt="Preview da imagem" class="preview-image" />
-              <ion-button fill="clear" color="danger" size="small" (click)="removerImagem()">
-                <ion-icon name="close-circle"></ion-icon>
-              </ion-button>
+          <div class="form-group">
+            <div class="labels-extras" style="margin-bottom: 8px; font-weight: 500; color: #666;">Data personalizada:
+            </div>
+            <div class="data-personalizada" style="display: flex; gap: 10px; align-items: center;">
+              <ion-input type="date" [(ngModel)]="dataCriacaoFormatada" name="dataCriacaoFormatada"
+                placeholder="dd/mm/aaaa" fill="outline" readonly></ion-input>
+              <span>até</span>
+              <ion-input type="date" [(ngModel)]="oferta.validade" name="validadeDate" placeholder="dd/mm/aaaa"
+                fill="outline"></ion-input>
             </div>
           </div>
         </div>
-      </ion-col>
-    </ion-row>
+      </ion-card-content>
+    </ion-card>
 
-    <!-- BotÃµes de aÃ§Ã£o -->
-    <ion-row>
-      <ion-col size="6">
-        <ion-button expand="full" color="success" (click)="salvarOferta()">Salvar</ion-button>
-      </ion-col>
-      <ion-col size="6">
-        <ion-button expand="full" color="danger" (click)="cancelar()">Cancelar</ion-button>
-      </ion-col>
-    </ion-row>
+    <!-- Botões de Ação -->
+    <div class="button-group-submit" style="margin-top: 20px; display: flex; gap: 12px;">
+      <ion-button type="submit" color="royal" class="submit-button" style="flex: 1;" (click)="salvarOferta()">
+        <ion-icon src="../assets/icon/salva.svg" slot="start"></ion-icon>
+        Salvar
+      </ion-button>
+      <ion-button type="button" color="lilac" class="submit-button" style="flex: 1;" (click)="cancelar()">
+        <ion-icon src="../assets/icon/CloseCircle.svg" slot="start"></ion-icon>
+        Cancelar
+      </ion-button>
+    </div>
 
-
-  </ion-grid>
+  </div>
 </ion-content>
-
-
-
-
-
-
-
-
-

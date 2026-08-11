@@ -1,15 +1,21 @@
-<ion-header [translucent]="true">
-  <ion-toolbar class="toolbar-estilo">
-    <ion-title>Meu Perfil</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true" class="perfil-container">
-  <ion-header collapse="condense" class="header-2">
-    <ion-toolbar class="toolbar-estilo">
-      <ion-title size="large">Meu Perfil</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="dashboard-header">
+    <div class="header-content">
+      <h1>Meu Perfil</h1>
+      <p>Gerencie suas informações e histórico</p>
+      <div class="header-breadcrumbs">
+        <ion-breadcrumbs>
+          <ion-icon slot="separator" name="chevron-forward-outline"></ion-icon>
+          <ion-breadcrumb routerLink="/dashboard"><ion-icon src="../assets/icon/HomeOutline.svg" slot="start" style="margin-right: 4px; filter: brightness(0) invert(1);"></ion-icon> </ion-breadcrumb>
+          <ion-breadcrumb class="breadcrumb-active">Meu Perfil</ion-breadcrumb>
+        </ion-breadcrumbs>
+      </div>
+    </div>
+    <div class="header-decoration">
+      <div class="decoration-circle"></div>
+      <div class="decoration-circle"></div>
+    </div>
+  </div>
 
   <div class="perfil-content">
     <ion-button expand="block" fill="solid" color="primary" (click)="irParaHistoricoPedidos()">

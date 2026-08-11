@@ -41,7 +41,7 @@ export class AppComponent implements OnInit {
     },
     { title: 'Cupons', url: '/cupons', icon: './assets/icon/Receipt2.svg' },
   ];
-  
+
   constructor(
     private usuarioService: UsuarioService,
     private router: Router,
@@ -52,10 +52,10 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     console.log('[AppComponent] ngOnInit iniciado');
-    
+
     // Detecta se é desktop ou mobile
     this.detectarTipoDispositivo();
-    
+
     // Configura o router e rota ativa
     this.rotaAtiva = this.router.url;
     this.router.events.subscribe((event: any) => {
@@ -63,10 +63,10 @@ export class AppComponent implements OnInit {
         this.rotaAtiva = event.url;
       }
     });
-    
+
     // Inicia o processo de carregamento do usuário
     this.iniciarCarregamentoUsuario();
-    
+
     // Adiciona listener para mudanças no localStorage
     window.addEventListener('storage', (event) => {
       if (event.key === 'tamo_junto_user') {
@@ -74,7 +74,7 @@ export class AppComponent implements OnInit {
         this.carregarUsuario();
       }
     });
-    
+
     // Também escuta mudanças no próprio localStorage (mesma aba)
     const originalSetItem = localStorage.setItem;
     localStorage.setItem = function(key: string, value: string) {
@@ -85,7 +85,7 @@ export class AppComponent implements OnInit {
         window.dispatchEvent(new CustomEvent('localStorageChange', { detail: { key, value } }));
       }
     };
-    
+
     // Escuta o evento customizado
     window.addEventListener('localStorageChange', (event: any) => {
       if (event.detail && event.detail.key === 'tamo_junto_user') {
@@ -102,16 +102,16 @@ export class AppComponent implements OnInit {
     // Verifica se é desktop baseado no tamanho da tela e user agent
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     const isSmallScreen = window.innerWidth < 768;
-    
+
     this.isDesktop = !isMobile && !isSmallScreen;
-    
+
     console.log('[AppComponent] 📱 Detecção de dispositivo:');
     console.log('[AppComponent]   - User Agent:', navigator.userAgent);
     console.log('[AppComponent]   - Largura da tela:', window.innerWidth);
     console.log('[AppComponent]   - É mobile:', isMobile);
     console.log('[AppComponent]   - É tela pequena:', isSmallScreen);
     console.log('[AppComponent]   - É desktop:', this.isDesktop);
-    
+
     // Adiciona listener para mudanças de tamanho da tela
     window.addEventListener('resize', () => {
       const newIsDesktop = !isMobile && window.innerWidth >= 768;
@@ -123,27 +123,27 @@ export class AppComponent implements OnInit {
 
   async iniciarCarregamentoUsuario() {
     console.log('[AppComponent] Iniciando carregamento de usuário...');
-    
+
     // Primeira tentativa imediata
     await this.carregarUsuario();
-    
+
     // Se não encontrou usuário, tenta novamente a cada 100ms por até 5 segundos
     if (!this.usuario) {
       console.log('[AppComponent] Usuário não encontrado, iniciando verificação agressiva...');
       let tentativas = 0;
       const maxTentativas = 50; // 5 segundos (50 * 100ms)
-      
+
       const verificarUsuario = async () => {
         tentativas++;
         console.log(`[AppComponent] Tentativa ${tentativas}/${maxTentativas} de carregar usuário...`);
-        
+
         await this.carregarUsuario();
-        
+
         if (this.usuario) {
           console.log('[AppComponent] Usuário encontrado na tentativa', tentativas);
           return; // Sucesso, para a verificação
         }
-        
+
         if (tentativas < maxTentativas) {
           // Agenda próxima tentativa com intervalo menor
           setTimeout(verificarUsuario, 100);
@@ -151,11 +151,11 @@ export class AppComponent implements OnInit {
           console.log(' Máximo de tentativas atingido, usuário não encontrado');
         }
       };
-      
+
       // Inicia a verificação agressiva
       setTimeout(verificarUsuario, 100);
     }
-    
+
     // Garantir que o layout seja exibido mesmo sem usuário
     if (!this.usuario) {
     }
@@ -163,7 +163,7 @@ export class AppComponent implements OnInit {
 
   async carregarUsuario() {
     console.log('[AppComponent] ===== INICIANDO CARREGAMENTO DE USUÁRIO =====');
-    
+
     if (!this.authService.isTokenValid()) {
       // Não redirecionar se estiver nas páginas de recuperação de senha ou confirmação de email
       if (this.router.url.includes('recuperar-senha') || this.router.url.includes('confirmar-email')) {
@@ -175,7 +175,7 @@ export class AppComponent implements OnInit {
 
     // Tenta carregar o usuário do localStorage
     this.usuario = this.authService.getUserFromStorage();
-    
+
     // Se não encontrou no localStorage, tenta buscar em usuarioLogado
     if (!this.usuario) {
       const usuarioLogado = localStorage.getItem('usuarioLogado');
@@ -184,7 +184,12 @@ export class AppComponent implements OnInit {
         console.log('[AppComponent] 🔍 Usuário de usuarioLogado:', this.usuario);
       }
     }
-    
+
+    // VERIFICA PARCEIRO IMEDIATAMENTE (antes da API) PARA EVITAR DELAY NO MENU
+    if (this.usuario) {
+      this.verificarSeEParceiroSincrono();
+    }
+
     const idAtual = obterIdUsuario(this.usuario);
     if (!idAtual) {
       try {
@@ -224,20 +229,20 @@ export class AppComponent implements OnInit {
 
     if (this.usuario) {
       this.verificarSeEParceiroSincrono();
-      
+
       // Força detecção de mudanças para atualizar a UI
       setTimeout(() => {
       }, 100);
     } else {
       console.log('Nenhum usuário encontrado');
     }
-    
+
   }
 
   verificarSeEParceiroSincrono() {
     if (this.usuario) {
       console.log('Verificando se usuário é parceiro (síncrono):', this.usuario);
-      
+
       if (isUsuarioParceiroComercial(this.usuario)) {
         console.log('Usuário é parceiro comercial (role):', obterRoleUsuario(this.usuario));
         this.isParceiro = true;
@@ -253,7 +258,7 @@ export class AppComponent implements OnInit {
 
   atualizarMenuParaParceiro() {
     console.log('Atualizando menu para parceiro');
-    // Atualiza o menu para parceiros, trocando "Cupons" por "Relatório de Cupom"
+    // Atualiza o menu para parceiros, trocando "Cupons" por "Relatório de Cupom" e alterando link do Dashboard
     this.appPages = this.appPages.map(page => {
       if (page.title === 'Cupons') {
         console.log('Trocando "Cupons" por "Relatório de Cupom"');
@@ -263,13 +268,37 @@ export class AppComponent implements OnInit {
           icon: './assets/icon/FileText.svg'
         };
       }
+      if (page.title === 'Dinheiro no\nbolso') {
+        return {
+          ...page,
+          url: '/dashboard-parceiro'
+        };
+      }
+      if (page.title === 'Ofertas') {
+        return {
+          ...page,
+          url: '/ofertas-parceiro'
+        };
+      }
       return page;
     });
     console.log('Menu atualizado:', this.appPages);
   }
 
-  public navegarPara(rota: string) {
+  public navegarPara(rota: string, isLogoClick: boolean = false) {
     this.navigationService.navegarPara(rota);
+    if (isLogoClick) {
+      setTimeout(() => {
+        window.dispatchEvent(new CustomEvent('scrollToTop'));
+      }, 100);
+    }
+  }
+
+  public goToHome() {
+    this.router.navigate([this.isParceiro ? '/dashboard-parceiro' : '/dashboard']);
+    setTimeout(() => {
+      window.dispatchEvent(new CustomEvent('scrollToTop'));
+    }, 100);
   }
 
   sair() {

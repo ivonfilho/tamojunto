@@ -839,7 +839,7 @@ ion-segment-button[aria-checked="true"] {
 .carrossel-container {
   position: relative;
   width: 100%;
-  max-width: 1200px;
+
   margin: 0 auto;
   padding: 2em;
   overflow: hidden;
@@ -1041,19 +1041,14 @@ ion-segment-button[aria-checked="true"] {
   padding-bottom: 20px;
   --overflow: auto;
   --scroll-y: true;
-
-
 }
 
 .cupom-expandido {
   background: white;
   border-radius: 16px;
   padding: 24px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   max-width: 500px;
   margin: 0 auto;
-
-
 
   .cupom-header-expandido {
     display: flex;
@@ -1066,7 +1061,6 @@ ion-segment-button[aria-checked="true"] {
     overflow-y: visible !important;
     overflow-x: hidden;
     overflow: visible;
-
 
     .valor-expandido,
     .data-expandido {
@@ -1435,3 +1429,236 @@ ion-segment-button[aria-checked="true"] {
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-20px); }
 }
+// ==========================================
+// GRID E CARD DE CUPONS (LAYOUT NOVO)
+// ==========================================
+
+.cupons-grid {
+  display: grid;
+  // Cria uma estrutura de colunas dinâmicas. Em mobile fica 1 coluna, em telas maiores divide automaticamente.
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+  padding: 10px 0;
+}
+
+.novo-cupom-card {
+  background: #f8f9fc; // Cor levemente acinzentada do fundo externo, baseado no mockup
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+
+  .card-inner-content {
+    padding: 16px;
+    background: #ffffff;
+    border-radius: 16px 16px 0 0;
+  }
+
+  .card-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  // DIVISOR
+  .divisor-fino {
+    height: 1px;
+    background-color: #f1f5f9;
+    margin: 14px 0;
+    width: 100%;
+  }
+
+  // LINHA 1: TOPO
+  .row-topo {
+    align-items: flex-start;
+
+    .qr-container {
+      width: 60px;
+      height: 60px;
+      border-radius: 8px;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: #f8fafc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #e2e8f0;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+
+      .no-qr {
+        color: #94a3b8;
+        font-size: 24px;
+      }
+    }
+
+    .titulo-container {
+      flex: 1;
+      padding: 0 12px;
+
+      .titulo-oferta {
+        font-size: 15px;
+        font-weight: 700;
+        color: #334155;
+        margin: 0 0 4px 0;
+        line-height: 1.2;
+      }
+
+      .desc-oferta {
+        font-size: 13px;
+        color: #64748b;
+        margin: 0;
+        line-height: 1.3;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+    }
+
+    .status-container {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+
+      .badge-status {
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 6px;
+        text-align: center;
+      }
+
+      // Variações de cor do badge
+      .badge-ativo {
+        background-color: #bbf7d0; // Fundo verde claro
+        color: #166534; // Texto verde escuro
+      }
+      .badge-usado {
+        background-color: #e2e8f0;
+        color: #475569;
+      }
+      .badge-expirado {
+        background-color: #fecaca;
+        color: #991b1b;
+      }
+
+      .codigo-cupom {
+        font-size: 12px;
+        font-weight: 800;
+        color: #1e293b;
+      }
+    }
+  }
+
+  // LINHA 2: MEIO
+  .row-meio {
+    align-items: flex-start;
+
+    .info-bloco {
+      display: flex;
+      flex-direction: column;
+
+      .lbl {
+        font-size: 12px;
+        color: #64748b;
+        margin-bottom: 4px;
+      }
+
+      .val {
+        font-size: 14px;
+        color: #334155;
+      }
+    }
+
+    .validade {
+      align-items: flex-end;
+      text-align: right;
+    }
+  }
+
+  // LINHA 3: FIM
+  .row-fim {
+    .lbl-desconto {
+      font-size: 13px;
+      color: #64748b;
+    }
+
+    .valores-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      .preco-verde {
+        color: #16a34a; // Verde exato da imagem
+        font-size: 16px;
+        font-weight: 800;
+      }
+
+      .badge-porcentagem {
+        background-color: #fee2e2; // Fundo vermelho claro
+        color: #dc2626; // Texto vermelho escuro
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 700;
+        border: 1px solid #fca5a5;
+      }
+    }
+  }
+
+  // BOTÃO INFERIOR (Roxo Estendido)
+  .btn-extendido {
+    width: calc(100% - 32px); // Margem lateral de 16px de cada lado
+    margin: 0 auto 16px auto;
+    background-color: #5C4EB9; // Roxo fiel da imagem
+    color: #ffffff;
+    border: none;
+    padding: 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &:active {
+      background-color: #5C4EB9;
+    }
+  }
+}
+
+// ==========================================
+// GRID DE CUPONS (Responsividade 1 / 2 / 3)
+// ==========================================
+
+.cupons-grid {
+  display: grid;
+  gap: 20px;
+  padding: 10px 0;
+
+  // Padrão: 1 coluna no Mobile (até 767px)
+  grid-template-columns: 1fr;
+
+  // Tablet (a partir de 768px): 2 colunas
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  // Desktop (a partir de 1024px): 3 colunas
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+// O SCSS do .novo-cupom-card da resposta anterior entra logo abaixo

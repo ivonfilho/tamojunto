@@ -1,43 +1,34 @@
-<ion-header class="ion-no-border">
+<ion-header class="ion-no-border header-global">
   <ion-toolbar>
     <div class="header-container">
-      <div class="header-content">
-        <!-- Botão de menu para mobile (sempre visível) -->
-        <ion-button 
-          class="menu-button" 
-          fill="clear" 
-          (click)="toggleMenu()"
-          *ngIf="!isDesktop">
-          <ion-icon aria-hidden="true" src="../assets/icon/Menu.svg"></ion-icon>
-        </ion-button>
-        
-        <div class="button-group" *ngIf="!isDesktop" style="display: flex;">
-          <ion-button class="header-button" (click)="isSearchModalOpen = true" style="margin-left: -5px;">
-            <ion-icon aria-hidden="true" src="../assets/icon/Search.svg"></ion-icon>
-          </ion-button>
-          <ion-button class="header-button" (click)="openNotificationModal()">
-            <ion-icon aria-hidden="true" src="../assets/icon/Bell.svg"></ion-icon>
-            <ion-badge *ngIf="unreadNotificationsCount > 0" color="danger">
-              {{ unreadNotificationsCount }}
-            </ion-badge>
+      <div class="header-content" style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+
+        <!-- Lado esquerdo: Logo e Menu -->
+        <div class="left-components" style="display: flex; align-items: center;">
+          <!-- Logo Desktop -->
+          <img src="../assets/tamo-junto-logo-new.png" class="logo-desktop" *ngIf="isDesktop" (click)="goToHome()" style="cursor: pointer; height: 40px; margin-left: 16px; position: relative; z-index: 10;" />
+
+          <!-- Bloco Logo Mobile -->
+          <div class="logo-mobile-container" *ngIf="!isDesktop" (click)="goToHome()" style="cursor: pointer; position: relative; z-index: 10;">
+            <img src="../assets/logo-mobile-new.png" class="logo-mobile" />
+          </div>
+
+          <!-- Botão Hamburger Mobile (agora à direita da logo) -->
+          <ion-button
+            class="menu-button"
+            fill="clear"
+            (click)="toggleMenu()"
+            *ngIf="!isDesktop">
+            <ion-icon aria-hidden="true" src="../assets/icon/Menu.svg"></ion-icon>
           </ion-button>
         </div>
-        
-        <!-- Campo de pesquisa centralizado (Desktop) -->
-        <div class="search-container" *ngIf="isDesktop">
-          <ion-searchbar 
-            placeholder="Buscar..." 
-            class="centered-search"
-            [(ngModel)]="searchTerm"
-            (ionInput)="onSearchInput($event)"
-            (ionClear)="onSearchClear()"
-            debounce="300">
-          </ion-searchbar>
-        </div>
-        
+
         <!-- Componentes do lado direito -->
-        <div class="right-components">
-          <div class="button-group" *ngIf="isDesktop">
+        <div class="right-components" style="display: flex; align-items: center; justify-content: flex-end;">
+          <div class="button-group" style="display: flex; margin-right: 15px;">
+            <ion-button class="header-button" (click)="isSearchModalOpen = true" style="margin-right: 10px;">
+              <ion-icon aria-hidden="true" src="../assets/icon/Search.svg"></ion-icon>
+            </ion-button>
             <ion-button class="header-button" (click)="openNotificationModal()">
               <ion-icon aria-hidden="true" src="../assets/icon/Bell.svg"></ion-icon>
               <ion-badge *ngIf="unreadNotificationsCount > 0" color="danger">
@@ -45,9 +36,9 @@
               </ion-badge>
             </ion-button>
           </div>
-          
+
           <div class="welcome-text">
-            Boas-vindas! <strong>{{ usuario?.nome ? (getPrimeiroNome(usuario.nome) | titlecase) : 'Usuário' }}</strong>
+            👋 Tamo Junto, <strong>{{ usuario?.nome ? (getPrimeiroNome(usuario.nome) | titlecase) : 'Usuário' }}</strong>
           </div>
 
           <!-- Avatar do Usuário -->
@@ -106,27 +97,92 @@
     </div>
   </ion-toolbar>
 
-  <!-- Modal de Busca no Mobile -->
-  <ion-modal [isOpen]="isSearchModalOpen" (didDismiss)="isSearchModalOpen = false">
+  <!-- Modal de Busca Dinâmica -->
+  <ion-modal [isOpen]="isSearchModalOpen" (didDismiss)="fecharBusca()" cssClass="large-modal">
     <ng-template>
-      <ion-header class="ion-no-border">
-        <ion-toolbar>
-          <ion-searchbar 
-            placeholder="Buscar..." 
-            class="centered-search search-modal-input"
-            [(ngModel)]="searchTerm"
-            (ionInput)="onSearchInput($event)"
-            (ionClear)="onSearchClear()"
-            debounce="300"
-            showCancelButton="always"
-            cancelButtonText="Cancelar"
-            (ionCancel)="isSearchModalOpen = false">
-          </ion-searchbar>
+      <ion-header>
+        <ion-toolbar color="primary">
+          <ion-title>Busca Rápida</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="fecharBusca()">
+              <ion-icon slot="icon-only" aria-hidden="true" src="../assets/icon/Close.svg" style="filter: brightness(0) invert(1);"></ion-icon>
+            </ion-button>
+          </ion-buttons>
         </ion-toolbar>
       </ion-header>
-      <ion-content class="search-modal-content">
-        <div style="padding: 20px; text-align: center; color: #666;" *ngIf="!searchTerm">
-          Digite para pesquisar ofertas ou cupons.
+
+      <ion-content class="search-modal-content ion-padding">
+        <div class="search-modal-wrapper">
+          <div class="search-header" style="margin-bottom: 16px;">
+            <ion-searchbar
+              #searchbarElement
+              placeholder="Buscar..."
+              class="custom-rounded-searchbar"
+              [(ngModel)]="searchTerm"
+              (ionInput)="onSearchInput($event)"
+              (ionClear)="onSearchClear()"
+              searchIcon="../assets/icon/Search.svg"
+              clearIcon="../assets/icon/Close.svg"
+              showClearButton="always"
+              debounce="400"
+              style="width: 100%; padding: 0;">
+            </ion-searchbar>
+          </div>
+
+          <div class="search-modal-body">
+            <div *ngIf="!searchTerm || (resultadosBusca.length === 0 && !isSearching)" class="search-empty-state">
+              <p *ngIf="!searchTerm">Digite para pesquisar ofertas ou cupons.</p>
+              <p *ngIf="searchTerm && resultadosBusca.length === 0 && !isSearching">Nenhum resultado encontrado.</p>
+            </div>
+
+            <div *ngIf="isSearching" class="search-loading">
+              <ion-spinner name="crescent" color="primary"></ion-spinner>
+            </div>
+
+            <div *ngIf="resultadosBusca.length > 0 && !isSearching" class="search-results-list">
+               <!-- Card Menor -->
+               <div class="small-offer-card" *ngFor="let item of resultadosBusca" (click)="goToItem(item)">
+                  <div class="small-card-header">
+                    <div class="small-card-parceiro">
+                      <img *ngIf="item.idParceiroNavigation?.fotoPerfil || item.idParceiroNavigation?.FotoPerfil" [src]="item.idParceiroNavigation?.fotoPerfil || item.idParceiroNavigation?.FotoPerfil" class="mini-logo" />
+                      <div>
+                        <span class="mini-parceiro-nome">{{ item.idParceiroNavigation?.idEmpresaNavigation?.nome || 'Parceiro' }}</span>
+                        <span class="mini-data" *ngIf="item.dataCriacao">
+                           {{ item.dataCriacao | date:'dd \'de\' MMM. \'de\' yyyy':'':'pt-BR' }}
+                        </span>
+                      </div>
+                    </div>
+                    <ion-button size="small" class="mini-btn-ver">VER OFERTA</ion-button>
+                  </div>
+
+                  <div class="small-card-title">
+                    <h4>{{ item.nomeProduto }}</h4>
+                  </div>
+
+                  <div class="small-card-valores">
+                    <div class="val-row">
+                      <span class="val-label">Valor Inicial:</span>
+                      <span class="val-old" *ngIf="item.preco">R${{ item.preco | number:'1.2-2' }}</span>
+                      <span class="val-old" *ngIf="!item.preco">-</span>
+                    </div>
+                    <div class="val-row" *ngIf="item.desconto && item.desconto > 0">
+                      <span class="val-label">Desconto:</span>
+                      <span class="val-badge">{{ item.desconto }}%</span>
+                    </div>
+                    <div class="val-row highlight">
+                      <span class="val-label">Valor Final:</span>
+                      <span class="val-new" *ngIf="item.preco && item.desconto">R${{ calcularDescontoCard(item.preco, item.desconto) | number:'1.2-2' }}</span>
+                      <span class="val-new" *ngIf="!item.preco || !item.desconto">-</span>
+                    </div>
+                  </div>
+               </div>
+
+               <!-- Ver Mais -->
+               <div class="search-ver-mais" *ngIf="hasMoreResults">
+                 <ion-button fill="clear" color="primary" (click)="buscarMais('ofertas')">Buscar mais em ofertas</ion-button>
+               </div>
+            </div>
+          </div>
         </div>
       </ion-content>
     </ng-template>

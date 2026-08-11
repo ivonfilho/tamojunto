@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { IonContent } from '@ionic/angular';
 import { CupomService } from '../services/cupom.service';
 import { OfertaService } from '../services/oferta.service';
 import { ParceiroService } from '../services/parceiro.service';
@@ -27,6 +28,7 @@ export type ChartOptions = {
   styleUrls: ['./dashboard-parceiro.page.scss'],
 })
 export class DashboardParceiroPage implements OnInit {
+  @ViewChild(IonContent) content!: IonContent;
 
   public chartOptions!: Partial<ChartOptions>;
 
@@ -57,7 +59,19 @@ export class DashboardParceiroPage implements OnInit {
     private usuarioService: UsuarioService
   ) {}
 
+  scrollToTop() {
+    if (this.content) {
+      this.content.scrollToTop(500);
+    }
+  }
+
   ngOnInit() {
+    window.addEventListener('scrollToTop', () => {
+      if (this.content) {
+        this.content.scrollToTop(500);
+      }
+    });
+
     // Carrega o usuário do localStorage
     this.usuario = JSON.parse(localStorage.getItem('tamo_junto_user') || '{}');
     this.obterParceiroEListarDados();

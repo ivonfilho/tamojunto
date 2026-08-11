@@ -7,31 +7,31 @@ import { ParceiroService } from '../services/parceiro.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { formatCurrencyBRL } from '../utils/currency.util';
 import { ofertaExpirada } from '../utils/oferta-validade.util';
-import { CATEGORIAS_OFERTA } from '../utils/constants';
 
 @Component({
-  selector: 'app-ofertas',
-  templateUrl: './ofertas.page.html',
-  styleUrls: ['./ofertas.page.scss'],
+  selector: 'app-ofertas-parceiro',
+  templateUrl: './ofertas-parceiro.page.html',
+  styleUrls: ['./ofertas-parceiro.page.scss'],
 })
-export class OfertasPage implements OnInit {
+export class OfertasParceiroPage implements OnInit {
   ofertas: any[] = [];
-  ofertasFiltradas:any;
+  ofertasFiltradas: any[] = [];
   usuario: any = null;
   tipoFiltro: string = 'todas';
   parceiro: any = null;
   termoBuscaParams: string = '';
   termoAtivo: string = '';
-  categoriaSelecionada: string = '';
-  categorias = CATEGORIAS_OFERTA;
-  tipoFiltroTipo: string = '';
+  
+  // Filtros por dropdown
+  filtroCategoria: string = '';
   filtroTipo: string = '';
-
-  // Contadores convertidos para variáveis (atualizados dinamicamente na filtragem)
-  totalOfertas: number = 0;
-  ofertasAtivas: number = 0;
-  ofertasInativas: number = 0;
-  ofertasExpiradas: number = 0;
+  categoriasUnicas: string[] = [];
+  tiposOfertaUnicos: string[] = [];
+  
+  get totalOfertas() { return this.ofertas?.length || 0; }
+  get ofertasAtivas() { return this.ofertas?.filter(o => o.status === true && !ofertaExpirada(o)).length || 0; }
+  get ofertasInativas() { return this.ofertas?.filter(o => o.status === false && !ofertaExpirada(o)).length || 0; }
+  get ofertasExpiradas() { return this.ofertas?.filter(o => ofertaExpirada(o)).length || 0; }
 
   constructor(
     private ofertaService: OfertaService,
@@ -47,19 +47,16 @@ export class OfertasPage implements OnInit {
 
   // Hook do Ionic que é executado sempre que a página é acessada
   ionViewWillEnter() {
-    console.log('[OfertasPage] ionViewWillEnter - Recarregando dados...');
+    console.log('[OfertasParceiroPage] ionViewWillEnter - Recarregando dados...');
     this.carregarDados();
     this.aplicarBusca();
   }
 
   voltarParaDashboard() {
-    // Correção: Agora o redirecionamento olha para a prova real.
-    // Só vai para o dashboard-parceiro se a API confirmou que ele é um parceiro válido.
-    if (this.parceiro && this.parceiro.idParceiro) {
-      this.router.navigate(['/dashboard-parceiro']);
-    } else {
-      // Qualquer outro usuário (sem tipo, cliente normal, etc) vai para o dashboard padrão
+    if (this.usuario?.tipoCadastro === 'MEI' || this.usuario?.tipoCadastro === 'PF') {
       this.router.navigate(['/dashboard']);
+    } else {
+      this.router.navigate(['/dashboard-parceiro']);
     }
   }
 
@@ -72,15 +69,14 @@ export class OfertasPage implements OnInit {
         this.buscarOfertas(this.termoAtivo);
       } else {
         this.termoAtivo = '';
-        this.aplicarFiltros();
       }
     });
   }
 
   // Busca ofertas pelo termo
-  private buscarOfertas(termo: string) {
-    this.termoAtivo = termo;
-    this.aplicarFiltros();
+  buscarOfertas(termo: string) {
+    this.termoAtivo = termo ? termo.trim() : '';
+    this.aplicarFiltroAtual();
   }
 
   // Calcular valor final com desconto
@@ -96,11 +92,9 @@ export class OfertasPage implements OnInit {
 
   limparBusca() {
     this.termoAtivo = '';
-    this.categoriaSelecionada = '';
-    this.filtroTipo = '';
-    this.tipoFiltro = 'todas';
     this.router.navigate(['/ofertas']);
-    this.aplicarFiltros();
+    this.ofertasFiltradas = [...this.ofertas];
+    this.aplicarFiltroAtual();
   }
 
   // Método centralizado para carregar todos os dados necessários
@@ -112,7 +106,7 @@ export class OfertasPage implements OnInit {
       this.carregarOfertas();
     }
   }
-
+  
   buscarParceiroPorUsuario(idUsuario: string) {
     this.parceiroService.buscarParceiroPorUsuario(idUsuario).subscribe(
       (parceiro: any) => {
@@ -134,10 +128,10 @@ export class OfertasPage implements OnInit {
       }
     );
   }
-
+  
   async carregarOfertas() {
     const loading = await this.exibirLoading('Carregando ofertas...');
-
+    
     try {
       // Verificar se o usuário é parceiro
       if (this.parceiro && this.parceiro.idParceiro) {
@@ -145,18 +139,19 @@ export class OfertasPage implements OnInit {
         this.ofertaService.listarOfertasPorParceiro(this.parceiro.idParceiro).subscribe({
           next: (data: Oferta[]) => {
             this.ofertas = data || [];
+            this.extrairFiltros();
             this.aplicarFiltroAtual();
             console.log('Ofertas do parceiro carregadas:', this.ofertas.length);
             console.log('Estrutura da primeira oferta:', this.ofertas[0]);
-
+            
             // Log específico para foto de perfil
             if (this.ofertas[0]?.idParceiroNavigation) {
-              console.log('[OfertasPage] idParceiroNavigation:', this.ofertas[0].idParceiroNavigation);
-              console.log('[OfertasPage] fotoPerfil:', this.ofertas[0].idParceiroNavigation.fotoPerfil);
-              console.log('[OfertasPage] FotoPerfil:', this.ofertas[0].idParceiroNavigation.FotoPerfil);
-              console.log('[OfertasPage] Todas as propriedades:', Object.keys(this.ofertas[0].idParceiroNavigation));
+              console.log('[OfertasParceiroPage] idParceiroNavigation:', this.ofertas[0].idParceiroNavigation);
+              console.log('[OfertasParceiroPage] fotoPerfil:', this.ofertas[0].idParceiroNavigation.fotoPerfil);
+              console.log('[OfertasParceiroPage] FotoPerfil:', this.ofertas[0].idParceiroNavigation.FotoPerfil);
+              console.log('[OfertasParceiroPage] Todas as propriedades:', Object.keys(this.ofertas[0].idParceiroNavigation));
             }
-
+            
             if (this.ofertas[0]?.imagem) {
               console.log('Imagens da primeira oferta:', this.ofertas[0].imagem);
               console.log('Quantidade de imagens:', this.ofertas[0].imagem.length);
@@ -188,12 +183,13 @@ export class OfertasPage implements OnInit {
         this.ofertaService.listarOfertas().subscribe({
           next: (data: Oferta[]) => {
             this.ofertas = data || [];
+            this.extrairFiltros();
             this.aplicarFiltroAtual();
 
             // Log para debug - verificar se fotoPerfil está sendo retornada
             if (this.ofertas.length > 0) {
               const primeiraOferta = this.ofertas[0];
-              console.log('[OfertasPage] Primeira oferta recebida:', {
+              console.log('[OfertasParceiroPage] Primeira oferta recebida:', {
                 id: primeiraOferta.id,
                 idParceiroNavigation: primeiraOferta.idParceiroNavigation,
                 fotoPerfil: primeiraOferta.idParceiroNavigation?.fotoPerfil,
@@ -203,15 +199,15 @@ export class OfertasPage implements OnInit {
             }
             console.log('Todas as ofertas carregadas:', this.ofertas.length);
             console.log('Estrutura da primeira oferta:', this.ofertas[0]);
-
+            
             // Log específico para foto de perfil
             if (this.ofertas[0]?.idParceiroNavigation) {
-              console.log('[OfertasPage] idParceiroNavigation:', this.ofertas[0].idParceiroNavigation);
-              console.log('[OfertasPage] fotoPerfil:', this.ofertas[0].idParceiroNavigation.fotoPerfil);
-              console.log('[OfertasPage] FotoPerfil:', this.ofertas[0].idParceiroNavigation.FotoPerfil);
-              console.log('[OfertasPage] Todas as propriedades:', Object.keys(this.ofertas[0].idParceiroNavigation));
+              console.log('[OfertasParceiroPage] idParceiroNavigation:', this.ofertas[0].idParceiroNavigation);
+              console.log('[OfertasParceiroPage] fotoPerfil:', this.ofertas[0].idParceiroNavigation.fotoPerfil);
+              console.log('[OfertasParceiroPage] FotoPerfil:', this.ofertas[0].idParceiroNavigation.FotoPerfil);
+              console.log('[OfertasParceiroPage] Todas as propriedades:', Object.keys(this.ofertas[0].idParceiroNavigation));
             }
-
+            
             if (this.ofertas[0]?.imagem) {
               console.log('Imagens da primeira oferta:', this.ofertas[0].imagem);
               console.log('Quantidade de imagens:', this.ofertas[0].imagem.length);
@@ -249,30 +245,29 @@ export class OfertasPage implements OnInit {
 
   // Método para forçar atualização da lista (útil para pull-to-refresh)
   async atualizarLista() {
-    console.log('[OfertasPage] Forçando atualização da lista...');
+    console.log('[OfertasParceiroPage] Forçando atualização da lista...');
     await this.carregarOfertas();
   }
 
   // Handler para o pull-to-refresh
   async handleRefresh(event: any) {
-    console.log('[OfertasPage] Pull-to-refresh acionado');
+    console.log('[OfertasParceiroPage] Pull-to-refresh acionado');
     try {
       await this.atualizarLista();
       event.target.complete();
     } catch (error) {
-      console.error('[OfertasPage] Erro ao atualizar lista:', error);
+      console.error('[OfertasParceiroPage] Erro ao atualizar lista:', error);
       event.target.complete();
     }
   }
-
   carregarUsuarioLogado() {
     // Tentar diferentes chaves do localStorage para compatibilidade
     let usuarioLogado = localStorage.getItem('tamo_junto_user');
-
+    
     if (!usuarioLogado) {
       usuarioLogado = localStorage.getItem('usuarioLogado');
     }
-
+    
     if (usuarioLogado) {
       try {
         this.usuario = JSON.parse(usuarioLogado);
@@ -287,8 +282,25 @@ export class OfertasPage implements OnInit {
     }
   }
 
+  async aplicarFiltro(tipo: string) {
+    const loading = await this.exibirLoading('Aplicando filtro...');
+    try {
+      this.tipoFiltro = tipo;
+      if (tipo === 'normal') {
+        this.ofertasFiltradas = this.ofertas.filter(oferta => oferta.tipoOferta.toLowerCase() === 'normal');
+      } else if (tipo === 'relampago') {
+        this.ofertasFiltradas = this.ofertas.filter(oferta => oferta.tipoOferta?.toLowerCase().replace('â', 'a').trim() === 'relampago');
+      } else {
+        this.ofertasFiltradas = [...this.ofertas];
+      }
+      console.log('Ofertas filtradas:', this.ofertasFiltradas);
+    } finally {
+      loading.dismiss();
+    }
+  }
+
   verOferta(ofertaId: string | undefined) {
-    this.router.navigate(['/oferta', ofertaId]);
+    this.router.navigate(['/editar-oferta', ofertaId]);
   }
 
   editarOferta(id: string) {
@@ -296,12 +308,14 @@ export class OfertasPage implements OnInit {
   }
 
   async recarregarPagina() {
+    
+  
     const loading = await this.exibirLoading('Redirecionando...');
     this.router.navigate(['/cadastro-oferta']).finally(() => {
       loading.dismiss();
     });
   }
-
+  
   async exibirLoading(mensagem: string = 'Carregando...') {
     const loading = await this.loadingCtrl.create({
       message: mensagem,
@@ -310,7 +324,6 @@ export class OfertasPage implements OnInit {
     await loading.present();
     return loading;
   }
-
   async alterarStatusOferta(oferta: any, event?: CustomEvent) {
     const ativar = event?.detail?.checked ?? oferta.status !== true;
     const novoStatus = ativar ? 'ativa' : 'inativa';
@@ -333,137 +346,83 @@ export class OfertasPage implements OnInit {
       }
     );
   }
-
-  // =========================================================================
-  // LOGICA CENTRAL DE FILTROS E CONTADORES
-  // =========================================================================
+  
+  private extrairFiltros() {
+    const categoriasSet = new Set<string>();
+    const tiposSet = new Set<string>();
+    
+    this.ofertas.forEach(o => {
+      if (o.categoria) categoriasSet.add(o.categoria);
+      if (o.tipoOferta) tiposSet.add(o.tipoOferta);
+    });
+    
+    this.categoriasUnicas = Array.from(categoriasSet).sort();
+    this.tiposOfertaUnicos = Array.from(tiposSet).sort();
+  }
 
   private aplicarFiltroAtual(): void {
-    this.aplicarFiltros();
+    const status = this.tipoFiltro || 'todas';
+      
+    // Helper to normalize strings
+    const normalize = (str: string) => {
+      return (str || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    };
+      
+    // Filtra pelas opções dos dropdowns
+    let ofertasBase = this.ofertas.filter(oferta => {
+      const categoriaVal = oferta.categoria || '';
+      const tipoVal = normalize(oferta.tipoOferta);
+      const searchTipo = normalize(this.filtroTipo);
+      
+      const matchCategoria = !this.filtroCategoria || categoriaVal === this.filtroCategoria;
+      const matchTipo = !searchTipo || tipoVal === searchTipo;
+      
+      return matchCategoria && matchTipo;
+    });
+
+    // Filtra pelo termo de busca (se houver)
+    if (this.termoAtivo && this.termoAtivo.length >= 2) {
+      const termoLower = this.termoAtivo.toLowerCase();
+      ofertasBase = ofertasBase.filter(oferta => {
+        const nomeProduto = (oferta.nomeProduto || '').toLowerCase();
+        const descricao = (oferta.descricao || '').toLowerCase();
+        const categoria = (oferta.categoria || '').toLowerCase();
+        const tipoOferta = (oferta.tipoOferta || '').toLowerCase();
+        
+        return nomeProduto.includes(termoLower) || 
+               descricao.includes(termoLower) || 
+               categoria.includes(termoLower) ||
+               tipoOferta.includes(termoLower);
+      });
+    }
+
+    this.ofertasFiltradas = ofertasBase.filter((oferta) => {
+      const expirada = ofertaExpirada(oferta);
+      const ativa = oferta.status === true && !expirada;
+
+      if (status === 'ativa') {
+        return ativa;
+      }
+      if (status === 'expirada') {
+        return expirada;
+      }
+      if (status === 'inativa') {
+        return oferta.status === false && !expirada;
+      }
+
+      return true; // status === 'todas'
+    });
   }
 
   async aplicarFiltroStatus(status: string = 'todas') {
     this.tipoFiltro = status;
     const loading = await this.exibirLoading('Aplicando filtro...');
     try {
-      this.aplicarFiltros();
+      this.aplicarFiltroAtual();
       console.log('Ofertas filtradas:', this.ofertasFiltradas);
     } finally {
       loading.dismiss();
     }
-  }
-
-  async aplicarFiltro(tipo: string) {
-    const loading = await this.exibirLoading('Aplicando filtro...');
-    try {
-      this.filtroTipo = tipo === 'normal' ? 'Normal' : (tipo === 'relampago' ? 'Relâmpago' : '');
-      this.aplicarFiltros();
-    } finally {
-      loading.dismiss();
-    }
-  }
-
-  filtrarPorCategoria(categoria: string) {
-    this.categoriaSelecionada = categoria;
-    this.termoAtivo = categoria ? categoria : '';
-    this.aplicarFiltros();
-  }
-
-  filtrarTipoOferta(tipo: string) {
-    this.filtroTipo = (this.filtroTipo === tipo) ? '' : tipo;
-    this.tipoFiltroTipo = this.filtroTipo; // Sincroniza com a variável usada no HTML
-    this.aplicarFiltros();
-  }
-
-  private aplicarFiltros() {
-    if (!this.ofertas) return;
-
-    let lista = [...this.ofertas];
-
-    // 1. Filtro por Busca de Texto (ignora busca textual generalizada se estiver buscando uma categoria exata)
-    if (this.termoAtivo && this.termoAtivo.length >= 2 && !this.categoriaSelecionada) {
-      const termoLower = this.termoAtivo.toLowerCase();
-      lista = lista.filter(o => {
-        return (o.nomeProduto || '').toLowerCase().includes(termoLower) ||
-               (o.descricao || '').toLowerCase().includes(termoLower) ||
-               (o.categoria || '').toLowerCase().includes(termoLower);
-      });
-    }
-
-    // 2. Filtro por Categoria Dropdown
-    if (this.categoriaSelecionada) {
-      lista = lista.filter(o => (o.categoria || '') === this.categoriaSelecionada);
-    }
-
-    // 3. Filtro por Tipo de Oferta (Normal ou Relâmpago)
-    if (this.filtroTipo) {
-      lista = lista.filter(o => {
-        const tipoOf = (o.tipoOferta || '').toLowerCase().replace('â', 'a');
-        const tipoDesejado = this.filtroTipo.toLowerCase().replace('â', 'a');
-        return tipoOf === tipoDesejado;
-      });
-    }
-
-    // 4. ATUALIZAR CONTADORES ANTES DE APLICAR A ABA
-    // Isso garante que os números do HTML reflitam a realidade dos filtros ativos acima
-    this.totalOfertas = lista.length;
-    this.ofertasAtivas = lista.filter(o => o.status === true && !ofertaExpirada(o)).length;
-    this.ofertasInativas = lista.filter(o => o.status === false && !ofertaExpirada(o)).length;
-    this.ofertasExpiradas = lista.filter(o => ofertaExpirada(o)).length;
-
-    // 5. Filtro por Status da Aba (Todas, Ativa, Inativa, Expirada)
-    if (this.tipoFiltro !== 'todas') {
-      lista = lista.filter(o => {
-        const expirada = ofertaExpirada(o);
-        if (this.tipoFiltro === 'ativa') return o.status === true && !expirada;
-        if (this.tipoFiltro === 'inativa') return o.status === false && !expirada;
-        if (this.tipoFiltro === 'expirada') return expirada;
-        return true;
-      });
-    }
-
-    this.ofertasFiltradas = lista;
-  }
-
-  get textoDescritivo(): string {
-    const total = this.ofertasFiltradas ? this.ofertasFiltradas.length : 0;
+  }  
     
-    // Status text based on current tab
-    let statusTexto = '';
-    if (this.tipoFiltro === 'ativa') statusTexto = ' ativas';
-    else if (this.tipoFiltro === 'inativa') statusTexto = ' inativas';
-    else if (this.tipoFiltro === 'expirada') statusTexto = ' expiradas';
-    else statusTexto = ' cadastradas';
-
-    if (total === 0) {
-      return `Poxa, não encontramos nenhuma oferta${statusTexto} com os filtros selecionados.`;
-    }
-
-    let texto = `Exibindo ${total} ${total === 1 ? 'oferta' : 'ofertas'}${statusTexto}`;
-
-    const filtrosExtras = [];
-
-    if (this.categoriaSelecionada) {
-      filtrosExtras.push(`na categoria "${this.categoriaSelecionada}"`);
-    }
-
-    if (this.filtroTipo) {
-      filtrosExtras.push(`do tipo ${this.filtroTipo}`);
-    }
-
-    if (this.termoAtivo && this.termoAtivo !== this.categoriaSelecionada) {
-      filtrosExtras.push(`com o termo "${this.termoAtivo}"`);
-    }
-
-    if (filtrosExtras.length > 0) {
-      if (filtrosExtras.length === 1) {
-        texto += ` ${filtrosExtras[0]}`;
-      } else {
-        const last = filtrosExtras.pop();
-        texto += ` ${filtrosExtras.join(', ')} e ${last}`;
-      }
-    }
-
-    return texto + '.';
-  }
 }

@@ -1,12 +1,23 @@
-<ion-header>
-  <ion-toolbar >
-    <ion-title>Novo Parceiro</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content class="ion-padding">
+  <div class="dashboard-header" style="margin: -16px -16px 16px -16px; border-radius: 0 0 24px 24px;">
+    <div class="header-content">
+      <h1>Novo Parceiro</h1>
+      <p>Preencha os dados do novo parceiro</p>
+      <div class="header-breadcrumbs">
+        <ion-breadcrumbs>
+          <ion-icon slot="separator" name="chevron-forward-outline"></ion-icon>
+          <ion-breadcrumb routerLink="/dashboard"><ion-icon src="../../assets/icon/HomeOutline.svg" slot="start" style="margin-right: 4px; filter: brightness(0) invert(1);"></ion-icon> </ion-breadcrumb>
+          <ion-breadcrumb class="breadcrumb-active">Cadastrar Parceiro</ion-breadcrumb>
+        </ion-breadcrumbs>
+      </div>
+    </div>
+    <div class="header-decoration">
+      <div class="decoration-circle"></div>
+      <div class="decoration-circle"></div>
+    </div>
+  </div>
   <!-- Card: Dados do Parceiro -->
-  
+
     <ion-card-content >
       <ion-item  style="--background: transparent; --highlight-color-focused: transparent; --highlight-color: transparent; border: 1px solid #ccc; border-radius: 6px; margin-bottom: 12px;">
         <ion-label position="stacked">Nome do Parceiro</ion-label>
@@ -28,7 +39,7 @@
         <ion-toggle slot="end" [(ngModel)]="Parceiro.status" color="success"></ion-toggle>
       </ion-item>
     </ion-card-content>
- 
+
 
   <!-- Card: Dados da Empresa -->
     <ion-card-content>

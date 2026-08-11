@@ -38,18 +38,16 @@
   background-color: #ffffff;
   justify-content: center;
   @media (max-width: 767px) {
-    height: auto;
-    min-height: 100vh;
-    padding: 0.5rem;
-    overflow-x: hidden;
-    align-items: center;
-
+      height: auto !important;
+      min-height: 100vh;
+      padding: 1.5rem 1rem;
+      overflow-x: hidden;
+      /* align-items: center; */
   }
 
+
   .img-container {
-    width: 30%;
-    max-width: 220px;
-    padding: 0 2rem 0.5rem 1rem;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -60,17 +58,13 @@
       max-width: 100%;
       width: auto;
       height: auto;
-      max-height: 88px;
+      max-height: 45px;
       object-fit: contain;
     }
 
     @media (max-width: 767px) {
-      padding: 0.25rem 1rem 0.35rem 1rem;
-      width: 42%;
-      max-width: 160px;
-
       img.logo {
-        max-height: 52px;
+        max-height: 45px;
       }
     }
   }
@@ -88,12 +82,8 @@
   }
 
   h2 {
-    max-width: 460px;
-    margin: 0 0 1rem 0;
-    font-size: 1.875rem;
     font-weight: 500;
     text-align: center;
-    padding: 0 2rem;
     display: block;
 
     @media (max-width: 767px) {
@@ -105,7 +95,6 @@
     }
 
     @media (max-width: 480px) {
-      font-size: 1.4rem;
       padding: 0 0.5rem;
       max-width: 100%;
       line-height: 1.2;
@@ -201,10 +190,14 @@
   .container {
     display: grid !important;
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    height: 100vh !important;
-    min-height: 100vh !important;
+
+    min-height: auto !important;
     width: 100% !important;
     overflow: hidden !important;
+
+    height: auto !important;
+
+    width: 100% !important;
   }
 
   .left {
@@ -215,6 +208,14 @@
     background-repeat: no-repeat !important;
     min-height: 100vh !important;
     width: 100% !important;
+  }
+
+  @media (max-width: 768px) {
+    .container {
+      overflow: auto !important;
+      margin: 3rem auto;
+      height: auto !important;
+    }
   }
 
   .right-content {
@@ -230,17 +231,6 @@
       width: 100% !important;
       background-color: #ffffff !important;
     }
-  }
-
-  .img-container {
-    width: 30% !important;
-    padding: 0 2rem 0.5rem 1rem !important;
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    flex-shrink: 0 !important;
-    align-self: center !important;
-    margin-bottom: 20px;
   }
 
   .form-component {
@@ -264,7 +254,7 @@ ion-content {
   --padding-bottom: 0 !important;
 
   .container {
-    height: 100vh !important;
+    height: auto !important;
     min-height: 100vh !important;
     width: 100% !important;
     margin: 0 !important;
@@ -293,4 +283,7 @@ ion-content ion-content {
   text-align: center;
   color: var(--ion-color-medium);
   margin-bottom: 2rem;
+}
+.titulo-logins {
+  font-size: medium !important;
 }

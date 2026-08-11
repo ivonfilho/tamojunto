@@ -1,0 +1,107 @@
+<ion-header [translucent]="true" class="sem-min-height">
+  <ion-toolbar class="toolbar-estilo">
+    <ion-buttons slot="start">
+      <ion-button (click)="voltarParaDashboard()" fill="clear" class="back-button">
+        <ion-icon aria-hidden="true" src="../assets/icon/ArrowBack.svg" style="filter: brightness(0) invert(1);"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Ofertas Parceiro</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="bg-gray">
+  <!-- Pull-to-refresh -->
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content pullingIcon="chevron-down-circle-outline" pullingText="Puxe para atualizar" refreshingSpinner="circles" refreshingText="Atualizando..."></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="top-controls-container" *ngIf="parceiro">
+    <div class="tabs-container">
+      <ion-segment mode="md" [value]="tipoFiltro" (ionChange)="aplicarFiltroStatus($event.detail.value?.toString() || 'todas')">
+        <ion-segment-button value="todas" layout="icon-top">
+          <ion-icon src="../assets/icon/Menu.svg"></ion-icon>
+          <ion-label><span class="tab-text">Todas</span> <ion-badge class="tab-badge">{{ totalOfertas }}</ion-badge></ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="ativa" layout="icon-top">
+          <ion-icon src="../assets/icon/CheckmarkCircle.svg"></ion-icon>
+          <ion-label><span class="tab-text">Ativas</span> <ion-badge class="tab-badge">{{ ofertasAtivas }}</ion-badge></ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="inativa" layout="icon-top">
+          <ion-icon src="../assets/icon/CloseCircle.svg"></ion-icon>
+          <ion-label><span class="tab-text">Inativas</span> <ion-badge class="tab-badge badge-blue">{{ ofertasInativas }}</ion-badge></ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="expirada" layout="icon-top">
+          <ion-icon src="../assets/icon/TimeOutline.svg"></ion-icon>
+          <ion-label><span class="tab-text">Expiradas</span> <ion-badge class="tab-badge" *ngIf="ofertasExpiradas > 0">{{ ofertasExpiradas }}</ion-badge></ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </div>
+
+    <div class="actions-container">
+      <div class="filter-toggles">
+        <button class="btn-filter-toggle" [class.active]="filtroTipo === 'Normal'" (click)="filtroTipo = (filtroTipo === 'Normal' ? '' : 'Normal'); aplicarFiltroStatus(tipoFiltro)">
+          <ion-icon src="../assets/icon/Filter.svg"></ion-icon>
+          <span class="hide-on-mobile">Normal</span>
+        </button>
+        <button class="btn-filter-toggle" [class.active]="filtroTipo === 'Relâmpago'" (click)="filtroTipo = (filtroTipo === 'Relâmpago' ? '' : 'Relâmpago'); aplicarFiltroStatus(tipoFiltro)">
+          <ion-icon src="../assets/icon/Flash.svg"></ion-icon>
+          <span class="hide-on-mobile">Relâmpago</span>
+        </button>
+      </div>
+
+      <ion-button class="btn-cadastrar-premium" (click)="recarregarPagina()">
+        <ion-icon src="../assets/icon/AddCircleOutline.svg" slot="start"></ion-icon>
+        <span>Cadastrar</span>
+      </ion-button>
+    </div>
+  </div>
+
+  <div class="offer-grid">
+    <!-- Card idêntico ao protótipo -->
+    <div class="offer-card" *ngFor="let oferta of ofertasFiltradas" [ngClass]="{'offer-relampago': (oferta.tipoOferta || '').toLowerCase().replace('â', 'a').trim() === 'relampago'}">
+
+      <!-- Topo do Card -->
+      <div class="card-top">
+        <div class="card-title-group">
+          <div class="icon-square">
+            <ion-icon src="../assets/icon/FileText.svg"></ion-icon>
+          </div>
+          <span class="card-title">{{ oferta.nomeProduto }}</span>
+        </div>
+        <button class="btn-edit-custom" (click)="editarOferta(oferta.id!)" *ngIf="parceiro">
+          <ion-icon src="../assets/icon/PencilOutline.svg"></ion-icon>
+          <span>Editar</span>
+        </button>
+      </div>
+
+      <!-- Meio do Card -->
+      <div class="card-middle">
+        <div class="toggle-group-small" *ngIf="parceiro">
+          <ion-toggle mode="ios" [checked]="oferta.status === true" (ionChange)="alterarStatusOferta(oferta, $event)"></ion-toggle>
+          <span class="card-label-gray" style="margin-left: 6px;">Ativar</span>
+        </div>
+        <span class="card-label-gray" *ngIf="!parceiro">Publicação</span>
+        <span class="card-date">{{ oferta.dataCriacao | date:'MMMM d, yyyy':'':'en-US' }}</span>
+      </div>
+
+      <!-- Rodapé do Card -->
+      <div class="card-bottom">
+        <span class="badge-cupom">Cupom</span>
+
+        <div class="price-group">
+          <span class="old-price" *ngIf="oferta.desconto && oferta.desconto > 0">{{ formatarValor(oferta.preco) }}</span>
+          <span class="separator" *ngIf="oferta.desconto && oferta.desconto > 0">-</span>
+          <span class="new-price">{{ formatarValor(calcularValorFinal(oferta)) }}</span>
+          <span class="discount-badge" *ngIf="oferta.desconto && oferta.desconto > 0">-{{ oferta.desconto }}%</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Empty state -->
+    <div class="empty-state" *ngIf="ofertasFiltradas.length === 0">
+      <ion-icon name="folder-open-outline"></ion-icon>
+      <p>Nenhuma oferta encontrada.</p>
+    </div>
+  </div>
+</ion-content>

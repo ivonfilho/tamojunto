@@ -4,6 +4,7 @@ import { ToastController } from '@ionic/angular';
 import { UsuarioService } from 'src/app/services/api/usuario.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
+import { isUsuarioParceiroComercial } from 'src/app/utils/usuario-sessao.util';
 
 @Component({
   selector: 'app-login-form',
@@ -77,13 +78,12 @@ export class LoginFormComponent implements OnInit {
           this.authService.setToken(data.token);
           localStorage.setItem('tamo_junto_user', JSON.stringify(data));
           
-          // Redireciona usando o Router do Angular em vez de window.location.href
-          if (data.role === 'Parceiro') {
+          if (isUsuarioParceiroComercial(data)) {
             console.log('[Login] Usuário parceiro, redirecionando para dashboard-parceiro');
-            this.router.navigate(['/dashboard-parceiro']);
+            window.location.href = '/#/dashboard-parceiro';
           } else {
             console.log('[Login] Usuário cliente, redirecionando para dashboard');
-            this.router.navigate(['/dashboard']);
+            window.location.href = '/#/dashboard';
           }
           
           this.spinner = false;

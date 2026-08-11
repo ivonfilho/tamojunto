@@ -1,14 +1,20 @@
-<ion-header [translucent]="true">
-  <ion-toolbar class="toolbar-estilo">
-    <ion-title>extrato</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar class="toolbar-estilo">
-      <ion-title size="large">extrato</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="dashboard-header" style="border-radius: 0 0 24px 24px; margin-bottom: 24px;">
+    <div class="header-content">
+      <h1>Extrato</h1>
+      <p>Acompanhe suas transações</p>
+      <div class="header-breadcrumbs">
+        <ion-breadcrumbs>
+          <ion-icon slot="separator" name="chevron-forward-outline"></ion-icon>
+          <ion-breadcrumb routerLink="/dashboard"><ion-icon src="../assets/icon/HomeOutline.svg" slot="start" style="margin-right: 4px; filter: brightness(0) invert(1);"></ion-icon> </ion-breadcrumb>
+          <ion-breadcrumb class="breadcrumb-active">Extrato</ion-breadcrumb>
+        </ion-breadcrumbs>
+      </div>
+    </div>
+    <div class="header-decoration">
+      <div class="decoration-circle"></div>
+      <div class="decoration-circle"></div>
+    </div>
+  </div>
 </ion-content>
 

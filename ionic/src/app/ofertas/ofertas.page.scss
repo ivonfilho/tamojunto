@@ -148,6 +148,7 @@ ion-content {
     flex-direction: column;
     height: 100%;
     min-height: 100%;
+    flex: 1;
   }
 
   // Responsividade para mobile
@@ -260,7 +261,7 @@ ion-content {
     }
 
     p {
-      font-size: 0.9rem;
+      //font-size: 0.9rem;
       color: #666;
       line-height: 1.5;
       margin: 0;
@@ -269,8 +270,9 @@ ion-content {
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
-      max-height: 2.7em;
-      min-height: 2.7em;
+      margin: 0 0 10px 0;
+      //max-height: 2.7em;
+      //min-height: 2.7em;
     }
   }
 
@@ -302,28 +304,28 @@ ion-content {
 
   .offer-button-container {
     padding: 12px 15px; // Reduzido padding
-    margin-top: auto;
+    margin-top: 10px;
     background-color: #f8f9fa;
     border-top: 1px solid #e9ecef;
     flex-shrink: 0; // Evita que o container encolha
   }
 
   .offer-button {
-    border-radius: 12px;
-    font-weight: 600;
-    height: 45px; // Reduzido de 55px para 45px
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin: 0;
-    --background: #28a745;
+    //border-radius: 12px;
+    //font-weight: 600;
+    //height: 45px; // Reduzido de 55px para 45px
+    //text-transform: uppercase;
+    //letter-spacing: 0.5px;
+    //margin: 0;
+    //--background: #28a745;
     --color: white;
-    --border-radius: 12px;
-    --box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
-    font-size: 0.9rem; // Reduzido de 1rem para 0.9rem
+    //--border-radius: 12px;
+    //--box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+    //font-size: 0.9rem; // Reduzido de 1rem para 0.9rem
 
     &:hover {
-      --background: #218838;
-      --box-shadow: 0 6px 16px rgba(40, 167, 69, 0.4);
+      --background: #f1f3f5;
+      --box-shadow: 0 6px 16px rgb(0 0 0 / 20%);
     }
   }
 
@@ -334,18 +336,9 @@ ion-content {
     }
 
     .offer-button {
-      height: 40px;
+      //height: 40px;
       font-size: 0.85rem;
     }
-  }
-}
-
-// Correção específica para garantir que o último card seja visível
-.offer-card:last-child {
-  margin-bottom: 2rem; // Margem extra no último card
-
-  @media (max-width: 768px) {
-    margin-bottom: 3rem; // Mais margem no mobile
   }
 }
 
@@ -434,8 +427,8 @@ ion-segment {
 
   .offer-card {
     flex: 1 1 100%;
-    max-width: none;
-    height: 470px; // Ajustado de 450px para 470px para manter proporção
+    max-width: stretch;
+    width: 100%;
   }
 }
 
@@ -479,7 +472,7 @@ ion-segment {
 
   .offer-button-relampago {
     --background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-    --color: white;
+    --color: white !important;
     --box-shadow: 0 4px 15px rgba(251, 191, 36, 0.4);
 
     &:hover {
@@ -554,4 +547,274 @@ ion-segment ion-segment-button.segment-button-checked {
 
 .header-action-btn ion-icon {
   color: white !important;
+}
+
+/* ==== TOP CONTROLS SYSTEM - IGUAL AO OFERTAS-PARCEIRO ==== */
+.top-controls-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 24px 32px 12px 32px;
+  margin: 0 auto;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+/* TABS */
+.tabs-container {
+  overflow-x: auto;
+
+  ion-segment {
+    --background: transparent;
+    justify-content: flex-start;
+
+    ion-segment-button {
+      --color: #888;
+      --color-checked: #5b45ff;
+      --indicator-color: #5b45ff;
+      --indicator-height: 2px;
+      font-weight: 600;
+      min-width: auto;
+      margin-right: 10px;
+      text-transform: none !important;
+      letter-spacing: 0;
+      color: #888;
+
+      &.segment-button-checked {
+        color: #5b45ff !important;
+        font-weight: bold;
+
+        .tab-badge {
+          background: #eef2ff !important;
+          color: #5b45ff !important;
+        }
+      }
+
+      &::part(native) {
+        text-transform: none !important;
+      }
+
+      ion-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.95rem;
+        text-transform: none !important;
+      }
+
+      &::part(indicator-background) {
+        height: 2px;
+      }
+    }
+  }
+}
+
+.tab-badge {
+  background: #f1f5f9;
+  color: #64748b;
+  border-radius: 12px;
+  padding: 4px 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* ACTIONS */
+.actions-container {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 16px;
+  flex-wrap: nowrap;
+
+  @media (min-width: 768px) {
+    margin-top: 0;
+  }
+}
+
+.filter-toggles {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-right: auto;
+}
+
+.btn-filter-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 6px 12px;
+  height: 40px;
+  color: #334155;
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &.active {
+    border-color: #5b45ff;
+    box-shadow: 0 0 0 1px #5b45ff;
+  }
+}
+
+ion-segment-button::part(native) {
+  color: #888;
+}
+ion-segment-button.segment-button-checked::part(native) {
+  color: #5b45ff !important;
+  font-weight: 600;
+}
+ion-segment-button.segment-button-checked ion-label {
+  color: #5b45ff !important;
+  font-weight: bold;
+  opacity: 1 !important;
+}
+ion-segment-button ion-label {
+  color: #888;
+  opacity: 1 !important;
+}
+
+@media (max-width: 767px) {
+  .hide-on-mobile {
+    display: none !important;
+  }
+  .tabs-container ion-segment-button {
+    --padding-start: 2px;
+    --padding-end: 2px;
+    min-width: 0;
+  }
+  .tab-text {
+    font-size: 10px;
+  }
+  .btn-filter-toggle {
+    padding: 6px;
+    width: 40px;
+    justify-content: center;
+  }
+}
+
+@media (min-width: 768px) {
+  .hide-on-desktop {
+    display: none !important;
+  }
+}
+
+.dashboard-header {
+  background: linear-gradient(
+    135deg,
+    var(--ion-color-primary) 0%,
+    #667eea 100%
+  );
+  padding: 40px 20px 30px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 20px;
+
+  .header-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: white;
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin: 0 0 10px 0;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      margin: 0;
+      font-weight: 300;
+    }
+  }
+
+  .header-decoration {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+
+    .decoration-circle {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      animation: float 6s ease-in-out infinite;
+
+      &:first-child {
+        width: 80px;
+        height: 80px;
+        top: 20px;
+        right: 20px;
+        animation-delay: 0s;
+      }
+
+      &:last-child {
+        width: 120px;
+        height: 120px;
+        top: 60px;
+        right: 100px;
+        animation-delay: 2s;
+      }
+    }
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+/* =========================================
+   Estilos específicos para Badges e Botões
+   ========================================= */
+
+.top-badge {
+  background: #f1f5f9;
+  color: #64748b;
+  border-radius: 12px;
+  padding: 4px 12px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+  display: inline-block;
+}
+
+ion-segment-button.segment-button-checked .top-badge {
+  background: #eef2ff !important;
+  color: #5b45ff !important;
+}
+
+.btn-filter-toggle.btn-normal.active {
+  background-color: var(--ion-color-primary, #5b45ff) !important;
+  border-color: var(--ion-color-primary, #5b45ff) !important;
+  box-shadow: 0 4px 12px rgba(91, 69, 255, 0.3) !important;
+
+  ion-icon {
+    filter: brightness(0) invert(1);
+  }
+}
+
+.btn-filter-toggle.btn-relampago.active {
+  background-color: #fbbf24 !important;
+  border-color: #fbbf24 !important;
+  box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3) !important;
+
+  ion-icon {
+    filter: brightness(0) invert(1);
+  }
 }

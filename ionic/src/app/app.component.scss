@@ -10,16 +10,33 @@ app-root {
 
 ion-app {
   height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-main-layout {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  min-height: 0;
+  width: 100%;
+  position: relative;
+}
+
+.split-pane-global {
+  width: 100%;
+  height: 100%;
 }
 
 /* Shell mobile: header fixo no fluxo + área flexível para ion-page (scroll interno da rota) */
 .mobile-app-shell {
   display: flex;
   flex-direction: column;
+  flex: 1;
   height: 100%;
-  min-height: 100%;
-  min-height: 100dvh;
   background: var(--ion-background-color, #fff);
+  position: relative;
+  width: 100%;
 }
 
 .mobile-router-outlet {
@@ -30,7 +47,7 @@ ion-app {
 }
 
 ion-menu ion-content {
-  --background: var(--ion-item-background, var(--ion-background-color, #fff));
+  --background: #6d67ca !important;
 }
 
 // Garantir que TODOS os labels e ícones do menu sejam brancos (não selecionados)
@@ -41,18 +58,18 @@ ion-menu {
       font-weight: 500 !important;
       font-size: 0.9rem !important;
     }
-    
+
     ion-icon {
       color: #ffffff !important;
     }
-    
+
     // Quando selecionado, fica amarelo
     &.selected {
       ion-label {
         color: var(--ion-color-primary-selected-hover) !important;
         font-weight: 600 !important;
       }
-      
+
       ion-icon {
         color: var(--ion-color-primary-selected-hover) !important;
       }
@@ -89,7 +106,8 @@ ion-menu.md ion-item {
 }
 
 ion-menu.md ion-item.selected {
-  --background: var(--ion-color-primary);
+  --background: transparent !important;
+  background: transparent !important;
 }
 
 ion-menu.md ion-item.selected {
@@ -171,7 +189,7 @@ ion-menu ion-item:hover:not(.selected) {
   ion-label {
     color: var(--ion-color-primary-selected-hover) !important;
   }
-  
+
   ion-label {
     font-weight: 600 !important;
   }
@@ -242,13 +260,19 @@ ion-menu ion-item.selected ion-icon {
   justify-content: center;
   height: 100vh;
   text-align: center;
-  
+
   ion-spinner {
     margin-bottom: 1rem;
   }
-  
+
   p {
     color: var(--ion-color-medium);
     font-size: 1.1rem;
   }
+}
+ion-menu ion-list,
+ion-menu ion-item,
+ion-menu ion-item.selected {
+  --background: transparent !important;
+  background: transparent !important;
 }

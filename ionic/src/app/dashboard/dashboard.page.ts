@@ -146,7 +146,17 @@ export class DashboardPage implements OnInit {
     // Carrega o usuário do localStorage
     this.usuario = JSON.parse(localStorage.getItem('tamo_junto_user') || '{}');
     
+    window.addEventListener('scrollToTop', () => {
+      this.scrollToTop();
+    });
+
     this.initializeDashboard();
+  }
+
+  scrollToTop() {
+    if (this.content) {
+      this.content.scrollToTop(500);
+    }
   }
 
   async initializeDashboard() {
@@ -560,7 +570,7 @@ export class DashboardPage implements OnInit {
   }
 
   mostrarDetalhesCupom(cupom: any) {
-    this.cupomDetalhes = cupom;
+    this.router.navigate(['/cupom', cupom.id]);
   }
 
   fecharDetalhesCupom() {

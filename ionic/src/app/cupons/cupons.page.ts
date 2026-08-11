@@ -23,6 +23,7 @@ export class CuponsPage implements OnInit {
   usuario: any;
   cupoms: Cupom[] = [];
   cuponsOriginais: Cupom[] = [];
+  cuponsProcessados: Cupom[] = []; // Nova lista centralizada para exibição rápida
   qrCode: string | null = null;
   categoriaPesquisa: string = 'Todos';
   mensagemCategoriaPorPesquisa: string = ''
@@ -36,8 +37,17 @@ export class CuponsPage implements OnInit {
   abaAtiva: string = 'Gerados';
   cupomExpandido: Cupom | null = null;
   isMobile: boolean = false;
+  termoBusca: string = ''; // Variável de estado para busca unificada
 
-  // Propriedades do carrossel
+  // =====================================
+  // CONTADORES DINÂMICOS DAS ABAS
+  // =====================================
+  totalCupons: number = 0;
+  cuponsAtivos: number = 0;
+  cuponsUsados: number = 0;
+  cuponsExpirados: number = 0;
+
+  // Propriedades do carrossel (mantidas para compatibilidade com outros métodos, embora agora usemos grid)
   indiceAtual: number = 0;
   cuponsPorSlide: number = 1;
   autoPlay: boolean = false;
@@ -50,6 +60,8 @@ export class CuponsPage implements OnInit {
   @Input() codigo: string = 'TMJ1X210';
   @Input() validade: string = '30 dias';
   @Input() categoria: string = 'Comida';
+
+  textoDescritivo: string = '';
 
   constructor(
     private clienteService: ClienteService,
@@ -64,40 +76,22 @@ export class CuponsPage implements OnInit {
     this.detectarDispositivo();
     this.carregarCupons();
     this.carregarUsuarioLogado();
-    this.aplicarBusca();
   }
 
-  // Aplica busca se houver query param
+  // Aplica busca se houver query param na inicialização
   private aplicarBusca() {
-    // Verificar query params quando a rota mudar
     const urlParams = new URLSearchParams(window.location.search);
-    const termoBusca = urlParams.get('busca');
-    if (termoBusca && termoBusca.trim()) {
-      this.buscarCupons(termoBusca.trim());
+    const termo = urlParams.get('busca');
+    if (termo && termo.trim()) {
+      this.termoBusca = termo.trim();
     }
   }
 
   // Busca cupons pelo termo
   private buscarCupons(termo: string) {
-    if (!termo || termo.length < 2) {
-      this.cupoms = [...this.cuponsOriginais];
-      return;
-    }
-
-    const termoLower = termo.toLowerCase();
-    this.cupoms = this.cuponsOriginais.filter(cupom => {
-      const nomeProduto = (cupom.ofertaParceiro?.nomeProduto || '').toLowerCase();
-      const descricao = (cupom.ofertaParceiro?.descricao || '').toLowerCase();
-      const categoria = (cupom.ofertaParceiro?.categoria || '').toLowerCase();
-      const codigo = (cupom.id || '').toLowerCase();
-      
-      return nomeProduto.includes(termoLower) || 
-             descricao.includes(termoLower) || 
-             categoria.includes(termoLower) ||
-             codigo.includes(termoLower);
-    });
-    
-    this.indiceAtual = 0; // Reset do carrossel
+    this.termoBusca = termo;
+    this.indiceAtual = 0;
+    this.aplicarFiltros();
   }
 
   carregarUsuarioLogado() {
@@ -134,7 +128,6 @@ export class CuponsPage implements OnInit {
     }
   }
 
-  // Métodos do carrossel
   anteriorCupom() {
     if (this.indiceAtual > 0) {
       this.indiceAtual--;
@@ -144,7 +137,7 @@ export class CuponsPage implements OnInit {
   proximoCupom() {
     const totalCupons = this.filtrarCupons().length;
     const maxIndice = Math.max(0, totalCupons - this.cuponsPorSlide);
-    
+
     if (this.indiceAtual < maxIndice) {
       this.indiceAtual++;
     }
@@ -154,7 +147,6 @@ export class CuponsPage implements OnInit {
     this.indiceAtual = indice;
   }
 
-  // Método para navegação por teclado
   @HostListener('window:keydown', ['$event'])
   onKeyDown(event: KeyboardEvent) {
     if (event.key === 'ArrowLeft') {
@@ -165,8 +157,7 @@ export class CuponsPage implements OnInit {
   }
 
   expandirCupom(cupom: Cupom) {
-    // Funciona tanto para mobile quanto para web
-    this.cupomExpandido = cupom;
+    this.router.navigate(['/cupom', cupom.id]);
   }
 
   fecharCupomExpandido() {
@@ -200,6 +191,7 @@ export class CuponsPage implements OnInit {
       }
     );
   }
+
   listarCuponsDetalhados(idOfertaParceiro: string): void {
     if (!idOfertaParceiro) {
       console.warn('ID da oferta do parceiro não é válido:', idOfertaParceiro);
@@ -211,7 +203,6 @@ export class CuponsPage implements OnInit {
       (cuponsDetalhados: any[]) => {
         console.log('Cupons detalhados retornados para a oferta:', idOfertaParceiro, cuponsDetalhados);
 
-        // Verifica se a resposta contém cupons e detalhes da oferta
         cuponsDetalhados.forEach(cupom => {
           const dataAtual = new Date();
           if (cupom.ofertaParceiro) {
@@ -222,11 +213,10 @@ export class CuponsPage implements OnInit {
             cupom.utilizado = false;
           }
 
-          // Classificação do status
           if (cupom.ofertaParceiro?.validade) {
             const validade = new Date(cupom.ofertaParceiro.validade);
             if (validade < dataAtual) {
-              cupom.status = 'Indisponíveis'; // Expirado
+              cupom.status = 'Indisponíveis';
             } else {
               cupom.status = cupom.utilizado ? 'Utilizados' : 'Gerados';
             }
@@ -235,23 +225,19 @@ export class CuponsPage implements OnInit {
           }
         });
 
-        // Atualiza a lista de cupons no frontend
         this.cupoms = [...this.cupoms, ...cuponsDetalhados];
         this.cuponsOriginais = [...this.cupoms];
-          this.atualizarCategorias();
-        
-        // Aplicar busca se houver termo na URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const termoBusca = urlParams.get('busca');
-        if (termoBusca && termoBusca.trim()) {
-          this.buscarCupons(termoBusca.trim());
-        }
+        this.atualizarCategorias();
+
+        this.aplicarBusca();
+        this.aplicarFiltros();
       },
       (error: HttpErrorResponse) => {
         console.error('Erro ao listar cupons detalhados:', error);
       }
     );
   }
+
   obterCliente() {
     this.clienteService.obterClientePorUsuario(this.usuario.Id).subscribe(
       (cliente) => {
@@ -268,12 +254,12 @@ export class CuponsPage implements OnInit {
       }
     );
   }
+
   obterParceiroEListarCupons(idUsuario: string): void {
     this.parceiroService.buscarParceiroPorUsuario(idUsuario).subscribe(
       (parceiro: any) => {
         console.log('Parceiro retornado pela API:', parceiro);
 
-        // Verifique se o objeto contém a propriedade `idParceiro`
         if (parceiro && parceiro.idParceiro) {
           const idParceiro = parceiro.idParceiro;
           this.idParceiro = idParceiro;
@@ -281,22 +267,17 @@ export class CuponsPage implements OnInit {
           this.listarCuponsPorParceiro(idParceiro);
         } else {
           console.warn('Parceiro não possui um ID válido:', parceiro);
-          // Se não encontrou parceiro, tenta buscar cliente
           console.log('Tentando buscar cliente...');
           this.obterCliente();
         }
       },
       (error: HttpErrorResponse) => {
         console.error('Erro ao obter parceiro:', error);
-        // Se deu erro ao buscar parceiro, tenta buscar cliente
         console.log('Erro ao buscar parceiro, tentando buscar cliente...');
         this.obterCliente();
       }
     );
   }
-
-
-
 
   obterListaCupom() {
     if (!this.idCliente) {
@@ -307,16 +288,14 @@ export class CuponsPage implements OnInit {
     this.cupomService.listarCupoms(this.idCliente).subscribe(
       (cupoms) => {
         this.cupoms = cupoms || [];
-        this.cuponsOriginais = [...cupoms];
-          this.atualizarCategorias();
+        this.cuponsOriginais = [...this.cupoms];
+        this.atualizarCategorias();
+
+        this.aplicarBusca();
         this.indiceAtual = 0;
+        this.aplicarFiltros();
+
         console.log('Lista de cupons:', this.cupoms);
-        // Aplicar busca se houver termo na URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const termoBusca = urlParams.get('busca');
-        if (termoBusca && termoBusca.trim()) {
-          this.buscarCupons(termoBusca.trim());
-        }
       },
       (error) => {
         console.error('Erro ao obter lista de cupons:', error);
@@ -341,18 +320,22 @@ export class CuponsPage implements OnInit {
 
   pesquisarPorCategoria(): void {
     if (this.categoriaPesquisa && this.categoriaPesquisa !== 'Todos') {
-      this.cupoms = this.cuponsOriginais.filter(cupom =>
-        cupom.ofertaParceiro?.categoria?.toLowerCase().includes(this.categoriaPesquisa.toLowerCase())
-      );
       this.mensagemCategoriaPorPesquisa = `Resultados para "${this.categoriaPesquisa}"`;
-      this.indiceAtual = 0; // Reset do carrossel
     } else {
-      this.cupoms = [...this.cuponsOriginais];
       this.mensagemCategoriaPorPesquisa = '';
     }
+    this.indiceAtual = 0;
+    this.aplicarFiltros();
   }
 
-    atualizarCategorias() {
+  limparBusca(): void {
+    this.categoriaPesquisa = 'Todos';
+    this.mensagemCategoriaPorPesquisa = '';
+    this.indiceAtual = 0;
+    this.aplicarFiltros();
+  }
+
+  atualizarCategorias() {
     const categoriasSet = new Set<string>();
     this.cuponsOriginais.forEach(cupom => {
       if (cupom.ofertaParceiro?.categoria) {
@@ -365,7 +348,8 @@ export class CuponsPage implements OnInit {
   mudarAba(aba: string): void {
     this.abaAtiva = aba;
     this.filtroStatus = aba;
-    this.indiceAtual = 0; 
+    this.indiceAtual = 0;
+    this.aplicarFiltros();
   }
 
   formatarPreco(preco: number | string | null | undefined): string {
@@ -379,7 +363,6 @@ export class CuponsPage implements OnInit {
     const texto = valor.toString().trim();
     if (!texto) return 0;
 
-    // Remove prefixos comuns
     const cleaned = texto.replace(/R\$/gi, '').replace(/\s/g, '');
     if (!cleaned) return 0;
 
@@ -387,11 +370,9 @@ export class CuponsPage implements OnInit {
     const dotIndex = cleaned.lastIndexOf('.');
 
     let normalized = cleaned;
-    // Se vírgula é decimal (ex: 20,50)
     if (commaIndex > dotIndex) {
       normalized = normalized.replace(/\./g, '').replace(',', '.');
     } else {
-      // Se ponto é decimal (ex: 20.50) ou não há decimal
       normalized = normalized.replace(/,/g, '');
     }
 
@@ -403,7 +384,6 @@ export class CuponsPage implements OnInit {
     const d = this.parseNumero(desconto);
     if (!Number.isFinite(d)) return '0%';
 
-    // Evita 15.00% e mostra 15%
     if (Number.isInteger(d)) return `${d}%`;
     return `${d.toFixed(2).replace(/\.?0+$/, '').replace('.', ',')}%`;
   }
@@ -449,47 +429,83 @@ export class CuponsPage implements OnInit {
   classificarCupom(cupom: Cupom): string {
     const dataAtual = new Date();
     const validade = new Date(cupom.ofertaParceiro.validade);
-    // Verificar se foi utilizado
+
     if (cupom.dataUtilizacao && dataAtual < validade) {
         return 'Utilizados';
     }
 
-    // Verificar se está expirado
     if (cupom.ofertaParceiro?.validade) {
       if (validade < dataAtual) {
         return 'Indisponíveis';
       }
     }
 
-    // Se não foi utilizado e está na validade, é ativo
     return 'Gerados';
   }
 
-  filtrarCupons(): Cupom[] {
-    let cuponsFiltrados = this.cupoms;
+  // =========================================================================
+  // LÓGICA CENTRALIZADA DE FILTROS E CONTADORES
+  // =========================================================================
 
-    // Filtrar por nome de usuário
-    if (this.filtroUsuario) {
-      cuponsFiltrados = cuponsFiltrados.filter(cupom =>
-        this.usuario.nome?.toLowerCase().includes(this.filtroUsuario.toLowerCase())
+  aplicarFiltros() {
+    let lista = [...this.cuponsOriginais];
+
+    // 1. Filtro de Busca de Texto
+    if (this.termoBusca && this.termoBusca.length >= 2) {
+      const termoLower = this.termoBusca.toLowerCase();
+      lista = lista.filter(cupom => {
+        const nomeProduto = (cupom.ofertaParceiro?.nomeProduto || '').toLowerCase();
+        const descricao = (cupom.ofertaParceiro?.descricao || '').toLowerCase();
+        const categoria = (cupom.ofertaParceiro?.categoria || '').toLowerCase();
+        const codigo = (cupom.id || '').toLowerCase();
+
+        return nomeProduto.includes(termoLower) ||
+               descricao.includes(termoLower) ||
+               categoria.includes(termoLower) ||
+               codigo.includes(termoLower);
+      });
+    }
+
+    // 2. Filtro de Categoria do Select
+    if (this.categoriaPesquisa && this.categoriaPesquisa !== 'Todos') {
+      lista = lista.filter(cupom =>
+        cupom.ofertaParceiro?.categoria?.toLowerCase().includes(this.categoriaPesquisa.toLowerCase())
       );
     }
 
-    // Filtrar por tipo de benefício
-    if (this.filtroTipo) {
-      cuponsFiltrados = cuponsFiltrados.filter(cupom => cupom.ofertaParceiro?.categoria === this.filtroTipo);
-    }
+    // 3. Atualizar Contadores das Abas ANTES de filtrar pelo status
+    this.totalCupons = lista.length;
+    this.cuponsAtivos = lista.filter(cupom => this.classificarCupom(cupom) === 'Gerados').length;
+    this.cuponsUsados = lista.filter(cupom => this.classificarCupom(cupom) === 'Utilizados').length;
+    this.cuponsExpirados = lista.filter(cupom => this.classificarCupom(cupom) === 'Indisponíveis').length;
 
-    // Filtrar por status usando o método classificarCupom
+    // 4. Filtro de Status das Abas (Ativos, Usados, Expirados)
     if (this.filtroStatus) {
-      cuponsFiltrados = cuponsFiltrados.filter(cupom => this.classificarCupom(cupom) === this.filtroStatus);
+      lista = lista.filter(cupom => this.classificarCupom(cupom) === this.filtroStatus);
     }
 
-    return cuponsFiltrados;
+    // 5. Filtros Extras (mantidos da sua base)
+    if (this.filtroUsuario) {
+      lista = lista.filter(cupom =>
+        this.usuario?.nome?.toLowerCase().includes(this.filtroUsuario.toLowerCase())
+      );
+    }
+    if (this.filtroTipo) {
+      lista = lista.filter(cupom => cupom.ofertaParceiro?.categoria === this.filtroTipo);
+    }
+
+    this.cuponsProcessados = lista;
+
+    const currentQtd = this.cuponsProcessados.length;
+    const nomeAba = this.abaAtiva === 'Gerados' ? 'ativos' : this.abaAtiva === 'Utilizados' ? 'usados' : 'expirados';
+    this.textoDescritivo = `Mostrando ${currentQtd} ${currentQtd === 1 ? 'cupom' : 'cupons'} ${nomeAba}`;
+  }
+
+  filtrarCupons(): Cupom[] {
+    return this.cuponsProcessados;
   }
 
   redirecionarRelatorioCupom(){
     this.router.navigate(['/cupons/relatorio-cupom']);
   }
 }
-

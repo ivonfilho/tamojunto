@@ -111,6 +111,7 @@ ion-content.dashboard-container {
     align-items: center;
     gap: 20px;
     position: relative;
+    flex-direction: row;
   }
 
   .stat-icon {

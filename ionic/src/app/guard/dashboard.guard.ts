@@ -1,6 +1,7 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { isUsuarioParceiroComercial } from '../utils/usuario-sessao.util';
 
 export const DashboardGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
@@ -18,7 +19,7 @@ export const DashboardGuard: CanActivateFn = (route, state) => {
   }
 
   const rotaAtual = state.url;
-  const isParceiro = usuario.role === 'Parceiro';
+  const isParceiro = isUsuarioParceiroComercial(usuario);
 
   // Se é parceiro tentando acessar dashboard de cliente
   if (isParceiro && rotaAtual.includes('/dashboard') && !rotaAtual.includes('dashboard-parceiro')) {

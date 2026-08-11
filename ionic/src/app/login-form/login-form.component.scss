@@ -14,7 +14,7 @@ ion-label.ng-invalid,
   flex-direction: column;
   gap: 8px;
   margin: 15px 0;
-  
+
   a {
     color: rgb(89, 79, 185);
     text-decoration: none;
@@ -25,7 +25,7 @@ ion-label.ng-invalid,
     transition: all 0.3s ease;
     font-variant-ligatures: none;
     text-rendering: auto;
-    
+
     &:hover {
       background-color: #f8f9ff;
       color: rgb(89, 79, 185);
@@ -51,13 +51,13 @@ p {
     display: block !important;
     box-sizing: border-box !important;
   }
-  
+
   form {
     width: 100% !important;
     display: block !important;
     box-sizing: border-box !important;
   }
-  
+
   .form-group {
     width: 100% !important;
     display: flex !important;
@@ -65,8 +65,11 @@ p {
     gap: 0.5rem !important;
     align-items: center !important;
   }
-  
+
   .input-group {
     width: 100% !important;
   }
+}
+.titulo-logins {
+  font-size: medium !important;
 }

@@ -1,10 +1,21 @@
-<ion-header>
-  <ion-toolbar class="toolbar-estilo">
-    <ion-title>Editar Parceiro</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content >
+  <div class="dashboard-header" style="border-radius: 0 0 24px 24px; margin-bottom: 24px;">
+    <div class="header-content">
+      <h1>Editar Parceiro</h1>
+      <p>Atualize as informações do parceiro</p>
+      <div class="header-breadcrumbs">
+        <ion-breadcrumbs>
+          <ion-icon slot="separator" name="chevron-forward-outline"></ion-icon>
+          <ion-breadcrumb routerLink="/dashboard"><ion-icon src="../../assets/icon/HomeOutline.svg" slot="start" style="margin-right: 4px; filter: brightness(0) invert(1);"></ion-icon> </ion-breadcrumb>
+          <ion-breadcrumb class="breadcrumb-active">Editar Parceiro</ion-breadcrumb>
+        </ion-breadcrumbs>
+      </div>
+    </div>
+    <div class="header-decoration">
+      <div class="decoration-circle"></div>
+      <div class="decoration-circle"></div>
+    </div>
+  </div>
   <div style="padding: 16px;">
     <div style="margin-bottom: 16px;">
       <ion-input label="Nome" labelPlacement="stacked" fill="outline" [(ngModel)]="Empresa.nome"></ion-input>

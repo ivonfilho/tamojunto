@@ -45,8 +45,10 @@ export class NotificationModalComponent implements OnInit {
   }
 
   navigateToNotification(notification: CustomNotification) {
+    const usuarioLogado = this.usuarioService.getUsuarioLogado();
+    const isParceiro = usuarioLogado?.role === 'Parceiro' || usuarioLogado?.Role === 'Parceiro';
     if (notification.titulo.includes("Oferta")) {
-      this.router.navigate(['/oferta', notification.id]);
+      this.router.navigate([isParceiro ? '/editar-oferta' : '/oferta', notification.id]);
     } else if (notification.titulo.includes("Cupom")) {
       this.router.navigate(['/cupom', notification.id]);
     } else if (notification.titulo.includes("Alerta")) {

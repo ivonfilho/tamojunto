@@ -3,6 +3,14 @@
     <div class="header-content">
       <h1>Cupons</h1>
       <p>Gerencie e visualize seus cupons</p>
+      <div class="header-breadcrumbs">
+        <ion-breadcrumbs>
+          <ion-icon slot="separator" name="chevron-forward-outline"></ion-icon>
+          <ion-breadcrumb routerLink="/dashboard"><ion-icon src="../assets/icon/HomeOutline.svg" slot="start" style="margin-right: 4px; filter: brightness(0) invert(1);"></ion-icon> </ion-breadcrumb>
+          <ion-breadcrumb [class.breadcrumb-active]="!textoDescritivo" [routerLink]="textoDescritivo ? '/cupons' : null">Cupons</ion-breadcrumb>
+          <ion-breadcrumb class="demo-2" *ngIf="textoDescritivo" class="breadcrumb-active">{{ textoDescritivo }}</ion-breadcrumb>
+        </ion-breadcrumbs>
+      </div>
     </div>
     <div class="header-decoration">
       <div class="decoration-circle"></div>
@@ -16,171 +24,121 @@
       </ion-button>
     </div>
   </div>
+
   <div class="page-content-padding">
-  <div style="margin-bottom: 15px;">
-    <ion-select label="Filtrar por categoria" labelPlacement="stacked" fill="outline" [(ngModel)]="categoriaPesquisa" (ionChange)="pesquisarPorCategoria()">
-      <ion-select-option *ngFor="let cat of categorias" [value]="cat">{{ cat }}</ion-select-option>
-    </ion-select>
-  </div>
+    <div style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+      <ion-select style="flex: 1;" label="Filtrar por categoria" labelPlacement="stacked" fill="outline" [(ngModel)]="categoriaPesquisa" (ionChange)="pesquisarPorCategoria()">
+        <ion-select-option *ngFor="let cat of categorias" [value]="cat">{{ cat }}</ion-select-option>
+      </ion-select>
+      
+      <button *ngIf="categoriaPesquisa && categoriaPesquisa !== 'Todos'" class="btn-filter-toggle" (click)="limparBusca()" style="color: #ef4444; border: 1px solid #fca5a5; background: #fef2f2; height: 56px; padding: 0 16px; border-radius: 8px; display: flex; align-items: center; gap: 6px; cursor: pointer;">
+        <ion-icon src="../assets/icon/Close.svg" style="filter: brightness(0) saturate(100%) invert(35%) sepia(87%) saturate(2333%) hue-rotate(345deg) brightness(98%) contrast(92%); width: 20px; height: 20px;"></ion-icon>
+        <span class="hide-on-mobile" style="font-weight: 500; font-size: 0.9rem;">Limpar</span>
+      </button>
+    </div>
 
-  <!-- Filtros -->
-  <ion-segment [value]="abaAtiva" color="primary" (ionChange)="mudarAba($event.detail.value ? $event.detail.value.toString() : '')">
-    <ion-segment-button value="Gerados">
-      <ion-label>ATIVOS</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="Utilizados">
-      <ion-label>USADOS</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="Indisponíveis">
-      <ion-label>EXPIRADOS</ion-label>
-    </ion-segment-button>
-  </ion-segment>
+    <!-- Filtros (Abas) -->
+    <ion-segment [value]="abaAtiva" color="primary" (ionChange)="mudarAba($event.detail.value ? $event.detail.value.toString() : '')" class="ion-margin-bottom">
+      <ion-segment-button value="Gerados">
+        <ion-label>ATIVOS ({{ cuponsAtivos || 0 }})</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="Utilizados">
+        <ion-label>USADOS ({{ cuponsUsados || 0 }})</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="Indisponíveis">
+        <ion-label>EXPIRADOS ({{ cuponsExpirados || 0 }})</ion-label>
+      </ion-segment-button>
+    </ion-segment>
 
-  <!-- Carrossel de Cupons -->
-  <div class="carrossel-container" *ngIf="filtrarCupons().length > 0; else semResultados">
-    <!-- Botão Anterior -->
-    <ion-button
-      class="carrossel-btn carrossel-btn-prev"
-      (click)="anteriorCupom()"
-      [disabled]="indiceAtual === 0"
-      fill="clear">
-      <ion-icon aria-hidden="true" src="../assets/icon/ChevronBack.svg"></ion-icon>
-    </ion-button>
+    <!-- NOVO LAYOUT EM GRID -->
+    <div class="cupons-grid" *ngIf="filtrarCupons().length > 0; else semResultados">
 
-    <!-- Container dos Cupons -->
-    <div class="carrossel-wrapper">
-      <div class="carrossel-track" [style.transform]="'translateX(' + (-indiceAtual * 100) + '%)'">
-        <div
-          class="carrossel-slide"
-          *ngFor="let cupom of filtrarCupons(); let i = index"
-          [class.active]="i === indiceAtual">
-          <div class="cupom" (click)="expandirCupom(cupom)" [class.cupom-clickable]="true">
-            <!-- Seção Superior -->
-            <div class="cupom-header">
-              <div class="valor">
-                <span class="label">Valor</span>
-                <strong>
-                  {{
-                    cupom.ofertaParceiro?.preco != null
-                      ? formatarPreco(calcularPrecoComDesconto(cupom.ofertaParceiro.preco, cupom.ofertaParceiro?.desconto))
-                      : valor
-                  }}
-                </strong>
-                <span class="preco-original" *ngIf="cupom.ofertaParceiro?.preco != null">
-                  {{ formatarPreco(cupom.ofertaParceiro.preco) }}
-                </span>
-                <span class="desconto-texto" *ngIf="cupom.ofertaParceiro?.desconto != null && cupom.ofertaParceiro?.desconto > 0">
-                  Desconto {{ formatarPorcentagem(cupom.ofertaParceiro?.desconto) }}
-                </span>
-              </div>
-              <div class="data">
-                <span class="label">Data</span>
-                <strong>{{ cupom.ofertaParceiro?.validade ? (cupom.ofertaParceiro.validade | date: 'dd/MM/yyyy') : data }}</strong>
+      <div class="novo-cupom-card" *ngFor="let cupom of filtrarCupons()">
+
+        <!-- Bloco Principal do Card (Fundo Branco) -->
+        <div class="card-inner-content">
+
+          <!-- Linha 1: QR Code + Titulo + Status -->
+          <div class="card-row row-topo">
+            <div class="qr-container">
+              <img *ngIf="cupom.qrCode" [src]="'data:image/png;base64,' + cupom.qrCode" alt="QR Code" />
+              <div class="no-qr" *ngIf="!cupom.qrCode">
+                <ion-icon name="qr-code-outline"></ion-icon>
               </div>
             </div>
 
-            <div class="parceiro">
-              <strong>{{ cupom.ofertaParceiro?.idParceiroNavigation?.nome || 'Parceiro Desconhecido' }}</strong>
+            <div class="titulo-container">
+              <h3 class="titulo-oferta">{{ cupom.ofertaParceiro?.nomeProduto || 'Produto não informado' }}</h3>
+              <p class="desc-oferta">{{ cupom.ofertaParceiro?.descricao || 'Sem descrição' }}</p>
             </div>
 
-            <!-- Linha de corte pontilhada -->
-            <div class="linha-pontilhada"></div>
-
-            <!-- Seção do Meio -->
-            <div class="cupom-body">
-              <div class="usuario">
-                <span class="label">Usuário</span>
-                <strong>{{ getPrimeiroNome(usuario?.nome) || 'Usuário' }}</strong>
+            <div class="status-container">
+              <div class="badge-status"
+                   [ngClass]="{
+                     'badge-ativo': classificarCupom(cupom) === 'Gerados',
+                     'badge-usado': classificarCupom(cupom) === 'Utilizados',
+                     'badge-expirado': classificarCupom(cupom) === 'Indisponíveis'
+                   }">
+                {{ classificarCupom(cupom) === 'Gerados' ? 'STATUS ATIVO' : (classificarCupom(cupom) === 'Utilizados' ? 'USADO' : 'EXPIRADO') }}
               </div>
-              <div class="produto">
-                <span class="label">Produto</span>
-                <strong>{{ cupom.ofertaParceiro?.nomeProduto || 'Produto não informado' }}</strong>
-              </div>
-              <div class="codigo">
-                <span class="label">Código</span>
-                <strong>{{ gerarId(cupom.id) || codigo }}</strong>
-              </div>
-            </div>
-
-            <!-- Linha de corte pontilhada -->
-            <div class="linha-pontilhada"></div>
-
-            <!-- Seção Inferior -->
-            <div class="cupom-footer">
-              <div class="col-left">
-                <div class="categoria">
-                  <span class="categoria-texto">{{ cupom.ofertaParceiro?.categoria || categoria }}</span>
-                  <strong class="valor-categoria">
-                    {{
-                      cupom.ofertaParceiro?.preco != null
-                        ? formatarPreco(calcularPrecoComDesconto(cupom.ofertaParceiro?.preco, cupom.ofertaParceiro?.desconto))
-                        : valor
-                    }}
-                  </strong>
-                </div>
-                <div class="validade">
-                  <span class="label">Validade</span>
-                  <strong>{{ cupom.ofertaParceiro?.validade | date: 'dd/MM/yyyy' || '30 dias' }}</strong>
-                </div>
-                <div class="codigo-footer">
-                  <span class="label">Código</span>
-                  <strong>{{ gerarId(cupom.id) || codigo }}</strong>
-                </div>
-              </div>
-
-              <!-- QR Code -->
-              <div class="qr-code">
-                <img *ngIf="cupom.qrCode"
-                [src]="'data:image/png;base64,' + cupom.qrCode"
-                alt="QR Code" />
-                <p *ngIf="!cupom.qrCode">QR Code não disponível</p>
-              </div>
-            </div>
-
-            <!-- Observação -->
-            <div class="atencao">
-              <strong>Atenção:</strong> Oferta não cumulativa.
-            </div>
-            <div class="validado-badge" *ngIf="cupomValidado(cupom)">
-              Cupom validado
+              <span class="codigo-cupom">{{ gerarId(cupom.id) || codigo }}</span>
             </div>
           </div>
+
+          <div class="divisor-fino"></div>
+
+          <!-- Linha 2: Estabelecimento + Validade -->
+          <div class="card-row row-meio">
+            <div class="info-bloco estabelecimento">
+              <span class="lbl">Estabelecimento</span>
+              <strong class="val">{{ cupom.ofertaParceiro?.idParceiroNavigation?.nome || 'Parceiro Desconhecido' }}</strong>
+            </div>
+            <div class="info-bloco validade">
+              <span class="lbl">VALIDADE</span>
+              <strong class="val">{{ cupom.ofertaParceiro?.validade ? (cupom.ofertaParceiro.validade | date: 'dd/MM/yyyy') : '30 dias' }}</strong>
+            </div>
+          </div>
+
+          <div class="divisor-fino"></div>
+
+          <!-- Linha 3: Preço + Desconto -->
+          <div class="card-row row-fim">
+            <span class="lbl-desconto">Valor do desconto</span>
+            <div class="valores-container">
+              <strong class="preco-verde">
+                {{
+                  cupom.ofertaParceiro?.preco != null
+                    ? formatarPreco(calcularPrecoComDesconto(cupom.ofertaParceiro.preco, cupom.ofertaParceiro?.desconto))
+                    : valor
+                }}
+              </strong>
+              <div class="badge-porcentagem" *ngIf="cupom.ofertaParceiro?.desconto != null && cupom.ofertaParceiro?.desconto > 0">
+                -{{ formatarPorcentagem(cupom.ofertaParceiro?.desconto) }}
+              </div>
+            </div>
+          </div>
+
         </div>
+
+        <!-- Botão Roxo Inferior -->
+        <button class="btn-extendido" color="royal" (click)="expandirCupom(cupom)">
+          VER CUPOM EXTENDIDO
+        </button>
+
       </div>
+
     </div>
 
-    <!-- Botão Próximo -->
-    <ion-button
-      class="carrossel-btn carrossel-btn-next"
-      (click)="proximoCupom()"
-      [disabled]="indiceAtual === filtrarCupons().length - 1"
-      fill="clear">
-      <ion-icon aria-hidden="true" src="../assets/icon/ChevronForward.svg"></ion-icon>
-    </ion-button>
-  </div>
-
-  <!-- Indicadores de Página -->
-  <div class="carrossel-indicators" *ngIf="filtrarCupons().length > 1">
-    <ion-button
-      *ngFor="let cupom of filtrarCupons(); let i = index"
-      class="indicator-btn"
-      [class.active]="i === indiceAtual"
-      (click)="irParaCupom(i)"
-      fill="clear"
-      size="small">
-      {{ i + 1 }}
-    </ion-button>
-  </div>
-
-  <ng-template #semResultados>
-    <div class="mensagem-vazia">
-      <p>{{ mensagemVazia }}</p>
-    </div>
-  </ng-template>
+    <!-- Mensagem Vazia -->
+    <ng-template #semResultados>
+      <div class="mensagem-vazia">
+        <p>{{ mensagemVazia }}</p>
+      </div>
+    </ng-template>
   </div>
 </ion-content>
 
-<!-- Modal de expansão do cupom para web e mobile -->
+<!-- Modal de expansão do cupom para web e mobile (MANTIDO INTACTO) -->
 <ion-modal
   [isOpen]="cupomExpandido !== null"
   (didDismiss)="fecharCupomExpandido()"
@@ -194,7 +152,7 @@
         <ion-title>Cupom Expandido</ion-title>
         <ion-buttons slot="end">
           <ion-button (click)="fecharCupomExpandido()">
-            <ion-icon aria-hidden="true" src="../assets/icon/Close.svg"></ion-icon>
+            <ion-icon aria-hidden="true" src="../assets/icon/Close.svg" style="filter: brightness(0) invert(1);"></ion-icon>
           </ion-button>
         </ion-buttons>
       </ion-toolbar>
@@ -305,4 +263,3 @@
     </ion-content>
   </ng-template>
 </ion-modal>
-

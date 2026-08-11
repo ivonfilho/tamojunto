@@ -1,8 +1,8 @@
-<h2 [class.large-form]="isFormLarge">Cadastre-se e faça parte do nosso clube de benefícios</h2>
+<h2 [class.large-form]="isFormLarge" class="titulo-logins">Cadastre-se e faça parte do nosso clube de benefícios</h2>
 <div class="form-container premium-form" [class.large-form]="isFormLarge">
   <form [formGroup]="loginForm" class="form-group">
     <div class="input-group">
-      <ion-label position="stacked">Tipo de Cadastro</ion-label>
+
       <div class="input-group">
         <ion-segment formControlName="tipoCadastro" (ionChange)="onTipoPessoaChange()">
           <!-- MOTORISTA (PF) - COMENTADO TEMPORARIAMENTE -->
@@ -45,12 +45,12 @@
         maxlength="18"
         required
       ></ion-input>
-    
+
       <div *ngIf="consultandoCNPJ" style="margin-top: 8px; display: flex; align-items: center;">
         <ion-spinner name="dots" color="primary"></ion-spinner>
         <span style="margin-left: 8px;">Consultando CNPJ...</span>
       </div>
-    
+
       <span *ngIf="cnpjInvalid && !consultandoCNPJ && cnpjNaoMEI" class="error-message">Este CNPJ não é de MEI. Apenas MEIs podem se cadastrar nesta categoria.</span>
       <span *ngIf="cnpjInvalid && !consultandoCNPJ && !cnpjNaoMEI" class="error-message">CNPJ inválido</span>
     </div>
@@ -80,7 +80,7 @@
         {{ loginForm.get('contato')?.errors?.['telefoneBr'] }}
       </span>
     </div>
-    
+
     <div class="input-group" *ngIf="isPessoaJuridica()">
       <ion-input label="CNPJ" label-placement="stacked"
         formControlName="cnpj"
@@ -92,12 +92,12 @@
         maxlength="18"
         required
       ></ion-input>
-    
+
       <div *ngIf="consultandoCNPJ" style="margin-top: 8px; display: flex; align-items: center;">
         <ion-spinner name="dots" color="primary"></ion-spinner>
         <span style="margin-left: 8px;">Consultando CNPJ...</span>
       </div>
-    
+
       <span *ngIf="cnpjInvalid && !consultandoCNPJ && empresaInativa" class="error-message">A empresa não está ativa. Verifique a situação cadastral.</span>
       <span *ngIf="cnpjInvalid && !consultandoCNPJ && !empresaInativa" class="error-message">CNPJ inválido</span>
     </div>
@@ -142,14 +142,14 @@
         Use nome e sobrenome apenas com letras (ex.: Maria Silva).
       </span>
     </div>
-    
+
     <div class="input-group">
       <ion-input label="E-mail" label-placement="stacked" formControlName="email" fill="outline" placeholder="Seu e-mail" type="email" inputmode="email" autocomplete="email"></ion-input>
       <span *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.errors?.['email']" class="error-message">
         E-mail inválido. Verifique o formato.
       </span>
     </div>
-    
+
     <div class="input-group">
       <ion-input label="Senha" label-placement="stacked" formControlName="senha" fill="outline" placeholder="Sua senha" type="password" autocomplete="new-password">
         <ion-input-password-toggle slot="end"></ion-input-password-toggle>
@@ -159,7 +159,7 @@
         {{ senhaRegrasTexto }}
       </span>
     </div>
-    
+
     <div class="input-group">
       <ion-input label="Confirmar senha" label-placement="stacked" formControlName="confirmacaoSenha" fill="outline" placeholder="Confirme sua senha" type="password" required>
         <ion-input-password-toggle slot="end"></ion-input-password-toggle>

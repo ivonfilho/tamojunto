@@ -130,6 +130,7 @@ export class ProfileModalComponent implements OnInit {
   }
 
   irParaPlanos() {
+    this.closeModal();
     this.router.navigate(['/Assinatura']);
   }
 

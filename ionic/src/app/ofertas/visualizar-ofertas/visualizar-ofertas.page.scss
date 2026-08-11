@@ -1,4 +1,5 @@
-.ion-page, ion-content {
+.ion-page,
+ion-content {
   --overflow: auto;
   --scroll-y: true;
 }
@@ -81,7 +82,7 @@ ion-content {
     margin: 8px 0 4px;
     letter-spacing: -0.02em;
   }
-  
+
   .modal-oferta-sub {
     margin: 0;
     font-size: 15px;
@@ -126,7 +127,7 @@ ion-content {
     font-weight: 600;
     text-align: right;
   }
-  
+
   .valor-destaque {
     color: #28bb50;
     font-size: 16px;
@@ -136,7 +137,7 @@ ion-content {
 
 .oferta-acoes {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 12px;
   margin-top: 10px;
 
@@ -208,6 +209,10 @@ ion-content {
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }

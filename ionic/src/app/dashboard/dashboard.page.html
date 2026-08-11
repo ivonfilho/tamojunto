@@ -1,17 +1,3 @@
-<ion-header [translucent]="true">
-  <ion-toolbar color="primary">
-    <ion-title>
-      <ion-icon aria-hidden="true" src="../assets/icon/HomeOutline.svg" slot="start"></ion-icon>
-      Dinheiro no bolso
-    </ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="refreshDashboard()" fill="clear">
-        <ion-icon aria-hidden="true" src="../assets/icon/Refresh.svg" slot="icon-only"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
-
 
 
 <ion-content [scrollY]="true" [scrollEvents]="true" class="dashboard-container">
@@ -39,8 +25,8 @@
   <div class="stats-grid">
       <ion-card class="stat-card">
         <ion-card-content>
-          <div class="stat-icon" style="background: var(--ion-color-success); border: none;">
-            <ion-icon aria-hidden="true" src="../assets/icon/TrendingUp.svg" style="color: white;"></ion-icon>
+          <div class="stat-icon" style="background: var(--ion-color-tertiary); border: none;">
+            <ion-icon aria-hidden="true" src="../assets/icon/TrendingUp.svg" style="filter: brightness(0) invert(1);"></ion-icon>
           </div>
           <div class="stat-info">
             <p class="stat-value">{{ chartData.length || 0 }}</p>
@@ -51,7 +37,7 @@
       <ion-card class="stat-card">
         <ion-card-content>
           <div class="stat-icon" style="background: var(--ion-color-primary); border: none;">
-            <ion-icon aria-hidden="true" src="../assets/icon/Pricetags.svg" style="color: white;"></ion-icon>
+            <ion-icon aria-hidden="true" src="../assets/icon/Pricetags.svg" style="filter: brightness(0) invert(1);"></ion-icon>
           </div>
           <div class="stat-info">
             <p class="stat-value">{{ oferta.length || 0 }}</p>
@@ -62,7 +48,7 @@
       <ion-card class="stat-card">
         <ion-card-content>
           <div class="stat-icon" style="background: var(--ion-color-warning); border: none;">
-            <ion-icon aria-hidden="true" src="../assets/icon/Receipt.svg" style="color: white;"></ion-icon>
+            <ion-icon aria-hidden="true" src="../assets/icon/Receipt.svg" style="filter: brightness(0) invert(1);"></ion-icon>
           </div>
           <div class="stat-info">
             <p class="stat-value">{{ cupons?.length || 0 }}</p>
@@ -135,7 +121,7 @@
     <ion-grid class="offers-grid" *ngIf="oferta && oferta.length > 0">
       <ion-row>
         <ion-col size="12" sizeMd="6" sizeLg="4" *ngFor="let oferta of oferta">
-          <div class="offer-card" [ngClass]="{'offer-relampago': (oferta.tipoOferta || '').toLowerCase() === 'relampago'}">
+          <div class="offer-card" [ngClass]="{'offer-relampago': (oferta.tipoOferta || '').toLowerCase().replace('â', 'a').trim() === 'relampago'}">
             <div class="offer-card-content">
               <ion-chip  class="offer-chip">
                 <ion-avatar>
@@ -166,26 +152,37 @@
                 </div>
               </ng-template>
 
-              <div class="offer-details">
-                <div class="offer-date">
-                  <ion-icon aria-hidden="true" src="../assets/icon/CalendarOutline.svg" class="date-icon"></ion-icon>
-                  {{ oferta.dataCriacao | date:'dd/MM/yyyy' }}
+              <ion-card-content class="offer-details">
+                <ion-card-subtitle>{{ oferta.dataCriacao | date }}</ion-card-subtitle>
+                <ion-card-title>{{ oferta.nomeProduto }}</ion-card-title>
+                <p>{{ oferta.descricao }}</p>
+
+                <!-- Informações de preço -->
+                <div class="price-info" *ngIf="oferta.preco">
+                  <div class="price-row">
+                    <span class="price-label">Valor Inicial:</span>
+                    <span class="price-value initial-price">{{ oferta.preco | brlCurrency }}</span>
+                  </div>
+
+                  <div class="price-row" *ngIf="oferta.desconto && oferta.desconto > 0">
+                    <span class="price-label">Desconto:</span>
+                    <span class="price-value discount">{{ oferta.desconto }}%</span>
+                  </div>
+
+                  <div class="price-row final-price-row">
+                    <span class="price-label">Valor Final:</span>
+                    <span class="price-value final-price">{{ calcularPrecoComDesconto(oferta.preco, oferta.desconto) | brlCurrency }}</span>
+                  </div>
                 </div>
-                <h3 class="offer-name">{{ oferta.nomeProduto }}</h3>
-                <p class="offer-description">{{ oferta.descricao }}</p>
-                <div class="offer-price-info">
-                  <span class="price-label">Preço:</span>
-                  <span class="price-value">{{ calcularPrecoComDesconto(oferta.preco, oferta.desconto) | brlCurrency }}</span>
-                </div>
-              </div>
+              </ion-card-content>
 
               <div class="offer-button-container">
                 <ion-button expand="block"
-                           [color]="(oferta.tipoOferta || '').toLowerCase() === 'relampago' ? 'warning' : 'primary'"
-                           (click)="verOferta(oferta.id)"
-                           [class]="'offer-button' + ((oferta.tipoOferta || '').toLowerCase() === 'relampago' ? ' offer-button-relampago' : '')">
-                  <ion-icon [src]="(oferta.tipoOferta || '').toLowerCase() === 'relampago' ? '../assets/icon/Flash.svg' : '../assets/icon/Eye.svg'" slot="start" aria-hidden="true"></ion-icon>
-                  Ver Oferta
+                           [color]="(oferta.tipoOferta || '').toLowerCase().replace('â', 'a').trim() === 'relampago' ? 'warning' : 'primary'"
+                           [class]="'offer-button' + ((oferta.tipoOferta || '').toLowerCase().replace('â', 'a').trim() === 'relampago' ? ' offer-button-relampago' : '')"
+                           (click)="verOferta(oferta.id)">
+                  <ion-icon [src]="(oferta.tipoOferta || '').toLowerCase().replace('â', 'a').trim() === 'relampago' ? '../assets/icon/Flash.svg' : '../assets/icon/Eye.svg'" slot="start" aria-hidden="true" style="filter: brightness(0) invert(1);"></ion-icon>
+                  VER OFERTA
                 </ion-button>
               </div>
             </div>
@@ -271,7 +268,7 @@
         <ion-title>Cupom Expandido</ion-title>
         <ion-buttons slot="end">
           <ion-button (click)="fecharDetalhesCupom()">
-            <ion-icon aria-hidden="true" src="../assets/icon/Close.svg"></ion-icon>
+            <ion-icon aria-hidden="true" src="../assets/icon/Close.svg" style="filter: brightness(0) invert(1);"></ion-icon>
           </ion-button>
         </ion-buttons>
       </ion-toolbar>

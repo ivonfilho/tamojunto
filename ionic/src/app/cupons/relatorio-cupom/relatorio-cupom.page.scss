@@ -724,3 +724,40 @@ ion-row:not(.header) {
     }
   }
 }
+
+.export-btn {
+  --background: rgba(255, 255, 255, 0.15);
+  --background-hover: rgba(255, 255, 255, 0.25);
+  --border-radius: 6px;
+  --border-width: 1px;
+  --border-style: solid;
+  --border-color: rgba(255, 255, 255, 0.4);
+  --color: white;
+  --padding-start: 10px;
+  --padding-end: 10px;
+  font-weight: 500;
+  margin-left: 8px;
+  font-size: 0.85rem;
+  height: 32px;
+}
+
+
+.export-text {
+  display: inline;
+}
+@media (max-width: 768px) {
+  .export-btn {
+    --padding-start: 8px;
+    --padding-end: 8px;
+  }
+  .export-text {
+    display: none;
+  }
+  ion-icon[slot="start"] {
+    margin-right: 0 !important;
+  }
+}
+
+
+.sortable-th { cursor: pointer; user-select: none; white-space: nowrap; }
+.sortable-th ion-icon { vertical-align: middle; margin-left: 4px; font-size: 14px; }

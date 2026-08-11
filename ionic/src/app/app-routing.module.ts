@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { ParceiroGuard } from './guard/parceiro.guard';
+import { ClienteGuard } from './guard/cliente.guard';
 
 const routes: Routes = [
   {
@@ -34,11 +36,13 @@ const routes: Routes = [
   },
   {
     path: 'ofertas',
+    canActivate: [ClienteGuard],
     loadChildren: () =>
       import('./ofertas/ofertas.module').then((m) => m.OfertasPageModule)
   },
   {
     path: 'editar-oferta/:id',
+    canActivate: [ParceiroGuard],
     loadChildren: () =>
       import('./ofertas/editar-ofertas/editar-ofertas.module').then((m) => m.EditarOfertasPageModule)
   },
@@ -54,6 +58,7 @@ const routes: Routes = [
   },
   {
     path: 'cadastro-oferta',
+    canActivate: [ParceiroGuard],
     loadChildren: () =>
       import('./cadastro-oferta/cadastro-oferta.module').then((m) => m.CadastroOfertaPageModule)
   },
@@ -74,6 +79,7 @@ const routes: Routes = [
   },
   {
     path: 'resgatar-cupom/:id',
+    canActivate: [ParceiroGuard],
     loadChildren: () => import('./cupons/resgatar-cupom/resgatar-cupom.module').then((m) => m.ResgatarCupomComponentModule)
   },
   {
@@ -133,6 +139,11 @@ const routes: Routes = [
   {
     path: 'confirmar-codigo-sms',
     loadChildren: () => import('./confirmar-codigo-sms/confirmar-codigo-sms.module').then( m => m.ConfirmarCodigoSmsPageModule)
+  },
+  {
+    path: 'ofertas-parceiro',
+    canActivate: [ParceiroGuard],
+    loadChildren: () => import('./ofertas-parceiro/ofertas-parceiro.module').then( m => m.OfertasParceiroPageModule)
   }
 ];
 
