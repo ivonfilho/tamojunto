@@ -25,3 +25,6 @@
 .env.local
 .env.*.local
 /TamoJunto.API/railway.env
+*.sql
+*.zip
+*.apk

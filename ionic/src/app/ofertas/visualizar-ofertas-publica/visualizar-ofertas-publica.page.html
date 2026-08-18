@@ -34,6 +34,18 @@
     </ion-header>
 
     <ion-card class="oferta-card">
+      <!-- Informações do Parceiro (Avatar + Nome) -->
+      <div style="display: flex; align-items: center; padding: 16px 16px 0 16px; gap: 12px; margin-bottom: 16px;">
+        <img [src]="oferta['idParceiroNavigation']?.['fotoPerfil'] || 'https://ionicframework.com/docs/img/demos/avatar.svg'" style="width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 1px solid #e5e7eb; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+        <div style="flex: 1;">
+          <h2 style="margin: 0; font-size: 16px; font-weight: 700; color: #1f2937;">{{ oferta['idParceiroNavigation']?.['idEmpresaNavigation']?.['nome'] || 'Estabelecimento Parceiro' }}</h2>
+          <p style="margin: 4px 0 0 0; font-size: 12px; color: #6b7280; display: flex; justify-content: space-between; align-items: center;">
+            <span>Oferta Autorizada</span>
+            <span style="font-weight: 600; color: #374151;">Validade: {{ (oferta?.validade || oferta?.dataCriacao) | date:'dd/MM/yyyy' }}</span>
+          </p>
+        </div>
+      </div>
+
       <!-- Imagem da Oferta -->
       <div class="oferta-imagem" *ngIf="oferta.imagemPaths && oferta.imagemPaths.length > 0">
         <img [src]="oferta.imagemPaths[0]" [alt]="oferta.nomeProduto" />

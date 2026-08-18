@@ -67,11 +67,26 @@ export class OfertasPage implements OnInit {
   private aplicarBusca() {
     this.route.queryParams.subscribe(params => {
       const termoBusca = params['busca'];
+      const categoria = params['categoria'];
+      let mudou = false;
+      
       if (termoBusca && termoBusca.trim()) {
         this.termoAtivo = termoBusca.trim();
-        this.buscarOfertas(this.termoAtivo);
+        mudou = true;
       } else {
         this.termoAtivo = '';
+      }
+
+      if (categoria && categoria.trim()) {
+        const slug = categoria.trim();
+        const matched = this.categorias.find(c => this.toSlug(c) === slug);
+        this.categoriaSelecionada = matched || slug;
+        mudou = true;
+      }
+      
+      if (mudou) {
+        this.aplicarFiltros();
+      } else {
         this.aplicarFiltros();
       }
     });
@@ -89,6 +104,11 @@ export class OfertasPage implements OnInit {
     return oferta.preco - (oferta.preco * oferta.desconto / 100);
   }
 
+  toSlug(text: string): string {
+    if (!text) return '';
+    return text.toString().normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim().replace(/[^a-z0-9 ]/g, '').replace(/\s+/g, '-');
+  }
+
   // Formatar valor para exibição
   formatarValor(valor: number): string {
     return formatCurrencyBRL(valor);
@@ -98,6 +118,7 @@ export class OfertasPage implements OnInit {
     this.termoAtivo = '';
     this.categoriaSelecionada = '';
     this.filtroTipo = '';
+    this.tipoFiltroTipo = '';
     this.tipoFiltro = 'todas';
     this.router.navigate(['/ofertas']);
     this.aplicarFiltros();
@@ -170,8 +191,20 @@ export class OfertasPage implements OnInit {
             // Aplicar busca se houver termo na URL
             this.route.queryParams.subscribe(params => {
               const termoBusca = params['busca'];
+              const categoria = params['categoria'];
+              let mudou = false;
               if (termoBusca && termoBusca.trim()) {
-                this.buscarOfertas(termoBusca.trim());
+                this.termoAtivo = termoBusca.trim();
+                mudou = true;
+              }
+              if (categoria && categoria.trim()) {
+                const slug = categoria.trim();
+                const matched = this.categorias.find(c => this.toSlug(c) === slug);
+                this.categoriaSelecionada = matched || slug;
+                mudou = true;
+              }
+              if (mudou) {
+                this.aplicarFiltros();
               }
             });
             loading.dismiss();
@@ -225,8 +258,20 @@ export class OfertasPage implements OnInit {
             // Aplicar busca se houver termo na URL
             this.route.queryParams.subscribe(params => {
               const termoBusca = params['busca'];
+              const categoria = params['categoria'];
+              let mudou = false;
               if (termoBusca && termoBusca.trim()) {
-                this.buscarOfertas(termoBusca.trim());
+                this.termoAtivo = termoBusca.trim();
+                mudou = true;
+              }
+              if (categoria && categoria.trim()) {
+                const slug = categoria.trim();
+                const matched = this.categorias.find(c => this.toSlug(c) === slug);
+                this.categoriaSelecionada = matched || slug;
+                mudou = true;
+              }
+              if (mudou) {
+                this.aplicarFiltros();
               }
             });
             loading.dismiss();

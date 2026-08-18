@@ -92,43 +92,7 @@ ion-button[fill="outline"] {
   color: #666;
 }
 
-// Segment buttons responsivos
-ion-segment {
-  margin: 16px 0;
-  --background: #f8f9fa;
-  border-radius: 12px;
-  padding: 4px;
 
-  ion-segment-button {
-    --color: #666;
-    --color-checked: #ffffff;
-    --background-checked: var(--ion-color-primary);
-    --border-radius: 8px;
-    font-weight: 500;
-    font-size: 0.8rem;
-    min-height: 40px;
-
-    ion-label {
-      color: inherit;
-      font-size: 0.8rem;
-      font-weight: 500;
-    }
-  }
-}
-
-// Forçar estilo do botão selecionado (o Ionic pode trocar quais vars usa dependendo do modo/tema)
-ion-segment-button.segment-button-checked,
-ion-segment-button[aria-checked="true"] {
-  --background: var(--ion-color-primary) !important;
-  --background-checked: var(--ion-color-primary) !important;
-  --color: #fff !important;
-  --color-checked: #fff !important;
-
-  ion-label {
-    color: var(--ion-color-primary) !important;
-    font-weight: 600 !important;
-  }
-}
 
 // Estilo do cupom - aumentado para mostrar todo conteúdo
 .cupom {
@@ -449,18 +413,7 @@ ion-segment-button[aria-checked="true"] {
   }
 
   // Segment buttons para mobile
-  ion-segment {
-    margin: 12px 0;
 
-    ion-segment-button {
-      font-size: 0.75rem;
-      min-height: 36px;
-
-      ion-label {
-        font-size: 0.75rem;
-      }
-    }
-  }
 
   .cupons-grid {
     padding: 8px;
@@ -614,16 +567,7 @@ ion-segment-button[aria-checked="true"] {
     padding-bottom: calc(20px + env(safe-area-inset-bottom));
   }
 
-  ion-segment {
-    margin: 10px 0;
-    ion-segment-button {
-      min-height: 34px;
-      ion-label {
-        font-size: 0.72rem;
-        white-space: nowrap;
-      }
-    }
-  }
+
 
   .carrossel-container {
     padding: 6px 2px;
@@ -687,11 +631,7 @@ ion-segment-button[aria-checked="true"] {
 }
 
 @media (max-width: 400px) {
-  ion-segment {
-    ion-segment-button ion-label {
-      font-size: 0.68rem;
-    }
-  }
+
 
   .carrossel-btn {
     width: 30px;
@@ -728,18 +668,7 @@ ion-segment-button[aria-checked="true"] {
   }
 
   // Segment buttons mais compactos
-  ion-segment {
-    margin: 8px 0;
 
-    ion-segment-button {
-      font-size: 0.7rem;
-      min-height: 32px;
-
-      ion-label {
-        font-size: 0.7rem;
-      }
-    }
-  }
 
   .cupom {
     padding: 10px;
@@ -1662,3 +1591,8 @@ ion-segment-button[aria-checked="true"] {
 }
 
 // O SCSS do .novo-cupom-card da resposta anterior entra logo abaixo
+.tabs-container ion-segment {
+    --background: transparent;
+    justify-content: center;
+    margin: 0;
+}

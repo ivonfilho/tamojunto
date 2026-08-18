@@ -34,6 +34,7 @@ export class LoginFormComponent implements OnInit {
     this.loginForm = this.formBuilder.group({
       email: ['', Validators.required],
       senha: ['', Validators.required],
+      lembrarMe: [false]
     });
   }
 
@@ -76,7 +77,16 @@ export class LoginFormComponent implements OnInit {
         .then((data: any) => {
           console.log('Login bem-sucedido:', data);
           this.authService.setToken(data.token);
-          localStorage.setItem('tamo_junto_user', JSON.stringify(data));
+          
+          try {
+            localStorage.setItem('tamo_junto_user', JSON.stringify(data));
+          } catch (e: any) {
+            if (e && e.name === 'QuotaExceededError') {
+              console.warn('[Login] QuotaExceededError ao salvar tamo_junto_user. Removendo imagens Base64.');
+              const dataSafe = { ...data, imagemUrl: '', ImagemUrl: '', urlImagem: '', UrlImagem: '' };
+              try { localStorage.setItem('tamo_junto_user', JSON.stringify(dataSafe)); } catch (e2) {}
+            }
+          }
           
           if (isUsuarioParceiroComercial(data)) {
             console.log('[Login] Usuário parceiro, redirecionando para dashboard-parceiro');
@@ -85,8 +95,6 @@ export class LoginFormComponent implements OnInit {
             console.log('[Login] Usuário cliente, redirecionando para dashboard');
             window.location.href = '/#/dashboard';
           }
-          
-          this.spinner = false;
         })
         .catch((e) => {
           console.error('Erro no login:', e);
@@ -107,6 +115,8 @@ export class LoginFormComponent implements OnInit {
           }
           
           this.presentToastErro(mensagemErro);
+        })
+        .finally(() => {
           this.spinner = false;
         });
     } else {

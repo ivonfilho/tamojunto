@@ -56,11 +56,21 @@ export class AppComponent implements OnInit {
     // Detecta se é desktop ou mobile
     this.detectarTipoDispositivo();
 
-    // Configura o router e rota ativa
+    // Configura o router e rota ativa, e sempre rola para o topo
     this.rotaAtiva = this.router.url;
     this.router.events.subscribe((event: any) => {
       if (event && event.url) {
         this.rotaAtiva = event.url;
+      }
+      if (event && event.constructor.name === 'NavigationEnd') {
+        setTimeout(() => {
+          const contents = document.querySelectorAll('ion-content');
+          contents.forEach(content => {
+            if (content.scrollToTop) {
+              content.scrollToTop(300).catch(() => {});
+            }
+          });
+        }, 100);
       }
     });
 

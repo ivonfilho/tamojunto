@@ -481,7 +481,7 @@ public async Task<IActionResult> ListarComDescontoECategoria()
             // Buscar ofertas do parceiro
             var ofertas = await dbContext.OfertaParceiro
                 .Where(o => o.IdParceiro == idParceiro)
-                .Select(o => new { o.Id, o.NomeProduto, o.Descricao, o.Preco, o.Desconto, o.Validade, o.Categoria })
+                .Select(o => new { o.Id, o.NomeProduto, o.Descricao, o.Preco, o.Desconto, o.Validade, o.Categoria, o.TipoProduto, o.TipoOferta })
                 .ToListAsync();
 
             if (!ofertas.Any())
@@ -522,7 +522,9 @@ public async Task<IActionResult> ListarComDescontoECategoria()
                             preco = oferta.Preco,
                             desconto = oferta.Desconto,
                             validade = oferta.Validade,
-                            categoria = oferta.Categoria
+                            categoria = oferta.Categoria,
+                            tipoProduto = oferta.TipoProduto,
+                            tipoOferta = oferta.TipoOferta
                         }
                     });
                 }

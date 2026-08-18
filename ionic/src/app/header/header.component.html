@@ -38,7 +38,7 @@
           </div>
 
           <div class="welcome-text">
-            👋 Tamo Junto, <strong>{{ usuario?.nome ? (getPrimeiroNome(usuario.nome) | titlecase) : 'Usuário' }}</strong>
+            👋 Olá, <strong>{{ usuario?.nome ? (getPrimeiroNome(usuario.nome) | titlecase) : 'Usuário' }}</strong>
           </div>
 
           <!-- Avatar do Usuário -->
@@ -140,41 +140,46 @@
             </div>
 
             <div *ngIf="resultadosBusca.length > 0 && !isSearching" class="search-results-list">
-               <!-- Card Menor -->
-               <div class="small-offer-card" *ngFor="let item of resultadosBusca" (click)="goToItem(item)">
-                  <div class="small-card-header">
-                    <div class="small-card-parceiro">
-                      <img *ngIf="item.idParceiroNavigation?.fotoPerfil || item.idParceiroNavigation?.FotoPerfil" [src]="item.idParceiroNavigation?.fotoPerfil || item.idParceiroNavigation?.FotoPerfil" class="mini-logo" />
-                      <div>
-                        <span class="mini-parceiro-nome">{{ item.idParceiroNavigation?.idEmpresaNavigation?.nome || 'Parceiro' }}</span>
-                        <span class="mini-data" *ngIf="item.dataCriacao">
-                           {{ item.dataCriacao | date:'dd \'de\' MMM. \'de\' yyyy':'':'pt-BR' }}
-                        </span>
-                      </div>
-                    </div>
-                    <ion-button size="small" class="mini-btn-ver">VER OFERTA</ion-button>
-                  </div>
+               <!-- Card Menor (Compact) -->
+               <div class="compact-offer-card" *ngFor="let item of resultadosBusca" (click)="goToItem(item)"
+                    [ngClass]="{'offer-relampago': (item.tipoOferta || '').toLowerCase().replace('â', 'a').trim() === 'relampago'}">
+                 
+                 <div class="compact-header">
+                   <img
+                     class="compact-avatar"
+                     *ngIf="item['idParceiroNavigation']?.['fotoPerfil'] || item['idParceiroNavigation']?.['FotoPerfil']; else defaultAvatar"
+                     [src]="item['idParceiroNavigation']?.['fotoPerfil'] || item['idParceiroNavigation']?.['FotoPerfil']"
+                     alt="Foto do parceiro"
+                   />
+                   <ng-template #defaultAvatar>
+                     <img class="compact-avatar" alt="Avatar padrão" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+                   </ng-template>
 
-                  <div class="small-card-title">
-                    <h4>{{ item.nomeProduto }}</h4>
-                  </div>
+                   <div class="compact-title-group">
+                     <h3 class="compact-title">{{ item.nomeProduto }}</h3>
+                     <span class="compact-category">{{ item['idParceiroNavigation']?.['idEmpresaNavigation']?.['nome'] || 'Estabelecimento' }}</span>
+                   </div>
 
-                  <div class="small-card-valores">
-                    <div class="val-row">
-                      <span class="val-label">Valor Inicial:</span>
-                      <span class="val-old" *ngIf="item.preco">R${{ item.preco | number:'1.2-2' }}</span>
-                      <span class="val-old" *ngIf="!item.preco">-</span>
-                    </div>
-                    <div class="val-row" *ngIf="item.desconto && item.desconto > 0">
-                      <span class="val-label">Desconto:</span>
-                      <span class="val-badge">{{ item.desconto }}%</span>
-                    </div>
-                    <div class="val-row highlight">
-                      <span class="val-label">Valor Final:</span>
-                      <span class="val-new" *ngIf="item.preco && item.desconto">R${{ calcularDescontoCard(item.preco, item.desconto) | number:'1.2-2' }}</span>
-                      <span class="val-new" *ngIf="!item.preco || !item.desconto">-</span>
-                    </div>
-                  </div>
+                   <div class="compact-validity">
+                     <span class="validity-label">VALIDADE</span>
+                     <span class="validity-date">{{ (item.validade || item.dataCriacao) | date:'dd/MM/yyyy' }}</span>
+                   </div>
+                 </div>
+
+                 <div class="compact-divider"></div>
+
+                 <div class="compact-pricing">
+                   <span class="old-price">Sem desconto: <strong>{{ (item.preco || 0) | currency:'BRL':'symbol' }}</strong></span>
+                   <div class="new-price-group">
+                     <span class="new-price">{{ (item.preco && item.desconto ? calcularDescontoCard(item.preco, item.desconto) : item.preco || 0) | currency:'BRL':'symbol' }}</span>
+                     <span class="discount-badge" *ngIf="item.desconto > 0">-{{ item.desconto }}%</span>
+                   </div>
+                 </div>
+
+                 <button class="compact-action-btn">
+                   <span class="btn-text">VER DETALHES DA OFERTA</span>
+                   <span class="btn-savings" *ngIf="item.preco && item.desconto">ECONOMIZE<br/>{{ (item.preco - calcularDescontoCard(item.preco, item.desconto)) | currency:'BRL':'symbol' }}</span>
+                 </button>
                </div>
 
                <!-- Ver Mais -->

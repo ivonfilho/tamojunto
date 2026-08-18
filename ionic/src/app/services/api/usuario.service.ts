@@ -49,10 +49,7 @@ export class UsuarioService extends ApiConfig {
 
             data.Id = userId;
             // Usar a mesma chave que o AuthService
-            localStorage.setItem('tamo_junto_user', JSON.stringify(data));
-            // Manter compatibilidade com a chave antiga
-            localStorage.setItem('usuarioLogado', JSON.stringify(data));
-            this.usuarioLogadoSubject.next(data);
+            this.setUsuarioLogado(data);
           } else {
             console.error(' ID do usuário não encontrado no token:', decodedToken);
           }
@@ -200,8 +197,19 @@ export class UsuarioService extends ApiConfig {
   setUsuarioLogado(usuario: any): void {
     this.usuarioLogadoSubject.next(usuario);
     // Salvar em ambas as chaves para manter compatibilidade
-    localStorage.setItem('tamo_junto_user', JSON.stringify(usuario));
-    localStorage.setItem('usuarioLogado', JSON.stringify(usuario));
+    try {
+      localStorage.setItem('tamo_junto_user', JSON.stringify(usuario));
+      localStorage.setItem('usuarioLogado', JSON.stringify(usuario));
+    } catch (e: any) {
+      if (e && e.name === 'QuotaExceededError') {
+        console.warn('[UsuarioService] QuotaExceededError detectado. Removendo imagens Base64.');
+        const usuarioSafe = { ...usuario, imagemUrl: '', ImagemUrl: '', urlImagem: '', UrlImagem: '' };
+        try { 
+          localStorage.setItem('tamo_junto_user', JSON.stringify(usuarioSafe));
+          localStorage.setItem('usuarioLogado', JSON.stringify(usuarioSafe));
+        } catch (e2) {}
+      }
+    }
   }
 
   getUsuarioLogado(): any {

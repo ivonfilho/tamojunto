@@ -79,84 +79,91 @@
     </div>
   </div>
 
-  <!-- Lista de ofertas -->
   <div class="offer-grid">
-    <ion-card *ngFor="let oferta of ofertasFiltradas" class="offer-card" [ngClass]="{'offer-relampago': (oferta.tipoOferta || '').toLowerCase().replace('â', 'a') === 'relampago'}">
-      <div class="offer-card-content">
+    <div *ngFor="let oferta of ofertasFiltradas" class="premium-offer-card"
+         [ngClass]="{'offer-relampago': (oferta.tipoOferta || '').toLowerCase().replace('â', 'a') === 'relampago'}"
+         (click)="verOferta(oferta.id!)"
+         style="cursor: pointer;">
 
-
-        <ion-chip color="light" class="offer-chip">
-          <ion-avatar>
-            <img
-              *ngIf="oferta.idParceiroNavigation?.fotoPerfil || oferta.idParceiroNavigation?.FotoPerfil; else defaultAvatar"
-              [src]="oferta.idParceiroNavigation?.fotoPerfil || oferta.idParceiroNavigation?.FotoPerfil"
-              alt="Foto de perfil do parceiro"
-            />
-            <ng-template #defaultAvatar>
-              <img
-                alt="Avatar padrÃ£o"
-                src="https://ionicframework.com/docs/img/demos/avatar.svg"
-              />
-            </ng-template>
-          </ion-avatar>
-          <ion-label class="offer-title">{{ oferta.idParceiroNavigation?.idEmpresaNavigation?.nome }}</ion-label>
-        </ion-chip>
-
+      <!-- Imagem de topo com overlay gradiente -->
+      <div class="card-image-wrapper">
         <img
-        *ngIf="oferta.imagem && oferta.imagem.length > 0; else placeholder"
-        [src]="oferta.imagem[0].path"
-        alt="Imagem da oferta"
-          class="offer-image"
+          *ngIf="oferta.imagem && oferta.imagem.length > 0; else placeholder"
+          [src]="oferta.imagem[0].path"
+          alt="Imagem da oferta"
         />
         <ng-template #placeholder>
           <div class="placeholder-container">
             <ion-icon aria-hidden="true" src="../assets/icon/ImageOutline.svg" class="placeholder-icon"></ion-icon>
           </div>
         </ng-template>
+        <div class="image-gradient-overlay"></div>
+      </div>
 
-        <ion-card-content class="offer-details">
-        <ion-card-subtitle>{{ oferta.dataCriacao | date }}</ion-card-subtitle>
-          <ion-card-title>{{ oferta.nomeProduto }}</ion-card-title>
-        <p>{{ oferta.descricao }}</p>
+      <div class="card-content-body">
 
-        <!-- InformaÃ§Ãµes de preÃ§o -->
-        <div class="price-info" *ngIf="oferta.preco">
-          <div class="price-row">
-            <span class="price-label">Valor Inicial:</span>
-            <span class="price-value initial-price">{{ formatarValor(oferta.preco) }}</span>
-          </div>
-
-          <div class="price-row" *ngIf="oferta.desconto && oferta.desconto > 0">
-            <span class="price-label">Desconto:</span>
-            <span class="price-value discount">{{ oferta.desconto }}%</span>
-          </div>
-
-          <div class="price-row final-price-row">
-            <span class="price-label">Valor Final:</span>
-            <span class="price-value final-price">{{ formatarValor(calcularValorFinal(oferta)) }}</span>
+        <!-- Linha 1: Título/Descrição -->
+        <div class="card-header-row">
+          <div class="title-desc-block">
+            <h3 class="card-title">{{ oferta.nomeProduto }}</h3>
+            <p class="card-desc">{{ oferta.descricao }}</p>
           </div>
         </div>
-      </ion-card-content>
 
-        <ion-item *ngIf="parceiro" class="status-toggle">
-        <ion-label>Ativar Oferta</ion-label>
-        <ion-toggle
-            [checked]="oferta.status === true"
-          (ionChange)="alterarStatusOferta(oferta, $event)" >
-        </ion-toggle>
-      </ion-item>
+        <div class="card-divider"></div>
 
-        <div class="offer-button-container">
-          <ion-button expand="block"
-                     [color]="(oferta.tipoOferta || '').toLowerCase().replace('â', 'a') === 'relampago' ? 'warning' : 'success'"
-                     [class]="'offer-button' + ((oferta.tipoOferta || '').toLowerCase().replace('â', 'a') === 'relampago' ? ' offer-button-relampago' : '')"
-                     (click)="verOferta(oferta.id!)">
-            <ion-icon [src]="(oferta.tipoOferta || '').toLowerCase().replace('â', 'a') === 'relampago' ? '../assets/icon/Flash.svg' : '../assets/icon/Eye.svg'" slot="start" aria-hidden="true"></ion-icon>
-            Ver Oferta
-          </ion-button>
+        <!-- Linha 2: Parceiro e Validade -->
+        <div class="card-company-row">
+          <div class="company-info-block">
+            <img
+              class="company-avatar"
+              *ngIf="oferta.idParceiroNavigation?.fotoPerfil || oferta.idParceiroNavigation?.FotoPerfil; else defaultAvatar"
+              [src]="oferta.idParceiroNavigation?.fotoPerfil || oferta.idParceiroNavigation?.FotoPerfil"
+              alt="Foto do estabelecimento"
+            />
+            <ng-template #defaultAvatar>
+              <img class="company-avatar" alt="Avatar padrão" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+            </ng-template>
+            <div class="company-names">
+              <span class="company-label">Estabelecimento</span>
+              <span class="company-name">{{ oferta.idParceiroNavigation?.idEmpresaNavigation?.nome || 'Estabelecimento' }}</span>
+            </div>
+          </div>
+          <div class="validity-block">
+            <span class="validity-label">VALIDADE</span>
+            <span class="validity-date">{{ (oferta.validade || oferta.dataCriacao) | date:'dd/MM/yyyy' }}</span>
+          </div>
+        </div>
+
+        <div class="card-divider"></div>
+
+        <!-- Linha 3: Preços -->
+        <div class="card-pricing-row">
+          <span class="old-price">Sem desconto: <strong>{{ formatarValor(oferta.preco || 0) }}</strong></span>
+          <div class="new-price-group">
+            <span class="new-price">{{ formatarValor(calcularValorFinal(oferta) || 0) }}</span>
+            <span class="discount-badge" *ngIf="oferta.desconto > 0">-{{ oferta.desconto }}%</span>
+          </div>
         </div>
       </div>
-    </ion-card>
+
+      <div class="card-divider mb-10"></div>
+
+      <!-- Rodapé: Botão Ação -->
+      <button class="card-action-btn">
+        <span class="btn-text">VER DETALHES DA OFERTA</span>
+        <span class="btn-savings" *ngIf="oferta.preco && oferta.desconto">ECONOMIZE<br/>{{ formatarValor(oferta.preco - calcularValorFinal(oferta)) }}</span>
+      </button>
+
+      <!-- Toggle Status (Só visível se parceiro estiver visualizando as próprias, não afeta o visual core) -->
+      <div class="partner-status-toggle" *ngIf="parceiro">
+        <ion-item lines="none">
+          <ion-label>Ativar Oferta</ion-label>
+          <ion-toggle [checked]="oferta.status === true" (ionChange)="alterarStatusOferta(oferta, $event)"></ion-toggle>
+        </ion-item>
+      </div>
+
+    </div>
   </div>
 </ion-content>
 

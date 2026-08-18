@@ -4,22 +4,23 @@
 **/publish/
 **/railway-publish/
 # **/wwwroot/  # Permitir arquivos web estáticos
-**/assets/
-**/imagens/
-**/svg/
-**/uploads/
-**/ionic/
+# **/assets/
+# **/imagens/
+# **/svg/
+# **/uploads/
+ionic/
 **/node_modules/
 **/.git/
 **/.vscode/
 **/*.md
 **/*.apk
-**/*.png
-**/*.jpg
-**/*.jpeg
-**/*.gif
-**/*.webp
+# **/*.png
+# **/*.jpg
+# **/*.jpeg
+# **/*.gif
+# **/*.webp
 **/*.zip
+*.zip
 **/*.rar
 **/*.7z
 **/.angular/

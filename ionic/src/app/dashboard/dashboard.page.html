@@ -26,7 +26,7 @@
       <ion-card class="stat-card">
         <ion-card-content>
           <div class="stat-icon" style="background: var(--ion-color-tertiary); border: none;">
-            <ion-icon aria-hidden="true" src="../assets/icon/TrendingUp.svg" style="filter: brightness(0) invert(1);"></ion-icon>
+            <ion-icon aria-hidden="true" src="../assets/icon/BagOutline.svg" style="filter: brightness(0) invert(1);"></ion-icon>
           </div>
           <div class="stat-info">
             <p class="stat-value">{{ chartData.length || 0 }}</p>
@@ -34,7 +34,7 @@
           </div>
         </ion-card-content>
       </ion-card>
-      <ion-card class="stat-card">
+      <ion-card class="stat-card" routerLink="/ofertas" style="cursor: pointer;">
         <ion-card-content>
           <div class="stat-icon" style="background: var(--ion-color-primary); border: none;">
             <ion-icon aria-hidden="true" src="../assets/icon/Pricetags.svg" style="filter: brightness(0) invert(1);"></ion-icon>
@@ -45,13 +45,13 @@
           </div>
         </ion-card-content>
       </ion-card>
-      <ion-card class="stat-card">
+      <ion-card class="stat-card" routerLink="/cupons" style="cursor: pointer;">
         <ion-card-content>
           <div class="stat-icon" style="background: var(--ion-color-warning); border: none;">
             <ion-icon aria-hidden="true" src="../assets/icon/Receipt.svg" style="filter: brightness(0) invert(1);"></ion-icon>
           </div>
           <div class="stat-info">
-            <p class="stat-value">{{ cupons?.length || 0 }}</p>
+            <p class="stat-value">{{ cupons.length || 0 }}</p>
             <h3>Cupons</h3>
           </div>
         </ion-card-content>
@@ -90,7 +90,7 @@
 
       <!-- Cards de categoria -->
       <div class="category-cards">
-        <div class="category-card" *ngFor="let item of chartData.slice(0, 3); let i = index">
+        <div class="category-card" *ngFor="let item of chartData.slice(0, 3); let i = index" routerLink="/ofertas" [queryParams]="{ categoria: toSlug(item.name) }" style="cursor: pointer;">
           <div class="category-icon" [style.background]="getColor(i)">
             <ion-icon [src]="getFixedIcon(i)" class="icon"></ion-icon>
           </div>
@@ -121,71 +121,46 @@
     <ion-grid class="offers-grid" *ngIf="oferta && oferta.length > 0">
       <ion-row>
         <ion-col size="12" sizeMd="6" sizeLg="4" *ngFor="let oferta of oferta">
-          <div class="offer-card" [ngClass]="{'offer-relampago': (oferta.tipoOferta || '').toLowerCase().replace('â', 'a').trim() === 'relampago'}">
-            <div class="offer-card-content">
-              <ion-chip  class="offer-chip">
-                <ion-avatar>
-                  <img
-                    *ngIf="oferta['idParceiroNavigation']?.['fotoPerfil']; else defaultAvatar"
-                    [src]="oferta['idParceiroNavigation']['fotoPerfil']"
-                    alt="Foto de perfil do parceiro"
-                  />
-                  <ng-template #defaultAvatar>
-                    <img
-                      alt="Avatar padrão"
-                      src="https://ionicframework.com/docs/img/demos/avatar.svg"
-                    />
-                  </ng-template>
-                </ion-avatar>
-                <div class="offer-title">{{ oferta['idParceiroNavigation']?.['idEmpresaNavigation']?.['nome'] }}</div>
-              </ion-chip>
-
+          <div class="compact-offer-card" 
+               [ngClass]="{'offer-relampago': (oferta.tipoOferta || '').toLowerCase().replace('â', 'a').trim() === 'relampago'}"
+               (click)="verOferta(oferta.id)">
+            
+            <div class="compact-header">
               <img
-                *ngIf="oferta['imagem'] && oferta['imagem'].length > 0; else placeholder"
-                [src]="oferta['imagem'][0].path"
-                alt="Imagem da oferta"
-                class="offer-image"
+                class="compact-avatar"
+                *ngIf="oferta['idParceiroNavigation']?.['fotoPerfil'] || oferta['idParceiroNavigation']?.['FotoPerfil']; else defaultAvatar"
+                [src]="oferta['idParceiroNavigation']?.['fotoPerfil'] || oferta['idParceiroNavigation']?.['FotoPerfil']"
+                alt="Foto do parceiro"
               />
-              <ng-template #placeholder>
-                <div class="placeholder-container">
-                  <ion-icon aria-hidden="true" src="../assets/icon/ImageOutline.svg" class="placeholder-icon"></ion-icon>
-                </div>
+              <ng-template #defaultAvatar>
+                <img class="compact-avatar" alt="Avatar padrão" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
               </ng-template>
 
-              <ion-card-content class="offer-details">
-                <ion-card-subtitle>{{ oferta.dataCriacao | date }}</ion-card-subtitle>
-                <ion-card-title>{{ oferta.nomeProduto }}</ion-card-title>
-                <p>{{ oferta.descricao }}</p>
+              <div class="compact-title-group">
+                <h3 class="compact-title">{{ oferta.nomeProduto }}</h3>
+                <span class="compact-category">{{ oferta['idParceiroNavigation']?.['idEmpresaNavigation']?.['nome'] || 'Estabelecimento' }}</span>
+              </div>
 
-                <!-- Informações de preço -->
-                <div class="price-info" *ngIf="oferta.preco">
-                  <div class="price-row">
-                    <span class="price-label">Valor Inicial:</span>
-                    <span class="price-value initial-price">{{ oferta.preco | brlCurrency }}</span>
-                  </div>
-
-                  <div class="price-row" *ngIf="oferta.desconto && oferta.desconto > 0">
-                    <span class="price-label">Desconto:</span>
-                    <span class="price-value discount">{{ oferta.desconto }}%</span>
-                  </div>
-
-                  <div class="price-row final-price-row">
-                    <span class="price-label">Valor Final:</span>
-                    <span class="price-value final-price">{{ calcularPrecoComDesconto(oferta.preco, oferta.desconto) | brlCurrency }}</span>
-                  </div>
-                </div>
-              </ion-card-content>
-
-              <div class="offer-button-container">
-                <ion-button expand="block"
-                           [color]="(oferta.tipoOferta || '').toLowerCase().replace('â', 'a').trim() === 'relampago' ? 'warning' : 'primary'"
-                           [class]="'offer-button' + ((oferta.tipoOferta || '').toLowerCase().replace('â', 'a').trim() === 'relampago' ? ' offer-button-relampago' : '')"
-                           (click)="verOferta(oferta.id)">
-                  <ion-icon [src]="(oferta.tipoOferta || '').toLowerCase().replace('â', 'a').trim() === 'relampago' ? '../assets/icon/Flash.svg' : '../assets/icon/Eye.svg'" slot="start" aria-hidden="true" style="filter: brightness(0) invert(1);"></ion-icon>
-                  VER OFERTA
-                </ion-button>
+              <div class="compact-validity">
+                <span class="validity-label">VALIDADE</span>
+                <span class="validity-date">{{ (oferta.validade || oferta.dataCriacao) | date:'dd/MM/yyyy' }}</span>
               </div>
             </div>
+
+            <div class="compact-divider"></div>
+
+            <div class="compact-pricing">
+              <span class="old-price">Sem desconto: <strong>{{ (oferta.preco || 0) | brlCurrency }}</strong></span>
+              <div class="new-price-group">
+                <span class="new-price">{{ (calcularPrecoComDesconto(oferta.preco, oferta.desconto) || 0) | brlCurrency }}</span>
+                <span class="discount-badge" *ngIf="oferta.desconto > 0">-{{ oferta.desconto }}%</span>
+              </div>
+            </div>
+
+            <button class="compact-action-btn">
+              <span class="btn-text">VER DETALHES DA OFERTA</span>
+              <span class="btn-savings" *ngIf="oferta.preco && oferta.desconto">ECONOMIZE<br/>{{ (oferta.preco - calcularPrecoComDesconto(oferta.preco, oferta.desconto)) | brlCurrency }}</span>
+            </button>
           </div>
         </ion-col>
       </ion-row>

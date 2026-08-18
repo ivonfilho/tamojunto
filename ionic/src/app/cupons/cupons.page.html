@@ -30,7 +30,7 @@
       <ion-select style="flex: 1;" label="Filtrar por categoria" labelPlacement="stacked" fill="outline" [(ngModel)]="categoriaPesquisa" (ionChange)="pesquisarPorCategoria()">
         <ion-select-option *ngFor="let cat of categorias" [value]="cat">{{ cat }}</ion-select-option>
       </ion-select>
-      
+
       <button *ngIf="categoriaPesquisa && categoriaPesquisa !== 'Todos'" class="btn-filter-toggle" (click)="limparBusca()" style="color: #ef4444; border: 1px solid #fca5a5; background: #fef2f2; height: 56px; padding: 0 16px; border-radius: 8px; display: flex; align-items: center; gap: 6px; cursor: pointer;">
         <ion-icon src="../assets/icon/Close.svg" style="filter: brightness(0) saturate(100%) invert(35%) sepia(87%) saturate(2333%) hue-rotate(345deg) brightness(98%) contrast(92%); width: 20px; height: 20px;"></ion-icon>
         <span class="hide-on-mobile" style="font-weight: 500; font-size: 0.9rem;">Limpar</span>
@@ -38,17 +38,25 @@
     </div>
 
     <!-- Filtros (Abas) -->
-    <ion-segment [value]="abaAtiva" color="primary" (ionChange)="mudarAba($event.detail.value ? $event.detail.value.toString() : '')" class="ion-margin-bottom">
-      <ion-segment-button value="Gerados">
-        <ion-label>ATIVOS ({{ cuponsAtivos || 0 }})</ion-label>
-      </ion-segment-button>
-      <ion-segment-button value="Utilizados">
-        <ion-label>USADOS ({{ cuponsUsados || 0 }})</ion-label>
-      </ion-segment-button>
-      <ion-segment-button value="Indisponíveis">
-        <ion-label>EXPIRADOS ({{ cuponsExpirados || 0 }})</ion-label>
-      </ion-segment-button>
-    </ion-segment>
+    <div class="tabs-container ion-margin-bottom">
+      <ion-segment mode="md" [value]="abaAtiva" (ionChange)="mudarAba($event.detail.value ? $event.detail.value.toString() : '')">
+        <ion-segment-button value="Gerados" layout="icon-top">
+          <ion-icon src="../assets/icon/CheckmarkCircle.svg" class="hide-on-mobile"></ion-icon>
+          <div class="top-badge hide-on-desktop">{{ cuponsAtivos || 0 }}</div>
+          <ion-label><span class="tab-text">Ativos</span> <ion-badge class="tab-badge hide-on-mobile">{{ cuponsAtivos || 0 }}</ion-badge></ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="Utilizados" layout="icon-top">
+          <ion-icon src="../assets/icon/CloseCircle.svg" class="hide-on-mobile"></ion-icon>
+          <div class="top-badge hide-on-desktop">{{ cuponsUsados || 0 }}</div>
+          <ion-label><span class="tab-text">Usados</span> <ion-badge class="tab-badge badge-blue hide-on-mobile">{{ cuponsUsados || 0 }}</ion-badge></ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="Indisponíveis" layout="icon-top">
+          <ion-icon src="../assets/icon/TimeOutline.svg" class="hide-on-mobile"></ion-icon>
+          <div class="top-badge hide-on-desktop">{{ cuponsExpirados || 0 }}</div>
+          <ion-label><span class="tab-text">Expirados</span> <ion-badge class="tab-badge hide-on-mobile" *ngIf="(cuponsExpirados || 0) > 0">{{ cuponsExpirados || 0 }}</ion-badge></ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </div>
 
     <!-- NOVO LAYOUT EM GRID -->
     <div class="cupons-grid" *ngIf="filtrarCupons().length > 0; else semResultados">

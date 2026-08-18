@@ -359,7 +359,7 @@ public class UsuarioController : ControllerBase
             });
         }
 
-        var token = _tokenUtil.GenerateToken(usuario);
+        var token = _tokenUtil.GenerateToken(usuario, model.LembrarMe);
 
         return new UsuarioVm()
         {

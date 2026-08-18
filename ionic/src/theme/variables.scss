@@ -1,18 +1,16 @@
 // For information on how to create your own theme, please see:
 // http://ionicframework.com/docs/theming/
 
-
-
 :root {
   --ion-item-background: #594fb9;
   --ion-color-primary-selected-hover: #ecc94b;
   --ion-color-primary: #4c439d;
-  --ion-font-family: 'Ubuntu', sans-serif;
-  --ion-color-segundary: #333;
-  
+  --ion-font-family: "Ubuntu", sans-serif;
+  --ion-color-secondary: #333;
+  --ion-min-height: 10px;
   --ion-color-border: #ccc;
   --ion-color-third: #f4f5f9;
-  
+
   // Variáveis para melhorar nitidez e legibilidade
   --ion-color-text-primary: #333;
   --ion-color-text-secondary: #666;
@@ -20,7 +18,10 @@
   --ion-color-background-input: #fff;
   --ion-color-border-input: #666;
   --ion-color-border-input-focus: #4c439d;
-  
+
+  --ion-color-base: #6d67ca;
+  --ion-color-contrast: #ffffff;
+
   // Variáveis para font-weight
   --ion-font-weight-light: 300;
   --ion-font-weight-normal: 400;
@@ -28,20 +29,20 @@
   --ion-font-weight-semibold: 600;
   --ion-font-weight-bold: 700;
   --ion-font-weight-extrabold: 800;
-  
+
   // Variáveis para tamanhos de fonte
   --ion-font-size-small: 0.85rem;
   --ion-font-size-base: 1rem;
   --ion-font-size-large: 1.1rem;
   --ion-font-size-xl: 1.25rem;
-  
+
   // Variáveis para espaçamento
   --ion-spacing-xs: 0.25rem;
   --ion-spacing-sm: 0.5rem;
   --ion-spacing-md: 1rem;
   --ion-spacing-lg: 1.5rem;
   --ion-spacing-xl: 2rem;
-  
+
   // Variáveis para bordas
   --ion-border-radius-sm: 4px;
   --ion-border-radius-md: 8px;
@@ -49,5 +50,66 @@
   --ion-border-width-thin: 1px;
   --ion-border-width-normal: 1.5px;
   --ion-border-width-thick: 2px;
+
+  // Variáveis de cores nativas modificadas
+  --ion-color-success: #4c439d;
+  --ion-color-success-rgb: 76, 67, 157;
+  --ion-color-success-contrast: #ffffff;
+  --ion-color-success-contrast-rgb: 255, 255, 255;
+  --ion-color-success-shade: #433b8a;
+  --ion-color-success-tint: #5e54a7;
+  --ion-color-tertiary: #c8479a;
+}
+// ===================================================
+// REGISTRO DE CORES PERSONALIZADAS PARA O ATRIBUTO color=""
+// ===================================================
+
+.ion-color-midnight {
+  --ion-color-base: #121C42;
+  --ion-color-base-rgb: 18, 28, 66;
+  --ion-color-contrast: #ffffff;
+  --ion-color-contrast-rgb: 255, 255, 255;
+  --ion-color-shade: #10193a;
+  --ion-color-tint: #2a3355;
 }
 
+.ion-color-lilac {
+  --ion-color-base: #C07FFB;
+  --ion-color-base-rgb: 192, 127, 251;
+  --ion-color-contrast: #ffffff;
+  --ion-color-contrast-rgb: 255, 255, 255;
+  --ion-color-shade: #a970dd;
+  --ion-color-tint: #c68bfb;
+}
+
+.ion-color-magenta {
+  --ion-color-base: #D137A8;
+  --ion-color-base-rgb: 209, 55, 168;
+  --ion-color-contrast: #ffffff;
+  --ion-color-contrast-rgb: 255, 255, 255;
+  --ion-color-shade: #b83094;
+  --ion-color-tint: #d64bb1;
+}
+
+.ion-color-royal {
+  --ion-color-base: #5C4EB9;
+  --ion-color-base-rgb: 92, 78, 185;
+  --ion-color-contrast: #ffffff;
+  --ion-color-contrast-rgb: 255, 255, 255;
+  --ion-color-shade: #5145a3;
+  --ion-color-tint: #6c60c0;
+}
+
+.ion-color-teal {
+  --ion-color-base: #49C194;
+  --ion-color-base-rgb: 73, 193, 148;
+  --ion-color-contrast: #ffffff;
+  --ion-color-contrast-rgb: 255, 255, 255;
+  --ion-color-shade: #40aa82;
+  --ion-color-tint: #5bc79f;
+}
+
+.toolbar-container {
+  /* Altera a variável que o .toolbar-container lê lá dentro */
+  --min-height: 0px !important; /* ou 0px se quiser sumir com ele */
+}

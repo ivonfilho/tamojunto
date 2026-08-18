@@ -2,7 +2,7 @@
 <div class="form-container premium-form container-entrar">
   <form [formGroup]="loginForm" class="form-group">
     <div class="input-group">
-      <ion-input label="E-mail" label-placement="stacked" formControlName="email" fill="outline" placeholder="Seu e-mail" type="email" required
+      <ion-input label="E-mail" label-placement="stacked" formControlName="email" fill="outline" placeholder="Seu e-mail" type="email" autocomplete="email" required
         [class.ng-invalid]="loginForm.get('email')?.touched && loginForm.get('email')?.invalid"></ion-input>
 
       <div *ngIf="submitted || (loginForm.get('email')?.touched && loginForm.get('email')?.invalid)"
@@ -14,7 +14,7 @@
     </div>
 
     <div class="input-group">
-      <ion-input label="Senha" label-placement="stacked" formControlName="senha" fill="outline" placeholder="Sua senha" type="password" required
+      <ion-input label="Senha" label-placement="stacked" formControlName="senha" fill="outline" placeholder="Sua senha" type="password" autocomplete="current-password" required
         [class.ng-invalid]="loginForm.get('senha')?.touched && loginForm.get('senha')?.invalid">
         <ion-input-password-toggle slot="end"></ion-input-password-toggle>
       </ion-input>
@@ -25,6 +25,10 @@
           <ion-icon name="alert-circle-outline"></ion-icon>
           A senha é obrigatória.</small>
       </div>
+    </div>
+
+    <div class="input-group" style="margin-bottom: 20px; display: flex; align-items: center;">
+      <ion-checkbox formControlName="lembrarMe" labelPlacement="end" justify="start">Lembrar de mim</ion-checkbox>
     </div>
 
     <ion-button (click)="login()" expand="full" [disabled]="spinner">

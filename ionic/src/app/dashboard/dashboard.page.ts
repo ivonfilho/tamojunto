@@ -285,6 +285,11 @@ export class DashboardPage implements OnInit {
     });
   }
 
+  toSlug(text: string): string {
+    if (!text) return '';
+    return text.toString().normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim().replace(/[^a-z0-9 ]/g, '').replace(/\s+/g, '-');
+  }
+
   getFixedIcon(index: number): string {
     const icons = [
       '../assets/icon/ShoppingBag2.svg',

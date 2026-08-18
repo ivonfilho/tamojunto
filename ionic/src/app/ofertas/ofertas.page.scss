@@ -108,7 +108,7 @@ ion-content {
 
   // Responsividade para tablet
   @media (min-width: 769px) and (max-width: 1024px) {
-    .offer-card {
+    .offer-card, .premium-offer-card {
       flex: 1 1 calc(50% - 20px);
       max-width: calc(50% - 20px);
     }
@@ -116,9 +116,9 @@ ion-content {
 
   // Responsividade para desktop
   @media (min-width: 1025px) {
-    .offer-card {
-      flex: 1 1 calc(33.333% - 20px);
-      max-width: 350px;
+    .offer-card, .premium-offer-card {
+      flex: 1 1 calc(25% - 20px);
+      max-width: none;
     }
   }
 }
@@ -800,21 +800,291 @@ ion-segment-button.segment-button-checked .top-badge {
 }
 
 .btn-filter-toggle.btn-normal.active {
-  background-color: var(--ion-color-primary, #5b45ff) !important;
+  background-color: transparent !important;
   border-color: var(--ion-color-primary, #5b45ff) !important;
-  box-shadow: 0 4px 12px rgba(91, 69, 255, 0.3) !important;
+  box-shadow: none !important;
+  color: var(--ion-color-primary, #5b45ff);
 
   ion-icon {
-    filter: brightness(0) invert(1);
+    filter: none;
   }
 }
 
 .btn-filter-toggle.btn-relampago.active {
-  background-color: #fbbf24 !important;
+  background-color: transparent !important;
   border-color: #fbbf24 !important;
-  box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3) !important;
+  box-shadow: none !important;
+  color: #fbbf24;
 
   ion-icon {
-    filter: brightness(0) invert(1);
+    filter: none;
+  }
+}
+
+/* ========================================================
+   PREMIUM OFFER CARD DESIGN (from Figma/Image)
+   ======================================================== */
+
+.premium-offer-card {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  border: 1px solid #5a52a5; /* Borda Roxa para Normal */
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+
+    .card-image-wrapper img {
+      transform: scale(1.05);
+    }
+  }
+
+  &.offer-relampago {
+    border: 1px solid #fbbc04; /* Borda Amarela para Relampago */
+  }
+
+  .card-image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .placeholder-container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #f3f4f6;
+
+      .placeholder-icon {
+        font-size: 64px;
+        color: #d1d5db;
+      }
+    }
+
+    .image-gradient-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 80px;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 100%);
+      pointer-events: none;
+    }
+  }
+
+  .card-content-body {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    background: #ffffff;
+  }
+
+  .card-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    .title-desc-block {
+      flex: 1;
+
+      .card-title {
+        font-size: 16px;
+        font-weight: 700;
+        color: #1f2937;
+        margin: 0 0 4px 0;
+        line-height: 1.2;
+      }
+
+      .card-desc {
+        font-size: 13px;
+        color: #6b7280;
+        margin: 0;
+        line-height: 1.4;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+    }
+  }
+
+  .card-divider {
+    height: 1px;
+    background-color: #f3f4f6;
+    width: 100%;
+  }
+
+  .card-company-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .company-info-block {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+      min-width: 0; /* Para permitir truncate se o nome for gigante */
+
+      .company-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        object-fit: cover;
+        background-color: #f3f4f6;
+        border: 1px solid #e5e7eb;
+        flex-shrink: 0;
+      }
+
+      .company-names {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        padding-right: 8px;
+
+        .company-label {
+          font-size: 10px;
+          color: #6b7280;
+          line-height: 1;
+          margin-bottom: 2px;
+        }
+
+        .company-name {
+          font-size: 13px;
+          font-weight: 700;
+          color: #1f2937;
+          line-height: 1.2;
+        }
+      }
+    }
+
+    .validity-block {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      flex-shrink: 0;
+
+      .validity-label {
+        font-size: 9px;
+        font-weight: 600;
+        color: #6b7280;
+        letter-spacing: 0.5px;
+        margin-bottom: 2px;
+      }
+
+      .validity-date {
+        font-size: 11px;
+        font-weight: 700;
+        color: #374151;
+      }
+    }
+  }
+
+  .card-pricing-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+
+    .old-price {
+      font-size: 13px;
+      color: #6b7280;
+
+      strong {
+        color: #1f2937;
+        font-weight: 700;
+      }
+    }
+
+    .new-price-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .new-price {
+        font-size: 15px;
+        font-weight: 800;
+        color: #16a34a;
+      }
+
+      .discount-badge {
+        background-color: #fef2f2;
+        color: #dc2626;
+        font-size: 11px;
+        font-weight: 700;
+        padding: 2px 6px;
+        border-radius: 4px;
+      }
+    }
+  }
+
+  .card-action-btn {
+    width: calc(100% - 32px);
+    margin: 0 16px 16px 16px;
+    background-color: #5a52a5;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    outline: none;
+
+    &:active {
+      opacity: 0.9;
+    }
+
+    .btn-text {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-savings {
+      font-size: 9px;
+      font-weight: 600;
+      text-align: right;
+      line-height: 1.2;
+      opacity: 0.9;
+    }
+  }
+
+  &.offer-relampago .card-action-btn {
+    background-color: #fbbc04;
+    color: #1f2937; // Texto escuro para botão amarelo
+  }
+
+  .partner-status-toggle {
+    background: #f9fafb;
+    border-top: 1px solid #e5e7eb;
+    
+    ion-item {
+      --background: transparent;
+      --padding-start: 16px;
+      font-size: 13px;
+      font-weight: 600;
+    }
   }
 }
