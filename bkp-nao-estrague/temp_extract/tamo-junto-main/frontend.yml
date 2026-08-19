@@ -1,0 +1,43 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+pool:
+  vmImage: windows-latest
+
+steps:
+- task: NuGetToolInstaller@1
+  inputs:
+    versionSpec: '6.9.1'
+    checkLatest: true
+- task: NuGetCommand@2
+  inputs:
+    command: 'restore'
+    restoreSolution: '**/*.sln'
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'publish'
+    publishWebProjects: false
+    projects: |
+      **/Web.Apis.csproj      
+    arguments: '--runtime linux-x64 --self-contained true'
+
+- task: CopyFilesOverSSH@0
+  inputs:
+    sshEndpoint: 'TAMO-JUNTO-APIS'
+    contents: '**/*.zip'
+    targetFolder: '/home/apps/tamo-junto/api/deploy'
+    readyTimeout: '20000'
+
+- task: SSH@0
+  inputs:
+    sshEndpoint: 'tamo-junto-APIS'
+    runOptions: 'commands'
+    commands: |
+      7z x /home/apps/tamo-junto/api/deploy/net/Web.Apis/bin/Debug/net7.0/linux-x64/publish.zip -o/home/apps/tamo-junto/api/release -aoa
+      sudo systemctl restart webnixservicefile.service
+    readyTimeout: '20000'

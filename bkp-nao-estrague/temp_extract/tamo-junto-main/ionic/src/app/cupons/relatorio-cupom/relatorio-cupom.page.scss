@@ -1,0 +1,733 @@
+// Estilos para o header e botão de voltar
+ion-header {
+  ion-toolbar {
+    ion-buttons {
+      ion-button {
+        --color: #333;
+        color: #333;
+        
+        ion-icon {
+          --color: #333;
+          color: #333;
+          font-size: 1.2rem;
+        }
+        
+        // Garantir que o texto seja visível
+        &::part(native) {
+          color: #333 !important;
+        }
+      }
+    }
+  }
+}
+
+ion-list {
+  ion-item {
+    --padding-start: 0;
+    --inner-padding-end: 0;
+    --background-color:white !important;
+  }
+}
+
+ion-col {
+  font-size: 14px;
+  padding: 6px;
+}
+
+ion-row:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+
+//Botões
+
+.ion-button-export{
+    margin-top: auto;
+    border-radius: 5px;
+    min-width: 150px; // Largura mínima para padronizar
+    max-width: 150px; // Largura máxima para manter igual
+    height: 40px; // Altura fixa
+    background-color: #2dd55b;
+    --background: #2dd55b;
+    --color: white !important;
+    color: white !important;
+    font-weight: bold;
+    text-align: center;
+    transition: background-color 0.3s, transform 0.2s;
+    align-self: flex-end;
+    margin-left: 8px; // Espaçamento entre botões
+    
+    // Garantir que ícone e texto tenham mesmo tamanho
+    ion-icon {
+      font-size: 1.2rem !important;
+      margin-right: 6px;
+      color: white !important;
+    }
+    
+    // Forçar texto branco em todos os níveis
+    &::part(native) {
+      color: white !important;
+    }
+    
+    * {
+      color: white !important;
+    }
+  }
+
+  .ion-label-button{
+   
+    color: white;
+    font-weight: bold;
+    
+  }
+  
+  
+  .ion-button-filter{
+    margin-top: auto;
+    border-radius: 5px;
+    width: 100%;
+    background-color: #4c439d !important;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    transition: background-color 0.3s, transform 0.2s;
+    align-self: flex-end;
+  }
+  
+  //Filtros
+  
+  .ion-label-filters{
+    font-size: 18px;
+  }
+  
+  .filters{
+      border-bottom: solid;
+      display: flex;
+      border-width: 1px;
+  }
+  
+  ion-item{
+    --background: #fff;
+    --border-color: transparent;
+    
+    ion-label {
+      color: #333 !important; // Cor escura para labels (títulos dos filtros)
+      font-weight: 500;
+    }
+    
+    ion-select {
+      color: #333 !important; // Texto escuro para o valor selecionado no campo
+      --placeholder-color: #999;
+      --placeholder-opacity: 1;
+      
+      &::part(text) {
+        color: #333 !important;
+      }
+      
+      &::part(icon) {
+        color: #333 !important;
+      }
+    }
+    
+    ion-input {
+      --color: #333; // Texto escuro nos inputs
+      --placeholder-color: #999;
+    }
+  }
+  
+  .col-filters{
+    background-color: white !important;
+    display: flex;
+    align-items: flex-end;
+    /* align-content: center; */
+    flex-direction: row;
+  }
+  
+  .col-filters-button{
+    background-color: white !important;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    /* align-content: center; */
+    flex-direction: row;
+  }
+  
+  .select-filters{
+    margin-left: 15px;
+    
+  }
+  
+  /* .input-filters{
+    font-size: 12px;
+    padding: 20px;
+  } */
+  
+  .row-list{
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .label-list{
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+  }
+  
+  .table-header{
+    border: solid;
+    border-width: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: black;
+    background-color: #dedede !important;
+  }
+  
+  .table-columns{
+    background-color: white !important;
+    border: solid;
+    border-width: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+  }
+  
+  .actions-column{
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    border: solid;
+    border-width: 1px;
+  }
+  
+  
+  .table-badge{
+    text-transform: uppercase;
+    font-size: 12px;
+    padding: 5px;
+  }
+  
+  .action-button{
+    background-color: #dedede;
+    border-radius: 5px;
+  }
+  
+  
+ion-card-header, ion-card-content {
+  background-color: white;
+  
+  ion-card-title {
+    color: #333 !important;
+    font-weight: 600;
+  }
+}
+
+  .action-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+  }
+  
+  ion-item h2 {
+    font-size: 1.1rem;
+    font-weight: bold;
+  }
+  
+  ion-item p {
+    margin: 5px 0;
+    font-size: 0.9rem;
+  }
+  
+  .page-count{
+    display: flex;
+    align-items: center;
+  }
+  
+  .text-success {
+    color: green;
+  }
+  
+  .text-danger {
+    color: red;
+  }
+  
+  .pagination {
+    margin-top: 15px;
+  }
+  
+  .loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(0, 0, 0, 0.1);
+    border-top: 5px solid #000000;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  
+  .loading-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent
+  
+  }
+  
+  /* Animação de rotação */
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  /* Corrigir cor dos botões de exportar */
+  .ion-button-export {
+    --color: white !important;
+    color: white !important;
+    
+    ion-icon {
+      --color: white !important;
+      color: white !important;
+    }
+    
+    // Força texto branco no conteúdo do botão
+    &::part(native) {
+      color: white !important;
+    }
+    
+    // Força em todos os elementos filhos
+    * {
+      color: white !important;
+    }
+    
+    // Label e texto dentro do botão
+    ion-label,
+    span,
+    div {
+      color: white !important;
+    }
+  }
+  
+  // Força branco no toolbar também
+  ion-toolbar {
+    .ion-button-export {
+      --color: white !important;
+      color: white !important;
+      
+      * {
+        color: white !important;
+      }
+    }
+  }
+
+// Estilos para o popover de seleção (dropdown da categoria)
+ion-popover {
+  --background: var(--ion-color-primary);
+  
+  ion-list {
+    background: var(--ion-color-primary);
+    padding: 0;
+  }
+  
+  ion-item {
+    --background: var(--ion-color-primary);
+    --color: white;
+    
+    ion-label {
+      color: white !important; 
+      font-weight: 500;
+    }
+    
+    // Quando a opção está selecionada ou em hover
+    &.item-radio-checked,
+    &[aria-checked="true"],
+    &.item-interactive-selected {
+      --background: rgba(255, 255, 255, 0.9);
+      
+      ion-label {
+        color: #000 !important; // Texto preto quando selecionada
+        font-weight: 600;
+      }
+    }
+  }
+  
+  ion-radio {
+    --color: white;
+    --color-checked: #000;
+  }
+  
+  // Classes específicas do Ionic para select
+  .alert-radio-label,
+  .select-interface-option {
+    color: white !important;
+  }
+}
+
+// ::ng-deep para penetrar no Shadow DOM do Ionic
+:host ::ng-deep {
+  .popover-content,
+  .select-popover {
+    .select-interface-option {
+      color: white !important;
+    }
+  }
+}
+
+ion-content {
+  --overflow: auto;
+  --scroll-y: true;
+  height: auto; 
+  min-height: 100dvh; 
+  min-height: 100svh; // fallback
+  --padding-bottom: calc(6rem + env(safe-area-inset-bottom, 0px));
+  padding-bottom: calc(6rem + env(safe-area-inset-bottom, 0px));
+  
+  @media (max-width: 768px) {
+    --overflow: auto !important;
+    --scroll-y: true !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+    height: auto !important;
+    min-height: 100dvh !important;
+    min-height: 100svh !important;
+    --padding-bottom: calc(10rem + env(safe-area-inset-bottom, 0px));
+    padding-bottom: calc(10rem + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+// Abas (Visualização / Oferta)
+.header-tabs {
+  margin-top: 10px;
+  margin-bottom: 6px;
+}
+
+// Cor da aba selecionada (não pode ficar branca no mobile)
+ion-segment {
+  --background: transparent;
+
+  ion-segment-button {
+    --color: #666;
+    --color-checked: var(--ion-color-primary);
+
+    ion-label {
+      color: inherit;
+      font-weight: 600;
+    }
+
+    &.segment-button-checked,
+    &[aria-checked="true"] {
+      --color: var(--ion-color-primary) !important;
+      --color-checked: var(--ion-color-primary) !important;
+
+      ion-label {
+        color: var(--ion-color-primary) !important;
+      }
+    }
+  }
+}
+
+// Cards mobile (visualização vertical)
+.mobile-relatorio-card {
+  margin: 10px 0;
+}
+
+.mobile-table-block {
+  margin: 10px 0;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  padding: 12px 12px;
+}
+
+.mobile-grid-row {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 12px;
+  align-items: baseline;
+  padding: 6px 0;
+}
+
+.mobile-grid-row + .mobile-grid-row {
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.mobile-grid-title {
+  color: #666;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+.mobile-grid-value {
+  color: #111;
+  font-size: 13px;
+  word-break: break-word;
+}
+
+.mobile-field {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+  padding: 6px 0;
+}
+
+.mobile-field .label {
+  min-width: 110px;
+  color: #666;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.mobile-field .value {
+  flex: 1;
+  color: #111;
+  font-size: 13px;
+  text-align: left;
+  word-break: break-word;
+}
+
+// Cabeçalho das "tabelas"
+ion-row.header {
+  background-color: #dedede !important;
+  color: #000;
+  font-weight: 700;
+  font-size: 13px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+// Linhas de dados (melhor legibilidade) — grid legado ainda usado na paginação
+ion-row:not(.header) {
+  ion-col {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 13px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    white-space: nowrap;
+  }
+}
+
+// ——— Tabelas HTML (cupons / ofertas) ———
+.table-card {
+  margin: 0 0 8px;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow:
+    0 1px 3px rgba(76, 67, 157, 0.08),
+    0 4px 14px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(76, 67, 157, 0.12);
+  overflow: hidden;
+}
+
+.table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.relatorio-table {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+  font-size: 13px;
+  line-height: 1.35;
+
+  thead {
+    background: linear-gradient(135deg, #4c439d 0%, #5b52b8 100%);
+    color: #fff;
+
+    th {
+      text-align: left;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      font-size: 11px;
+      padding: 14px 16px;
+      white-space: nowrap;
+    }
+  }
+
+  tbody tr {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    transition: background-color 0.15s ease;
+
+    &:nth-child(even) {
+      background: #f8f7fc;
+    }
+
+    &:hover {
+      background: rgba(76, 67, 157, 0.06);
+    }
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  td {
+    padding: 12px 16px;
+    color: #222;
+    vertical-align: middle;
+  }
+
+  .td-strong {
+    font-weight: 600;
+    color: #1a1a1a;
+    max-width: 200px;
+  }
+
+  .col-desc {
+    max-width: 280px;
+    white-space: normal;
+    word-break: break-word;
+  }
+
+  .col-numeric {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .col-action {
+    text-align: center;
+    width: 1%;
+    white-space: nowrap;
+  }
+}
+
+.relatorio-table--ofertas {
+  min-width: 420px;
+}
+
+.code-pill {
+  display: inline-block;
+  font-family: ui-monospace, monospace;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 4px 10px;
+  border-radius: 8px;
+  background: rgba(76, 67, 157, 0.1);
+  color: #4c439d;
+}
+
+.btn-detalhes-oferta {
+  --border-color: #4c439d;
+  --color: #4c439d;
+  --background: transparent;
+  font-weight: 600;
+  margin: 0;
+  text-transform: none;
+}
+
+.empty-state {
+  --background: transparent;
+  margin: 16px 0;
+}
+
+.pagination-row {
+  align-items: center;
+}
+
+// Modal oferta
+.modal-oferta-toolbar {
+  --background: #4c439d;
+  --color: #fff;
+
+  ion-title {
+    color: #fff;
+    font-weight: 700;
+  }
+
+  ion-button {
+    --color: #fff;
+  }
+}
+
+// Ícone SVG usa stroke="currentColor" — garante tamanho e cor no toolbar
+.modal-oferta-close-icon {
+  width: 26px;
+  height: 26px;
+  color: #fff;
+}
+
+.modal-oferta-content {
+  --background: #f5f4fa;
+}
+
+.modal-oferta-nome {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #1a1a1a;
+  line-height: 1.25;
+  margin: 8px 0 4px;
+  letter-spacing: -0.02em;
+}
+
+.modal-oferta-sub {
+  margin: 0 0 20px;
+  font-size: 14px;
+  color: #555;
+  line-height: 1.5;
+}
+
+.oferta-detalhes {
+  margin: 0;
+  padding: 0;
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.oferta-detalhes__row {
+  display: grid;
+  grid-template-columns: minmax(120px, 38%) 1fr;
+  gap: 8px 16px;
+  padding: 12px 16px;
+  align-items: baseline;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  dt {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 700;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  dd {
+    margin: 0;
+    font-size: 14px;
+    color: #111;
+    font-weight: 500;
+    word-break: break-word;
+  }
+}
+
+@media (max-width: 480px) {
+  .oferta-detalhes__row {
+    grid-template-columns: 1fr;
+    gap: 4px;
+
+    dt {
+      margin-bottom: -2px;
+    }
+  }
+}
+  

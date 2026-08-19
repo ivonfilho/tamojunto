@@ -95,8 +95,10 @@ public class EmailService : IEmailService
             }
 
             using var client = new SmtpClient(smtpHost, smtpPort);
-            client.EnableSsl = true;
+            client.UseDefaultCredentials = false;
             client.Credentials = new NetworkCredential(smtpUser, smtpPassword);
+            client.EnableSsl = true;
+            client.DeliveryMethod = SmtpDeliveryMethod.Network;
             client.Timeout = 30000; // 30 segundos de timeout
 
             using var message = new MailMessage();

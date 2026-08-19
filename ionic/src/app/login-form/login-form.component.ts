@@ -61,6 +61,10 @@ export class LoginFormComponent implements OnInit {
     this.Cadastro.emit();
   }
 
+  irParaRecuperarEmail() {
+    this.router.navigate(['/recuperar-senha-email']);
+  }
+
    login() {
     this.submitted = true;
 

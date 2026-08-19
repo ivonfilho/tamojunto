@@ -1,0 +1,7 @@
+{
+  "name": "tamo-junto",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

@@ -1,0 +1,1888 @@
+// Variáveis de cores do aplicativo
+$primary-color: #6a00f4;
+$secondary-color: #8a2be2;
+$success-color: #28a745;
+$warning-color: #ffc107;
+$danger-color: #dc3545;
+$light-color: #f8f9fa;
+$dark-color: #343a40;
+$gradient-primary: linear-gradient(135deg, $primary-color, $secondary-color);
+$gradient-success: linear-gradient(135deg, #28a745, #20c997);
+$gradient-warning: linear-gradient(135deg, #ffc107, #fd7e14);
+
+// Dashboard: um único ion-content faz o scroll — fundo igual ao layout anterior (gradiente roxo)
+$dashboard-bg-gradient: linear-gradient(135deg, #f8f9fa 0%, #f8f9fa 100%);
+
+.dashboard-container {
+  --ion-background-color: #f8fafc;
+  background: $dashboard-bg-gradient;
+  --background: #{$dashboard-bg-gradient};
+  overflow-x: hidden;
+  position: relative;
+}
+
+ion-content.dashboard-container {
+  --overflow: auto;
+  --scroll-y: true;
+  --background: #{$dashboard-bg-gradient};
+  /* Espaço no fim da rolagem: safe area + folga para não cortar cards / botões */
+  --padding-bottom: max(2rem, calc(1.25rem + env(safe-area-inset-bottom, 0px)));
+}
+
+@media (max-width: 768px) {
+  ion-content.dashboard-container {
+    --overflow: auto !important;
+    --scroll-y: true !important;
+    -webkit-overflow-scrolling: touch;
+    --padding-bottom: max(5.5rem, calc(3.5rem + env(safe-area-inset-bottom, 0px)));
+  }
+}
+
+@media (max-width: 480px) {
+  ion-content.dashboard-container {
+    --padding-bottom: max(6rem, calc(4rem + env(safe-area-inset-bottom, 0px)));
+  }
+}
+
+// Hero Section
+.hero-section {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  backdrop-filter: blur(10px);
+  border-radius: 0 0 30px 30px;
+  padding: 2rem 1.5rem;
+  margin-bottom: 2rem;
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(255, 255, 255, 0.05) 0%, transparent 100%);
+    z-index: 1;
+    pointer-events: none;
+  }
+  
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    margin-bottom: 2rem;
+    
+    .hero-title {
+      color: var(--ion-color-primary);
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin: 0 0 1rem 0;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      background: linear-gradient(45deg, #fff, #f0f0f0);
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+    
+    .hero-subtitle {
+      color: #333; // Cor escura para melhor legibilidade
+      font-size: 1.1rem;
+      margin: 0;
+      font-weight: 300;
+    }
+  }
+  
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
+    position: relative;
+    z-index: 2;
+    
+    .stat-card {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 1.5rem 1rem;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
+      position: relative;
+      z-index: 3;
+      overflow: hidden;
+      
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: -1;
+        transition: all 0.3s ease;
+      }
+      
+      &:nth-child(1) {
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.8) 0%, rgba(37, 99, 235, 0.6) 100%);
+        border-color: rgba(59, 130, 246, 0.8);
+        box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+        
+        &::before {
+          background: linear-gradient(135deg, rgba(59, 130, 246, 0.9) 0%, rgba(37, 99, 235, 0.7) 100%);
+        }
+      }
+      
+      &:nth-child(2) {
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.8) 0%, rgba(5, 150, 105, 0.6) 100%);
+        border-color: rgba(16, 185, 129, 0.8);
+        box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+        
+        &::before {
+          background: linear-gradient(135deg, rgba(16, 185, 129, 0.9) 0%, rgba(5, 150, 105, 0.7) 100%);
+        }
+      }
+      
+      &:nth-child(3) {
+        background: linear-gradient(135deg, rgba(245, 158, 11, 0.8) 0%, rgba(217, 119, 6, 0.6) 100%);
+        border-color: rgba(245, 158, 11, 0.8);
+        box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+        
+        &::before {
+          background: linear-gradient(135deg, rgba(245, 158, 11, 0.9) 0%, rgba(217, 119, 6, 0.7) 100%);
+        }
+      }
+      
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        
+        &::before {
+          opacity: 1;
+        }
+      }
+      
+      .stat-icon {
+        font-size: 2rem;
+        color: white;
+        margin-bottom: 0.5rem;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+        position: relative;
+        z-index: 2;
+      }
+      
+      .stat-info {
+        position: relative;
+        z-index: 2;
+        
+        .stat-value {
+          display: block;
+          font-size: 1.8rem;
+          font-weight: 700;
+          color: white;
+          margin-bottom: 0.25rem;
+          text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .stat-label {
+          color: rgba(255, 255, 255, 0.95);
+          font-size: 0.9rem;
+          font-weight: 500;
+          text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+      }
+    }
+  }
+}
+
+// Analytics Section
+.analytics-card {
+  background: white;
+  border-radius: 25px;
+  margin: 0 1rem 2rem 1rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  border: none;
+  overflow: hidden;
+  
+  .analytics-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    
+    .analytics-title {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin: 0 0 0.5rem 0;
+      color: #f8fafc;
+      
+      .title-icon {
+        font-size: 1.8rem;
+        color: rgba(255, 255, 255, 0.9);
+      }
+    }
+    
+    .analytics-subtitle {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 1rem;
+      margin: 0;
+      font-weight: 300;
+    }
+  }
+  
+  .analytics-content {
+    padding: 2rem 1.5rem;
+    
+    .chart-section {
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: center;
+      
+      .chart-container {
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        border-radius: 20px;
+        padding: 1.5rem;
+        box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.05);
+        width: 100%;
+        max-width: 460px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+      }
+    }
+    
+    .category-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      
+      .category-card {
+        background: white;
+        border-radius: 20px;
+        padding: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        border: 1px solid #f1f5f9;
+        transition: all 0.3s ease;
+        
+        &:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .category-icon {
+          width: 60px;
+          height: 60px;
+          border-radius: 15px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+          
+          .icon {
+            font-size: 1.8rem;
+            color: white;
+          }
+        }
+        
+        .category-info {
+          flex: 1;
+          
+          .category-value {
+            display: block;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.25rem;
+          }
+          
+          .category-name {
+            color: #64748b;
+            font-size: 0.9rem;
+            font-weight: 500;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Ofertas Section
+.offers-section {
+  background: white;
+  border-radius: 25px;
+  margin: 0 1rem 2rem 1rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  border: none;
+  overflow: hidden;
+  position: relative;
+  z-index: 1; // Garantir que não seja sobreposto
+  
+  ion-card-header {
+    background: transparent; // Remover background padrão do ion-card-header
+    padding: 0; // Remover padding padrão
+  }
+  
+  ion-card-content {
+    background: transparent; // Remover background padrão do ion-card-content
+    padding: 0; // Remover padding padrão
+  }
+  
+  .offers-header {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    position: relative;
+    z-index: 2; // Garantir que fique acima de outras camadas
+    
+    .offers-title {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin: 0 0 0.5rem 0;
+      position: relative;
+      z-index: 3; // Garantir que o título fique visível
+      color: #f8fafc;
+      
+      .title-icon {
+        font-size: 1.8rem;
+        color: rgba(255, 255, 255, 0.9);
+      }
+    }
+    
+    .offers-subtitle {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 1rem;
+      margin: 0;
+      font-weight: 300;
+      position: relative;
+      z-index: 3; // Garantir que o subtítulo fique visível
+    }
+  }
+  
+  .offers-grid {
+    padding: 2rem 1.5rem;
+    
+    ion-row {
+      margin: 0 -0.75rem; // Ajustar margens do grid
+    }
+    
+    ion-col {
+      padding: 0 0.75rem; // Ajustar padding das colunas
+    }
+    
+    .offer-card {
+      background: white;
+      border-radius: 20px;
+      //box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+      border: 1px solid #f1f5f9;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      margin-bottom: 1rem;
+      height: 460px; // Diminuir altura dos cards
+      display: flex;
+      flex-direction: column;
+      
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+      }
+      
+      // Estilos para ofertas relâmpago (dourado)
+      &.offer-relampago {
+        border: 2px solid #fbbf24 !important;
+        box-shadow: 0 4px 15px rgba(251, 191, 36, 0.2) !important;
+        
+        &:hover {
+          box-shadow: 0 8px 25px rgba(251, 191, 36, 0.3) !important;
+          transform: translateY(-5px);
+        }
+        
+        .offer-button-relampago {
+          --background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+          --color: white;
+          --box-shadow: 0 4px 15px rgba(251, 191, 36, 0.4);
+          
+          &:hover {
+            --box-shadow: 0 6px 20px rgba(251, 191, 36, 0.6);
+          }
+          
+          ion-icon {
+            color: white;
+            animation: flash-pulse 1.5s ease-in-out infinite;
+          }
+        }
+      }
+      
+      .offer-card-content {
+        display: flex;
+        flex-direction: column;
+        height: 100%; // Ocupar toda a altura do card
+        padding: 0; // Remover padding padrão
+        
+        .offer-chip {
+          background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+          border-radius: 15px;
+          padding: 0.5rem;
+          margin: 1rem;
+          flex-shrink: 0; // Não encolher
+          
+          .offer-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #475569;
+          }
+        }
+        
+        .placeholder-container {
+          height: 140px; // Manter altura otimizada
+          margin: 0 1rem 1rem 1rem;
+          border-radius: 15px;
+          overflow: hidden;
+          background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0; // Não encolher
+          
+          .placeholder-icon {
+            font-size: 3rem;
+            color: #94a3b8;
+            opacity: 0.5;
+          }
+        }
+        
+        .offer-image {
+          width: calc(100% - 2rem); // Largura com margem
+          height: 140px; // Manter altura otimizada
+          object-fit: cover;
+          margin: 0 1rem 1rem 1rem;
+          border-radius: 15px;
+          flex-shrink: 0; // Não encolher
+        }
+        
+        .offer-details {
+          padding: 0 1rem;
+          flex: 1; // Ocupar espaço disponível
+          display: flex;
+          flex-direction: column;
+          min-height: 0; // Permitir que o flex funcione corretamente
+          
+          .offer-date {
+            color: #64748b;
+            font-size: 0.8rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-shrink: 0; // Não encolher
+            
+            .date-icon {
+              font-size: 1rem;
+            }
+          }
+          
+          .offer-name {
+            font-size: 1.1rem; // Manter tamanho otimizado
+            font-weight: 600;
+            color: #1e293b;
+            margin: 0 0 0.5rem 0;
+            line-height: 1.3;
+            flex-shrink: 0; // Não encolher
+            display: -webkit-box;
+            -webkit-line-clamp: 2; // Limitar a 2 linhas
+            line-clamp: 2; // Compatibilidade padrão
+            line-clamp: 2; // Compatibilidade padrão
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+          }
+          
+          .offer-description {
+            color: #64748b;
+            font-size: 0.85rem; // Manter tamanho otimizado
+            line-height: 1.4;
+            margin-bottom: 0.5rem; // Reduzir margem para aproximar do preço
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2; // Compatibilidade padrão
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            flex-shrink: 0; // Não encolher
+          }
+          
+          .offer-price-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0; // Remover margem inferior para colar no botão
+            flex-shrink: 0; // Não encolher
+            
+            .price-label {
+              color: #64748b;
+              font-size: 0.85rem;
+              font-weight: 500;
+            }
+            
+            .price-value {
+              color: #10b981;
+              font-size: 1rem;
+              font-weight: 700;
+            }
+          }
+        }
+        
+        .offer-button-container {
+          padding: 0 1rem 1rem 1rem;
+          margin-top: auto; // Empurra o botão para baixo
+          flex-shrink: 0; // Não encolher
+          
+          .offer-button {
+            border-radius: 15px;
+            font-weight: 600;
+            height: 44px; // Manter altura otimizada
+            --box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+            width: 100%; // Largura total
+            
+            &:hover {
+              --box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Animação para o ícone de raio
+@keyframes flash-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.1);
+  }
+}
+
+// Cupons Section
+.coupons-section {
+  background: white;
+  border-radius: 25px;
+  margin: 0 1rem 2rem 1rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  border: none;
+  overflow: hidden;
+  
+  .coupons-header {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    color: white;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    
+    .coupons-title {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin: 0 0 0.5rem 0;
+      
+      .title-icon {
+        font-size: 1.8rem;
+        color: rgba(255, 255, 255, 0.9);
+      }
+    }
+    
+    .coupons-subtitle {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 1rem;
+      margin: 0;
+      font-weight: 300;
+    }
+  }
+  
+  .coupons-table {
+    padding: 2rem 1.5rem;
+    
+    .test-section {
+      text-align: center;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      border-radius: 20px;
+      border: 2px dashed #cbd5e1;
+      
+      ion-button {
+        margin-bottom: 0.75rem;
+        --border-radius: 15px;
+        --box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
+        
+        &:hover {
+          --box-shadow: 0 6px 20px rgba(108, 117, 125, 0.4);
+        }
+      }
+      
+      small {
+        display: block;
+        color: #64748b;
+        font-size: 0.85rem;
+        line-height: 1.4;
+      }
+    }
+    
+    .no-coupons-message {
+      text-align: center;
+      padding: 3rem 2rem;
+      color: #64748b;
+      
+      .no-coupons-icon {
+        font-size: 4rem;
+        margin-bottom: 1.5rem;
+        opacity: 0.3;
+        color: #94a3b8;
+      }
+      
+      p {
+        margin: 0 0 0.5rem 0;
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: #475569;
+      }
+      
+      small {
+        opacity: 0.7;
+        font-size: 0.95rem;
+        line-height: 1.4;
+      }
+    }
+    
+    .table-header {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+      gap: 1rem;
+      padding: 1rem 1.5rem;
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      border-radius: 15px;
+      margin-bottom: 1rem;
+      font-weight: 600;
+      color: #475569;
+      font-size: 0.9rem;
+      
+      .header-cell {
+        text-align: center;
+        
+        &:first-child {
+          text-align: left;
+        }
+      }
+    }
+    
+    .table-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+      gap: 1rem;
+      padding: 1.5rem;
+      background: white;
+      border-radius: 15px;
+      margin-bottom: 1rem;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      border: 1px solid #f1f5f9;
+      transition: all 0.3s ease;
+      
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      }
+      
+      .estab-info {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        
+        .avatar {
+          width: 45px;
+          height: 45px;
+          border-radius: 12px;
+          object-fit: cover;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .estab-name {
+          font-weight: 600;
+          color: #1e293b;
+          font-size: 0.95rem;
+        }
+      }
+      
+      .order-code {
+        text-align: center;
+        font-family: 'Courier New', monospace;
+        font-weight: 600;
+        color: #475569;
+        font-size: 0.9rem;
+      }
+      
+      .order-value {
+        text-align: center;
+        font-weight: 700;
+        color: #059669;
+        font-size: 1rem;
+      }
+      
+      .order-date {
+        text-align: center;
+        color: #64748b;
+        font-size: 0.9rem;
+      }
+      
+      .order-status {
+        text-align: center;
+        
+        ion-badge {
+          border-radius: 10px;
+          font-weight: 600;
+          padding: 0.5rem 1rem;
+          font-size: 0.8rem;
+        }
+      }
+    }
+  }
+}
+
+// Responsividade
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 1.5rem 1rem;
+    margin-bottom: 1.5rem;
+    
+    .hero-content .hero-title {
+      font-size: 2rem;
+    }
+    
+    .hero-stats {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+      
+      .stat-card {
+        padding: 1rem 0.75rem;
+        
+        .stat-icon {
+          font-size: 1.5rem;
+        }
+        
+        .stat-info .stat-value {
+          font-size: 1.4rem;
+        }
+      }
+    }
+  }
+  
+  .analytics-card,
+  .offers-section,
+  .coupons-section {
+    margin: 0 0.75rem 1.5rem 0.75rem;
+    
+    .analytics-header,
+    .offers-header,
+    .coupons-header {
+      padding: 1.5rem 1rem;
+      
+      .analytics-title,
+      .offers-title,
+      .coupons-title {
+        font-size: 1.3rem;
+      }
+    }
+    
+    .analytics-content,
+    .offers-grid,
+    .coupons-table {
+      padding: 1.5rem 1rem;
+    }
+
+    .analytics-content {
+      .chart-section {
+        margin-bottom: 1.5rem;
+      }
+
+      .chart-section .chart-container {
+        padding: 1.25rem;
+        max-width: 380px;
+      }
+    }
+  }
+  
+  .category-cards {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  
+  .offers-grid .offer-card .offer-card-content .offer-image-container {
+    height: 150px;
+    margin: 0.75rem;
+  }
+  
+  .coupons-table .table-header,
+  .coupons-table .table-row {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+    text-align: center;
+    
+    .header-cell:first-child,
+    .estab-info {
+      text-align: center;
+      justify-content: center;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-section .hero-content .hero-title {
+    font-size: 1.8rem;
+  }
+  
+  .hero-stats {
+    grid-template-columns: 1fr;
+  }
+  
+  .analytics-card,
+  .offers-section,
+  .coupons-section {
+    margin: 0 0.5rem 1rem 0.5rem;
+    border-radius: 20px;
+
+    .analytics-content {
+      padding: 1.25rem 0.75rem;
+
+      .chart-section .chart-container {
+        padding: 1rem;
+        max-width: 320px;
+      }
+    }
+  }
+}
+
+.chart-placeholder {
+  text-align: center;
+  padding: 3rem 2rem;
+  color: #94a3b8;
+  
+  .placeholder-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    opacity: 0.3;
+  }
+  
+  p {
+    margin: 0;
+    font-size: 1rem;
+    color: #64748b;
+  }
+}
+
+:host ::ng-deep .analytics-content .chart-container {
+  .apexcharts-canvas,
+  .apexcharts-svg {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+  }
+}
+
+.offer-price-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  border-radius: 10px;
+  
+  .price-label {
+    font-size: 0.8rem;
+    color: #64748b;
+    font-weight: 500;
+  }
+  
+  .price-value {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #059669;
+  }
+}
+
+.date-icon {
+  margin-right: 0.25rem;
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+.header-icon {
+  margin-right: 0.5rem;
+  font-size: 1rem;
+  opacity: 0.8;
+}
+
+.status-icon {
+  margin-right: 0.25rem;
+  font-size: 0.8rem;
+}
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  color: white;
+  
+  ion-spinner {
+    margin-bottom: 1rem;
+    --color: white;
+  }
+  
+  p {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 500;
+  }
+}
+
+.last-refresh {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  
+  ion-icon {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.8);
+  }
+  
+  small {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.85rem;
+    font-weight: 400;
+  }
+}
+
+// Animação de rotação para o ícone de refresh
+ion-icon[name="refresh"].spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Estilos para os toasts e loading customizados
+:host {
+  .custom-loading {
+    --background: rgba(0, 0, 0, 0.8);
+    --spinner-color: var(--ion-color-primary);
+    --color: white;
+    
+    .loading-wrapper {
+      background: rgba(0, 0, 0, 0.9);
+      border-radius: 20px;
+      padding: 2rem;
+    }
+  }
+  
+  .custom-toast {
+    --background: var(--ion-color-primary);
+    --color: white;
+    --border-radius: 15px;
+    --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    
+    .toast-wrapper {
+      border-radius: 15px;
+    }
+  }
+}
+
+// Responsividade para diferentes tamanhos de tela
+@media (max-width: 768px) {
+  .offers-section {
+    margin: 0 0.5rem 1rem 0.5rem;
+    
+    .offers-header {
+      padding: 1.5rem 1rem;
+      
+      .offers-title {
+        font-size: 1.3rem;
+      }
+    }
+    
+    .offers-grid {
+      padding: 1rem 0.5rem;
+      
+      ion-col {
+        padding: 0 0.5rem;
+      }
+      
+      .offer-card {
+        height: 420px; // Altura ajustada para tablets
+        
+        .offer-card-content {
+          .offer-chip {
+            margin: 0.75rem;
+            padding: 0.4rem;
+            
+            .offer-title {
+              font-size: 0.8rem;
+            }
+          }
+          
+          .placeholder-container,
+          .offer-image {
+            height: 130px; // Manter altura otimizada
+            margin: 0 0.75rem 0.75rem 0.75rem;
+          }
+          
+          .offer-details {
+            padding: 0 0.75rem;
+            
+            .offer-name {
+              font-size: 1rem;
+              -webkit-line-clamp: 2; // Limitar a 2 linhas
+            line-clamp: 2; // Compatibilidade padrão
+            }
+            
+            .offer-description {
+              font-size: 0.8rem;
+              -webkit-line-clamp: 2; // Limitar a 2 linhas
+            line-clamp: 2; // Compatibilidade padrão
+              margin-bottom: 0.5rem; // Reduzir margem para aproximar do preço
+            }
+            
+            .offer-price-info {
+              margin-bottom: 0; // Remover margem inferior para colar no botão
+              
+              .price-label {
+                font-size: 0.8rem;
+              }
+              
+              .price-value {
+                font-size: 0.95rem;
+              }
+            }
+          }
+          
+          .offer-button-container {
+            padding: 0 0.75rem 0.75rem 0.75rem;
+            
+            .offer-button {
+              height: 42px;
+              font-size: 0.9rem;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .offers-section {
+    margin: 0 0.25rem 0.5rem 0.25rem;
+    
+    .offers-header {
+      padding: 1rem 0.75rem;
+      
+      .offers-title {
+        font-size: 1.1rem;
+        
+        .title-icon {
+          font-size: 1.4rem;
+        }
+      }
+      
+      .offers-subtitle {
+        font-size: 0.9rem;
+      }
+    }
+    
+    .offers-grid {
+      padding: 0.75rem 0.25rem;
+      
+      ion-col {
+        padding: 0 0.25rem;
+      }
+      
+      .offer-card {
+        height: 380px; // Altura ajustada para mobile
+        
+        .offer-card-content {
+          .offer-chip {
+            margin: 0.5rem;
+            padding: 0.3rem;
+            
+            .offer-title {
+              font-size: 0.75rem;
+            }
+          }
+          
+          .placeholder-container,
+          .offer-image {
+            height: 110px; // Manter altura otimizada
+            margin: 0 0.5rem 0.5rem 0.5rem;
+          }
+          
+          .offer-details {
+            padding: 0 0.5rem;
+            
+            .offer-name {
+              font-size: 0.95rem;
+              -webkit-line-clamp: 2; // Limitar a 2 linhas
+            line-clamp: 2; // Compatibilidade padrão
+              margin-bottom: 0.4rem; // Reduzir margem para aproximar do preço
+            }
+            
+            .offer-description {
+              font-size: 0.75rem;
+              -webkit-line-clamp: 2; // Limitar a 2 linhas
+            line-clamp: 2; // Compatibilidade padrão
+              margin-bottom: 0.4rem; // Reduzir margem para aproximar do preço
+            }
+            
+            .offer-price-info {
+              margin-bottom: 0; // Remover margem inferior para colar no botão
+              
+              .price-label {
+                font-size: 0.75rem;
+              }
+              
+              .price-value {
+                font-size: 0.9rem;
+              }
+            }
+          }
+          
+          .offer-button-container {
+            padding: 0 0.5rem 0.5rem 0.5rem;
+            
+            .offer-button {
+              height: 40px;
+              font-size: 0.8rem;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Seção de Cupons (margem inferior moderada — padding do ion-content cobre o fim da rolagem)
+.cupons-section {
+  margin: 1rem 1rem;
+  margin-bottom: 1.25rem;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+.cupons-header {
+  background: linear-gradient(135deg, #f7931e 0%, #f7931e 100%);
+  color: white;
+  padding: 1.5rem;
+  
+  .cupons-title {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #fff;
+    
+    .title-icon {
+      margin-right: 0.75rem;
+      font-size: 1.8rem;
+    }
+  }
+  
+  .cupons-subtitle {
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0.5rem 0 0 0;
+    font-size: 0.95rem;
+  }
+}
+
+.cupons-content {
+  padding: 1.5rem;
+}
+
+.cupons-empty {
+  text-align: center;
+  padding: 3rem 1rem;
+  
+  .empty-icon {
+    font-size: 4rem;
+    color: var(--ion-color-medium);
+    margin-bottom: 1rem;
+  }
+  
+  p {
+    color: var(--ion-color-dark);
+    font-size: 1.1rem;
+    margin: 0 0 0.5rem 0;
+  }
+  
+  small {
+    color: var(--ion-color-medium);
+    font-size: 0.9rem;
+  }
+}
+
+.cupons-table {
+  .table-header {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+    gap: 1rem;
+    padding: 1rem;
+    background: #f8f9fa; // Fundo claro em vez de azul
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    
+    .header-cell {
+      font-weight: 600;
+      color: #333; // Cor escura para melhor legibilidade
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  }
+
+  .cupons-scroll-container {
+    max-height: 500px; // Aumentar altura máxima
+    overflow-y: auto;
+    border-radius: 8px;
+    border: 1px solid #e9ecef; // Borda mais sutil
+    background: white; // Fundo branco para melhor contraste
+    
+    // Estilização da barra de rolagem
+    &::-webkit-scrollbar {
+      width: 8px; // Aumentar largura da barra
+    }
+    
+    &::-webkit-scrollbar-track {
+      background: #f8f9fa; // Fundo claro
+      border-radius: 4px;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background: #6c757d; // Cor mais visível
+      border-radius: 4px;
+      
+      &:hover {
+        background: #495057;
+      }
+    }
+  }
+  
+  .table-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+    gap: 1rem;
+    padding: 1rem;
+    border-bottom: 1px solid #f1f3f4; // Borda mais sutil
+    background: white; // Fundo branco
+    transition: background-color 0.2s ease;
+    
+    &:hover {
+      background: #f8f9fa; // Hover sutil
+    }
+    
+    &:last-child {
+      border-bottom: none;
+  }
+  
+  .table-cell {
+    display: flex;
+    align-items: center;
+      font-size: 0.9rem;
+      color: #333; // Cor escura para melhor legibilidade
+    
+    .estabelecimento-info {
+      display: flex;
+      align-items: center;
+        gap: 0.5rem;
+        max-width: 100%;
+      
+      .estabelecimento-icon {
+        color: var(--ion-color-primary);
+        font-size: 1.2rem;
+          flex-shrink: 0;
+      }
+      
+      span {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          color: #333; // Cor escura
+      }
+    }
+    
+    .codigo-chip {
+        --background: var(--ion-color-primary);
+        --color: #ffffff;
+      font-size: 0.8rem;
+      font-weight: 600;
+        max-width: 100%;
+        
+        ion-label {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          color: #ffffff !important;
+        }
+    }
+    
+    .valor-cupom {
+        color: #10b981; // Cor verde para valores
+      font-weight: 600;
+        font-size: 0.9rem;
+    }
+    
+    .data-cupom {
+        color: #6b7280; // Cor cinza para datas
+        font-size: 0.85rem;
+    }
+    
+    .status-chip {
+      font-size: 0.8rem;
+        font-weight: 600;
+        max-width: 100%;
+        background-color: var(--ion-color-primary);
+        
+        
+        
+        ion-label {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          
+        }
+      }
+    }
+  }
+}
+
+.ver-mais {
+  text-align: center;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--ion-color-light);
+  
+  ion-button {
+    --color: var(--ion-color-primary);
+    font-weight: 500;
+    
+    ion-icon {
+      margin-left: 0.25rem;
+    }
+  }
+}
+
+// Responsividade para tablets e mobile
+@media (max-width: 768px) {
+  .cupons-section {
+    margin-bottom: 1rem;
+  }
+  
+  .cupons-table {
+    .table-header {
+      display: none; // Esconde o cabeçalho em mobile
+    }
+    
+    .cupons-scroll-container {
+      max-height: none;
+      overflow: visible;
+      border: none;
+      -webkit-overflow-scrolling: touch; // Scroll suave no iOS
+      
+      &::-webkit-scrollbar {
+        width: 6px; // Barra de rolagem mais visível em mobile
+      }
+    }
+    
+    .table-row {
+      display: block;
+      border: 1px solid var(--ion-color-light);
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      padding: 1rem;
+      background: white;
+      
+      .table-cell {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid var(--ion-color-light);
+        
+        &:last-child {
+          border-bottom: none;
+        }
+        
+        &::before {
+          content: attr(data-label);
+          font-weight: 600;
+          color: var(--ion-color-medium);
+          font-size: 0.8rem;
+          text-transform: uppercase;
+          margin-right: 1rem;
+          min-width: 80px;
+        }
+      }
+    }
+  }
+}
+
+// Responsividade específica para mobile pequeno
+@media (max-width: 480px) {
+  .cupons-section {
+    margin: 0.5rem;
+    margin-bottom: 0.75rem;
+    
+    .cupons-header {
+      padding: 1rem;
+      
+      .cupons-title {
+        font-size: 1.3rem;
+        
+        .title-icon {
+          font-size: 1.5rem;
+        }
+      }
+      
+      .cupons-subtitle {
+        font-size: 0.9rem;
+      }
+    }
+    
+    .cupons-content {
+      padding: 1rem;
+    }
+    
+    .cupons-table {
+      .cupons-scroll-container {
+        max-height: none;
+        overflow: visible;
+        -webkit-overflow-scrolling: touch; // Scroll suave no iOS
+      }
+      
+      .table-row {
+        padding: 0.75rem;
+        margin-bottom: 0.75rem;
+        
+        .table-cell {
+          padding: 0.5rem 0;
+          
+          &::before {
+            font-size: 0.75rem;
+            min-width: 70px;
+          }
+          
+          .estabelecimento-info {
+            .estabelecimento-icon {
+              font-size: 1rem;
+            }
+            
+            span {
+              font-size: 0.9rem;
+            }
+          }
+          
+          .codigo-chip {
+            font-size: 0.7rem;
+          }
+          
+          .valor-cupom {
+            font-size: 0.9rem;
+          }
+          
+          .data-cupom {
+            font-size: 0.8rem;
+          }
+          
+          .status-chip {
+            font-size: 0.7rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Estilos para cupons clicáveis
+.cupom-clickable {
+  cursor: pointer;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background-color: #f8f9fa;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+}
+
+// Modal de detalhes do cupom
+.cupom-detalhes-modal {
+  --width: 90%;
+  --max-width: 500px;
+  --height: 80%;
+  --border-radius: 20px;
+}
+
+.cupom-detalhes-content {
+  --background: #f8fafc;
+  padding: 1rem;
+}
+
+.cupom-detalhes {
+  background: white;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #6a00f4, #8a2be2);
+  }
+}
+
+.cupom-header-detalhes {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px dashed #e9ecef;
+  
+  .valor-detalhes, .data-detalhes {
+    text-align: center;
+    
+    .label {
+      display: block;
+      font-size: 0.8rem;
+      color: #6b7280;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .valor-texto, .data-texto {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #1f2937;
+    }
+    
+    .valor-texto {
+      color: #10b981;
+    }
+  }
+}
+
+.parceiro-detalhes {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  
+  strong {
+    font-size: 1.3rem;
+    color: #1f2937;
+    font-weight: 600;
+  }
+}
+
+.linha-pontilhada-detalhes {
+  height: 2px;
+  background: repeating-linear-gradient(
+    to right,
+    #e9ecef 0px,
+    #e9ecef 10px,
+    transparent 10px,
+    transparent 20px
+  );
+  margin: 1.5rem 0;
+}
+
+.cupom-body-detalhes {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px dashed #e9ecef;
+  
+  .usuario-detalhes, .codigo-detalhes {
+    flex: 1;
+    text-align: center;
+    
+    .label {
+      display: block;
+      font-size: 0.8rem;
+      color: #6b7280;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    strong {
+      font-size: 1rem;
+      color: #1f2937;
+      font-weight: 600;
+    }
+  }
+}
+
+.cupom-footer-detalhes {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+  
+  .col-left-detalhes {
+    flex: 1;
+    
+    .categoria-detalhes, .validade-detalhes, .codigo-footer-detalhes, .status-detalhes {
+      margin-bottom: 1rem;
+      
+      .label {
+        display: block;
+        font-size: 0.8rem;
+        color: #6b7280;
+        margin-bottom: 0.3rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      
+      .categoria-texto {
+        font-size: 0.9rem;
+        color: #6b7280;
+        display: block;
+        margin-bottom: 0.3rem;
+      }
+      
+      .valor-categoria {
+        font-size: 1.1rem;
+        color: #10b981;
+        font-weight: 700;
+      }
+      
+      strong {
+        font-size: 0.95rem;
+        color: #1f2937;
+        font-weight: 600;
+      }
+    }
+  }
+  
+  .qr-code-detalhes {
+    width: 120px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fa;
+    border-radius: 12px;
+    border: 2px dashed #e9ecef;
+    
+    img {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+    }
+    
+    p {
+      font-size: 0.8rem;
+      color: #6b7280;
+      text-align: center;
+      margin: 0;
+    }
+  }
+}
+
+.atencao-detalhes {
+  text-align: center;
+  padding: 1rem;
+  background: #fef3c7;
+  border-radius: 8px;
+  border-left: 4px solid #f59e0b;
+  
+  strong {
+    color: #92400e;
+    font-weight: 600;
+  }
+  
+  color: #92400e;
+  font-size: 0.9rem;
+}
+
+.status-chip-detalhes {
+  font-size: 0.8rem;
+  height: 28px;
+  
+  
+  ion-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+}
+
+// Cores melhoradas para os status dos cupons - abordagem mais específica
+ion-chip[color="success"] {
+  --background: #059669 !important;
+  --color: #ffffff !important;
+  
+  ion-label {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+  }
+}
+
+// Garantir que o código dos cupons seja sempre branco
+.codigo-chip {
+  --background: var(--ion-color-primary) !important;
+  --color: #ffffff !important;
+  
+  ion-label {
+    color: #ffffff !important;
+    font-weight: 600 !important;
+  }
+}
+
+ion-chip[color="danger"] {
+  --background: #dc2626 !important;
+  --color: #ffffff !important;
+  
+  ion-label {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+  }
+}
+
+ion-chip[color="primary"] {
+  --background: #2563eb !important;
+  --color: #ffffff !important;
+  
+  ion-label {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+  }
+}
+
+// Estilos específicos para o modal
+.cupom-detalhes-modal ion-chip[color="success"] {
+  --background: #059669 !important;
+  --color: #ffffff !important;
+  
+  ion-label {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+  }
+}
+
+.cupom-detalhes-modal ion-chip[color="danger"] {
+  --background: #dc2626 !important;
+  --color: #ffffff !important;
+  
+  ion-label {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+  }
+}
+
+.cupom-detalhes-modal ion-chip[color="primary"] {
+  --background: #2563eb !important;
+  --color: #ffffff !important;
+  
+  ion-label {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+  }
+}
+
+// Responsividade para o modal
+@media (max-width: 768px) {
+  .cupom-detalhes-modal {
+    --width: 95%;
+    --height: 85%;
+  }
+  
+  .cupom-detalhes {
+    padding: 1.5rem;
+    margin: 0.5rem;
+  }
+  
+  .cupom-header-detalhes {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .cupom-body-detalhes {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .cupom-footer-detalhes {
+    flex-direction: column;
+    gap: 1.5rem;
+    
+    .qr-code-detalhes {
+      width: 100px;
+      height: 100px;
+      align-self: center;
+      
+      img {
+        width: 80px;
+        height: 80px;
+      }
+    }
+  }
+}

@@ -1,0 +1,53 @@
+// For information on how to create your own theme, please see:
+// http://ionicframework.com/docs/theming/
+
+
+
+:root {
+  --ion-item-background: #594fb9;
+  --ion-color-primary-selected-hover: #ecc94b;
+  --ion-color-primary: #4c439d;
+  --ion-font-family: 'Ubuntu', sans-serif;
+  --ion-color-segundary: #333;
+  
+  --ion-color-border: #ccc;
+  --ion-color-third: #f4f5f9;
+  
+  // Variáveis para melhorar nitidez e legibilidade
+  --ion-color-text-primary: #333;
+  --ion-color-text-secondary: #666;
+  --ion-color-text-placeholder: #999;
+  --ion-color-background-input: #fff;
+  --ion-color-border-input: #666;
+  --ion-color-border-input-focus: #4c439d;
+  
+  // Variáveis para font-weight
+  --ion-font-weight-light: 300;
+  --ion-font-weight-normal: 400;
+  --ion-font-weight-medium: 500;
+  --ion-font-weight-semibold: 600;
+  --ion-font-weight-bold: 700;
+  --ion-font-weight-extrabold: 800;
+  
+  // Variáveis para tamanhos de fonte
+  --ion-font-size-small: 0.85rem;
+  --ion-font-size-base: 1rem;
+  --ion-font-size-large: 1.1rem;
+  --ion-font-size-xl: 1.25rem;
+  
+  // Variáveis para espaçamento
+  --ion-spacing-xs: 0.25rem;
+  --ion-spacing-sm: 0.5rem;
+  --ion-spacing-md: 1rem;
+  --ion-spacing-lg: 1.5rem;
+  --ion-spacing-xl: 2rem;
+  
+  // Variáveis para bordas
+  --ion-border-radius-sm: 4px;
+  --ion-border-radius-md: 8px;
+  --ion-border-radius-lg: 12px;
+  --ion-border-width-thin: 1px;
+  --ion-border-width-normal: 1.5px;
+  --ion-border-width-thick: 2px;
+}
+

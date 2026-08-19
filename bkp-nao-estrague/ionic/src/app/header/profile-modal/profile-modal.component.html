@@ -1,0 +1,185 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Opções de Perfil</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()" fill="clear">
+        <ion-icon slot="icon-only" aria-hidden="true" src="../assets/icon/Close.svg"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="modal-container">
+    <!-- Menu de NavegaÃ§Ã£o -->
+    <div class="sidebar">
+      <ion-list>
+        <ion-item button (click)="setActiveTab('info')"  [ngClass]="{'active-tab': activeTab === 'info'}">
+          Informações do Usuário
+        </ion-item>
+        <ion-item button (click)="setActiveTab('subscription')"  [ngClass]="{'active-tab': activeTab === 'subscription'}">
+          Opções de Assinatura
+        </ion-item>
+      </ion-list>
+    </div>
+
+    <div class="content">
+      <div *ngIf="activeTab === 'info'">
+        <form [formGroup]="profileSettingsForm" class="form-group">
+          <div class="input-group">
+            <ion-label position="floating">Tipo de Cadastro <span class="required-mark" aria-hidden="true">*</span></ion-label>
+            <ion-segment formControlName="tipoCadastro" (ionChange)="onTipoPessoaChange()" [disabled]="!podeAlterarTipo" class="tipo-perfil-segment">
+              <ion-segment-button value="MEI">
+                <ion-label>MEI</ion-label>
+              </ion-segment-button>
+              <ion-segment-button value="PJ">
+                <ion-label>Parceiro</ion-label>
+              </ion-segment-button>
+            </ion-segment>
+            <div *ngIf="!podeAlterarTipo" class="info-message">
+              <small>Seu tipo de cadastro é: <strong>{{ getTipoDescricao(usuarioTipoAtual) }}</strong></small>
+            </div>
+          </div>
+
+          <div class="input-group" *ngIf="usuarioTipoAtual === 'PF'">
+            <ion-input
+              formControlName="cpf"
+              placeholder="Digite o seu CPF"
+              fill="outline"
+              type="text"
+              (ionInput)="applyMaskCPF($event)"
+              (ionBlur)="validateCPF()"
+              maxlength="14"
+             labelPlacement="stacked"><div slot="label">CPF <span class="required-mark" aria-hidden="true">*</span></div></ion-input>
+            <span *ngIf="deveMostrarErro('cpf')" class="error-message">{{ mensagemErroCampo('cpf') }}</span>
+            <span *ngIf="cpfInvalid && profileSettingsForm.get('cpf')?.value" class="error-message">CPF inválido</span>
+          </div>
+
+          <div class="input-group" *ngIf="usuarioTipoAtual === 'MEI'">
+            <ion-input
+              formControlName="cnpj"
+              placeholder="Digite o seu CNPJ"
+              fill="outline"
+              type="text"
+              (ionInput)="applyMaskCNPJ($event)"
+              (ionBlur)="validateCNPJ()"
+              maxlength="18"
+             labelPlacement="stacked"><div slot="label">CNPJ <span class="required-mark" aria-hidden="true">*</span></div></ion-input>
+            <span *ngIf="deveMostrarErro('cnpj')" class="error-message">{{ mensagemErroCampo('cnpj') }}</span>
+            <span *ngIf="cnpjInvalid && profileSettingsForm.get('cnpj')?.value" class="error-message">CNPJ inválido</span>
+          </div>
+
+          <div class="input-group" *ngIf="usuarioTipoAtual === 'MEI'">
+            <ion-input formControlName="nomeEmpresa" fill="outline" placeholder="Nome da empresa" labelPlacement="stacked"><div slot="label">Nome da empresa <span class="required-mark" aria-hidden="true">*</span></div></ion-input>
+            <span *ngIf="deveMostrarErro('nomeEmpresa')" class="error-message">{{ mensagemErroCampo('nomeEmpresa') }}</span>
+          </div>
+
+          <div class="input-group" *ngIf="usuarioTipoAtual === 'MEI'">
+            <ion-input
+              formControlName="contato"
+              fill="outline"
+              placeholder="(00) 00000-0000"
+              type="tel"
+              inputmode="tel"
+              autocomplete="tel-national"
+              (ionInput)="applyMaskContato($event)"
+             labelPlacement="stacked"><div slot="label">Contato <span class="required-mark" aria-hidden="true">*</span></div></ion-input>
+            <span *ngIf="deveMostrarErro('contato')" class="error-message">{{ mensagemErroCampo('contato') }}</span>
+          </div>
+
+          <div class="input-group" *ngIf="usuarioTipoAtual === 'PJ'">
+            <ion-input
+              formControlName="cnpj"
+              placeholder="Digite o CNPJ da empresa"
+              fill="outline"
+              type="text"
+              (ionInput)="applyMaskCNPJ($event)"
+              (ionBlur)="validateCNPJ()"
+              maxlength="18"
+             labelPlacement="stacked"><div slot="label">CNPJ <span class="required-mark" aria-hidden="true">*</span></div></ion-input>
+            <span *ngIf="deveMostrarErro('cnpj')" class="error-message">{{ mensagemErroCampo('cnpj') }}</span>
+            <span *ngIf="cnpjInvalid && profileSettingsForm.get('cnpj')?.value" class="error-message">CNPJ inválido</span>
+          </div>
+
+          <div class="input-group" *ngIf="usuarioTipoAtual === 'PJ'">
+            <ion-input formControlName="nomeEmpresa" fill="outline" placeholder="Nome da empresa" labelPlacement="stacked"><div slot="label">Nome da empresa <span class="required-mark" aria-hidden="true">*</span></div></ion-input>
+            <span *ngIf="deveMostrarErro('nomeEmpresa')" class="error-message">{{ mensagemErroCampo('nomeEmpresa') }}</span>
+          </div>
+
+          <div class="input-group" *ngIf="usuarioTipoAtual === 'PJ'">
+            <ion-input formControlName="atividade" fill="outline" placeholder="Atividade principal" labelPlacement="stacked"><div slot="label">Atividade principal <span class="required-mark" aria-hidden="true">*</span></div></ion-input>
+            <span *ngIf="deveMostrarErro('atividade')" class="error-message">{{ mensagemErroCampo('atividade') }}</span>
+          </div>
+
+          <div class="input-group" *ngIf="usuarioTipoAtual === 'PJ'">
+            <ion-input formControlName="website" fill="outline" placeholder="Seu website" type="url" labelPlacement="stacked"><div slot="label">Website <span class="optional-hint">(opcional)</span></div></ion-input>
+          </div>
+
+          <div class="input-group" *ngIf="usuarioTipoAtual === 'PJ'">
+            <ion-input
+              formControlName="contato"
+              fill="outline"
+              placeholder="(00) 00000-0000"
+              type="tel"
+              inputmode="tel"
+              autocomplete="tel-national"
+              (ionInput)="applyMaskContato($event)"
+             labelPlacement="stacked"><div slot="label">Contato <span class="required-mark" aria-hidden="true">*</span></div></ion-input>
+            <span *ngIf="deveMostrarErro('contato')" class="error-message">{{ mensagemErroCampo('contato') }}</span>
+          </div>
+
+          <div class="input-group">
+            <ion-input formControlName="nome" fill="outline" placeholder="Seu nome" type="text" labelPlacement="stacked"><div slot="label">Nome <span class="required-mark" aria-hidden="true">*</span></div></ion-input>
+            <span *ngIf="deveMostrarErro('nome')" class="error-message">{{ mensagemErroCampo('nome') }}</span>
+          </div>
+          <div class="input-group">
+            <ion-input formControlName="email" fill="outline" placeholder="Seu e-mail" type="email" labelPlacement="stacked"><div slot="label">E-mail <span class="required-mark" aria-hidden="true">*</span></div></ion-input>
+            <span *ngIf="deveMostrarErro('email')" class="error-message">{{ mensagemErroCampo('email') }}</span>
+          </div>
+          <div class="input-group">
+            <ion-input formControlName="senha" fill="outline" placeholder="Deixe em branco para manter a atual" type="password" labelPlacement="stacked"><div slot="label">Senha <span class="optional-hint">(opcional)</span></div><ion-input-password-toggle slot="end"></ion-input-password-toggle></ion-input>
+            <span *ngIf="deveMostrarErro('senha')" class="error-message">{{ mensagemErroCampo('senha') }}</span>
+          </div>
+          <div class="input-group">
+            <ion-input formControlName="confirmacaoSenha" fill="outline" placeholder="Confirme a nova senha" type="password" labelPlacement="stacked"><div slot="label">Confirmar senha <span class="optional-hint">(opcional)</span></div><ion-input-password-toggle slot="end"></ion-input-password-toggle></ion-input>
+            <span *ngIf="deveMostrarErro('confirmacaoSenha')" class="error-message">{{ mensagemErroCampo('confirmacaoSenha') }}</span>
+            <span *ngIf="deveMostrarErroSenhas()" class="error-message">As senhas não conferem.</span>
+          </div>
+
+          <ion-button expand="full" [disabled]="profileSettingsForm.invalid || spinner" (click)="updateProfile()">
+            <ng-container *ngIf="!spinner; else loadingSpinner">
+              Atualizar Dados
+            </ng-container>
+            <ng-template #loadingSpinner>
+              <ion-spinner name="crescent"></ion-spinner>
+            </ng-template>
+          </ion-button>
+        </form>
+      </div>
+
+      <div *ngIf="activeTab === 'subscription'">
+        <ion-list>
+          <ion-item>
+            <ion-label>Plano Atual</ion-label>
+            <ion-text>{{ subscriptionInfo?.planoTitulo || 'Sem plano' }}</ion-text>
+          </ion-item>
+          <ion-item>
+            <ion-label>Status</ion-label>
+            <ion-text [color]="subscriptionInfo?.ativo ? 'success' : 'medium'">
+              {{ subscriptionInfo?.ativo ? 'Ativo' : 'Inativo' }}
+            </ion-text>
+          </ion-item>
+          <ion-item *ngIf="subscriptionInfo?.dataRenovacao">
+            <ion-label>Renova em</ion-label>
+            <ion-text>{{ subscriptionInfo?.dataRenovacao | date: 'dd/MM/yyyy' }}</ion-text>
+          </ion-item>
+        </ion-list>
+
+        <div class="subscription-actions">
+          <ion-button expand="block" color="primary" (click)="irParaPlanos()">Ver Planos</ion-button>
+          <ion-button expand="block" fill="outline" color="medium" (click)="atualizarAssinatura()">Atualizar status</ion-button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

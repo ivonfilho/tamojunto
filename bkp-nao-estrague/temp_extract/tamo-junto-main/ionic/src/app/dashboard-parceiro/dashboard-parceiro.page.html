@@ -1,0 +1,191 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-title>Dinheiro no bolso</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+
+<ion-content [fullscreen]="true" class="dashboard-container">
+  <!-- Header com gradiente -->
+  <div class="dashboard-header">
+    <div class="header-content">
+      <h1>Dinheiro no bolso</h1>
+      <p>Monitore seu desempenho e gerencie suas ofertas</p>
+    </div>
+    <div class="header-decoration">
+      <div class="decoration-circle"></div>
+      <div class="decoration-circle"></div>
+    </div>
+  </div>
+
+  <!-- Cards de estatísticas rápidas -->
+  <div class="stats-grid">
+    <ion-card class="stat-card">
+      <ion-card-content>
+        <div class="stat-icon">
+          <ion-icon aria-hidden="true" src="../assets/icon/TrendingUp.svg" color="success"></ion-icon>
+        </div>
+        <div class="stat-info">
+          <h3>Total de Vendas</h3>
+          <p class="stat-value">{{ totalVendas | brlCurrency }}</p>
+          <span class="stat-change" [ngClass]="percentualVendasMes >= 0 ? 'positive' : 'negative'">
+            {{ percentualVendasMes >= 0 ? '+' : '' }}{{ percentualVendasMes | number:'1.1-1' }}% este mês
+          </span>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card class="stat-card">
+      <ion-card-content>
+        <div class="stat-icon">
+          <ion-icon  src="../assets/icon/Card.svg" color="primary"></ion-icon>
+        </div>
+        <div class="stat-info">
+          <h3>Cupons Utilizados</h3>
+          <p class="stat-value">{{ totalCuponsUtilizados }}</p>
+          <span class="stat-change positive">+{{ cuponsUtilizadosSemana }} esta semana</span>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card class="stat-card">
+      <ion-card-content>
+        <div class="stat-icon">
+          <ion-icon src="../assets/icon/Storefront.svg" color="warning"></ion-icon>
+        </div>
+        <div class="stat-info">
+          <h3>Ofertas Ativas</h3>
+          <p class="stat-value">{{ totalOfertasAtivas }}</p>
+          <span class="stat-change positive">{{ totalOfertasInativas }} inativas</span>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card class="stat-card">
+      <ion-card-content>
+        <div class="stat-icon">
+          <ion-icon src="../assets/icon/Time.svg" color="danger"></ion-icon>
+        </div>
+        <div class="stat-info">
+          <h3>Cupons Pendentes</h3>
+          <p class="stat-value">{{ totalCuponsPendentes }}</p>
+          <span class="stat-change negative">{{ totalCuponsPerdidos }} perdidos</span>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <!-- Seção do gráfico de desempenho -->
+  <ion-card class="chart-section">
+    <ion-card-header>
+      <div class="section-header">
+        <div class="header-text">
+          <h2>Desempenho dos Últimos {{ selectedPeriodo }} Dias</h2>
+          <p>Visualize suas vendas e cupons utilizados ao longo do tempo</p>
+        </div>
+        <div class="header-actions">
+          <ion-button fill="clear" size="small" (click)="atualizarDados()">
+            <ion-icon src="assets/icon/Refresh.svg" slot="start"></ion-icon>
+            Atualizar
+          </ion-button>
+        </div>
+      </div>
+    </ion-card-header>
+    
+    <ion-card-content>
+      <div class="chart-container">
+        <apx-chart
+          *ngIf="chartOptions"
+          [series]="chartOptions.series!"
+          [chart]="chartOptions.chart!"
+          [xaxis]="chartOptions.xaxis!"
+          [dataLabels]="chartOptions.dataLabels!"
+          [stroke]="chartOptions.stroke!">
+        </apx-chart>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Vendas por Produto -->
+  <ion-card class="products-section">
+    <ion-card-header>
+      <div class="section-header">
+        <div class="header-text">
+          <h2>Vendas por Produto</h2>
+          <p>Produtos mais vendidos no período</p>
+        </div>
+        <ion-button fill="clear" size="small" color="#fff" routerLink="/ofertas" >
+          Ver todas
+          <ion-icon src="assets/icon/ArrowForward.svg" slot="end"></ion-icon>
+        </ion-button>
+      </div>
+    </ion-card-header>
+
+    <ion-card-content>
+      <div class="products-list">
+        <div class="product-item" *ngFor="let v of vendasPorProduto; let i = index">
+          <div class="product-rank">
+            <span class="rank-number">{{ i + 1 }}</span>
+          </div>
+          
+          <div class="product-info">
+            <h4 class="product-name">{{ v.nomeProduto }}</h4>
+            <div class="product-stats">
+              <span class="quantity">
+                <ion-icon src="../assets/icon/Basket.svg" color="primary"></ion-icon>
+                {{ v.quantidade }} vendas
+              </span>
+            </div>
+          </div>
+
+          <div class="product-amount">
+            <span class="amount">{{ v.valorTotal | brlCurrency }}</span>
+            <div class="progress-bar modern">
+              <div class="progress-fill animate" [style.width.%]="getProgressPercentage(v.valorTotal)"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Ações rápidas -->
+  <div class="quick-actions">
+    <div class="section-title">
+      <h2>Ações Rápidas</h2>
+    </div>
+    
+    <div class="actions-grid">
+      <ion-card class="action-card" routerLink="/cadastro-oferta">
+        <ion-card-content>
+          <div class="action-icon">
+            <ion-icon src="../assets/icon/AddCircleOutline.svg" color="primary"></ion-icon>
+          </div>
+          <h3>Nova Oferta</h3>
+          <p>Criar uma nova oferta para seus clientes</p>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card class="action-card" routerLink="/ofertas">
+        <ion-card-content>
+          <div class="action-icon">
+            <ion-icon src="../assets/icon/Storefront.svg" color="success"></ion-icon>
+          </div>
+          <h3>Gerenciar Ofertas</h3>
+          <p>Visualizar e gerenciar suas ofertas</p>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card class="action-card" routerLink="/cupons/relatorio-cupom">
+        <ion-card-content>
+          <div class="action-icon">
+            <ion-icon src="../assets/icon/Analytics.svg" color="warning"></ion-icon>
+          </div>
+          <h3>Relatórios</h3>
+          <p>Acessar relatórios detalhados de vendas</p>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </div>
+</ion-content>

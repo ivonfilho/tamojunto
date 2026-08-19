@@ -1,0 +1,1 @@
+web: dotnet TamoJunto.API.dll 

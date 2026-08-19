@@ -1,0 +1,66 @@
+.container {
+  padding: 16px;
+}
+
+.error-text {
+  color: var(--ion-color-danger);
+  font-size: 0.9em;
+  margin-top: 4px;
+}
+
+ion-card {
+  margin-bottom: 16px;
+}
+
+ion-card-title {
+  font-size: 1.2em;
+  font-weight: 600;
+}
+
+ion-card-subtitle {
+  font-size: 0.9em;
+  color: var(--ion-color-medium);
+}
+
+ion-item {
+  --padding-start: 0;
+  --inner-padding-end: 0;
+}
+
+ion-item h3 {
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+ion-item p {
+  margin: 0;
+  color: var(--ion-color-medium);
+  font-size: 0.9em;
+}
+
+ion-icon {
+  font-size: 1.5em;
+}
+
+ion-button {
+  margin-top: 16px;
+}
+
+ion-list {
+  padding: 0;
+}
+
+ion-list ion-item {
+  --padding-start: 16px;
+  --inner-padding-end: 16px;
+}
+
+ion-list ion-item h3 {
+  font-size: 1em;
+  font-weight: 500;
+}
+
+ion-list ion-item p {
+  font-size: 0.85em;
+  margin-top: 4px;
+} 

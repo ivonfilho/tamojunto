@@ -1,0 +1,64 @@
+<ion-header [translucent]="true">
+  <ion-toolbar class="toolbar-estilo">
+    <ion-title>{{ isRecuperacaoSenha ? 'Redefinir senha' : 'Confirmar e-mail' }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding confirmar-email-content">
+  <div class="status-card">
+    <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+
+    <ion-icon
+      *ngIf="!isLoading && processado && sucesso"
+      src="../assets/icon/CheckmarkCircle.svg"
+      class="status-icon status-icon-success"
+      aria-hidden="true"
+    ></ion-icon>
+
+    <ion-icon
+      *ngIf="!isLoading && processado && !sucesso"
+      src="../assets/icon/CloseCircle.svg"
+      class="status-icon status-icon-error"
+      aria-hidden="true"
+    ></ion-icon>
+
+    <h2>
+      <ng-container *ngIf="isLoading">Processando...</ng-container>
+      <ng-container *ngIf="!isLoading && processado && sucesso">Concluído com sucesso</ng-container>
+      <ng-container *ngIf="!isLoading && processado && !sucesso">Não foi possível concluir</ng-container>
+      <ng-container *ngIf="!isLoading && !processado">Pronto para confirmar</ng-container>
+    </h2>
+
+    <p *ngIf="isRecuperacaoSenha">Informe a nova senha para concluir a recuperação.</p>
+    <p *ngIf="!isRecuperacaoSenha">Você será direcionado automaticamente após confirmar o e-mail.</p>
+
+    <p class="erro" *ngIf="mensagemErro">{{ mensagemErro }}</p>
+
+    <div *ngIf="isRecuperacaoSenha" class="senha-form">
+      <div style="margin-bottom: 15px;">
+        <ion-input label="Nova senha" labelPlacement="stacked" fill="outline" [(ngModel)]="novaSenha" type="password"></ion-input>
+      </div>
+
+      <div style="margin-bottom: 15px;">
+        <ion-input label="Confirmar senha" labelPlacement="stacked" fill="outline" [(ngModel)]="confirmarSenha" type="password"></ion-input>
+      </div>
+
+      <ion-button expand="block" (click)="processarToken()" [disabled]="isLoading">
+        Confirmar senha
+      </ion-button>
+    </div>
+
+    <ion-button
+      *ngIf="!isLoading && !isRecuperacaoSenha && !processado"
+      expand="block"
+      (click)="confirmarEmail()"
+    >
+      Confirmar e-mail
+    </ion-button>
+
+    <ion-button *ngIf="!isLoading && processado && !sucesso" fill="outline" expand="block" (click)="voltarParaLogin()">
+      Voltar para login
+    </ion-button>
+  </div>
+</ion-content>
+

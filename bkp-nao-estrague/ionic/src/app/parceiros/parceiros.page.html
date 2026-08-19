@@ -1,0 +1,125 @@
+<ion-header>
+  <ion-toolbar slot="star">
+    <ion-title>Parceiros</ion-title>
+  
+    <ion-buttons slot="end">
+      <ion-button class="ion-button-export" (click)="exportarCSV()">Exportar Lista</ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end"> 
+      <ion-button (click)="cadastrarPaceiro()" class="ion-button">
+        <ion-label class="ion-label">cadastrar Parceiro</ion-label>
+      </ion-button>     
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+  <ion-grid>
+
+    <!-- Filtros -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title class="label-list">Filtros</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <form #filtersForm="ngForm">
+          <ion-grid>
+            <ion-row>
+              <ion-col class="col-filters" size-md="3">
+                  <ion-input labelPlacement="stacked" label="Nome" fill="outline" class="input-filters" [(ngModel)]="filters.name" name="name">
+                  </ion-input>
+              </ion-col>
+
+              
+              <ion-col class="col-filters" size-md="3">
+                  <ion-input labelPlacement="stacked" label="CNPJ" fill="outline" class="input-filters" [(ngModel)]="filters.cnpj" name="cnpj">
+                  </ion-input>
+              </ion-col>
+
+              <ion-col class="col-filters" size-md="3">
+                  <ion-select label="Status" labelPlacement="stacked" fill="outline" class="select-filters" [(ngModel)]="filters.status" name="status">
+                    <ion-select-option value="">Todos</ion-select-option>                    <ion-select-option value="ativo">Ativo</ion-select-option>
+                    <ion-select-option value="inativo">Inativo</ion-select-option>
+                  </ion-select>
+              </ion-col>
+
+              <ion-col class="col-filters-button" size-md="3">
+                  <ion-button class="ion-button-export" style="height: 100%; margin: 0;" expand="block" (click)="applyFilters(filtersForm.value)">Aplicar Filtros</ion-button>
+              </ion-col>
+
+        
+            </ion-row>
+          </ion-grid>
+        </form>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Tabela de Parceiros -->
+    <ion-card>
+      <ion-card-header>
+        <ion-row class="row-list">
+          <ion-card-title class="label-list">Consultar</ion-card-title>
+          <ion-button (click)="loadPartners()" title="Atualizar Lista"><ion-icon src="assets/icon/Refresh.svg"></ion-icon></ion-button>
+        </ion-row>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row class="header">
+            <ion-col size="12" size-sm="2" class="table-header">Nome</ion-col>
+            <ion-col size="12" size-sm="2" class="table-header">CNPJ</ion-col>
+            <ion-col size="12" size-sm="2" class="table-header">Website</ion-col>
+            <ion-col size="12" size-sm="2" class="table-header">Contato</ion-col>
+            <ion-col size="12" size-sm="1" class="table-header">Status</ion-col>
+            <ion-col size="12" size-sm="1" class="table-header">Data de Cadastro</ion-col>
+            <ion-col size="12" size-sm="2" class="table-header">Ações</ion-col>
+          </ion-row>
+    
+          <ion-row *ngFor="let partner of partners">
+            <ion-col size="12" size-sm="2" class="table-columns">{{ partner.idEmpresaNavigation?.nome }}</ion-col>
+            <ion-col size="12" size-sm="2" class="table-columns">{{ partner.idEmpresaNavigation?.cnpj }}</ion-col>
+            <ion-col size="12" size-sm="2" class="table-columns">
+              <a [href]="partner.website" target="_blank">{{ partner.website }}</a>
+            </ion-col>
+            <ion-col size="12" size-sm="2" class="table-columns">{{ partner.contato }}</ion-col>
+            <ion-col size="12" size-sm="1" class="table-columns">
+              <ion-badge class="table-badge" [color]="partner.status ? 'success' : 'danger'">
+                {{ partner.status ? 'Ativo' : 'Inativo' }}
+              </ion-badge>
+            </ion-col>
+            <ion-col size="12" size-sm="1" class="table-columns">
+              {{ partner.dataCriacao | date:'dd/MM/yyyy' }}
+            </ion-col>
+            <ion-col size="12" size-sm="2" class="actions-column">
+              <ion-button class="action-button" fill="clear" size="small" color="warning" (click)="editarParceiro(partner)" title="Editar">✏️</ion-button>
+              <ion-button class="action-button" fill="clear" size="small" color="danger" (click)="deletePartner(partner.id!)" title="Excluir">
+                <ion-icon name="trash"></ion-icon>
+              </ion-button>
+            </ion-col>
+          </ion-row>
+    
+          <ion-row *ngIf="partners.length === 0">
+            <ion-col class="text-center">Nenhum parceiro encontrado.</ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+    
+
+    <!-- Paginação -->
+    <ion-row class="ion-justify-content-between ion-padding">
+      <ion-col size="auto">
+        <ion-button [disabled]="currentPage === 1" (click)="onPageChange(currentPage - 1)">Anterior</ion-button>
+      </ion-col>
+      <ion-col class="page-count text-center">
+        Página {{ currentPage }} de {{ getTotalPages() }}
+      </ion-col>
+      <ion-col size="auto">
+        <ion-button [disabled]="currentPage * pageSize >= totalPartners" (click)="onPageChange(currentPage + 1)">
+          Próxima
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+

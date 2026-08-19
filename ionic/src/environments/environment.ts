@@ -7,7 +7,7 @@ export const environment = {
   apiUrl: 'http://backend-tamojunto.31.97.254.35.sslip.io'
 };
 
-export let SERVER_URL = environment.apiUrl;
+//export let SERVER_URL = 'http://backend-tamojunto.31.97.254.35.sslip.io';
 
 /*
  * For easier debugging in development mode, you can import the following file
