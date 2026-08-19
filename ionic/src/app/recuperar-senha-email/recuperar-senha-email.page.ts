@@ -78,8 +78,8 @@ export class RecuperarSenhaEmailPage implements OnInit {
     await toast.present();
   }
 
-  voltarParaLogin() {
-    this.router.navigate(['/login']);
+  voltarLogin() {
+    this.router.navigate(['/']);
   }
 
   irParaRecuperarSms() {

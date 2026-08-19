@@ -123,8 +123,8 @@ if (builder.Environment.IsDevelopment())
 }
 else
 {
-    // Configuração para produção (PostgreSQL no Railway)
-    var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL");
+    // Configuração para produção (PostgreSQL no Railway / Coolify)
+    var connectionString = "Server=uyv3qfxqzeum3yavomg0juac;Port=5432;Database=postgres;User Id=postgres;Password=ML2jK99ppwvEKvrmd60NjquUksUhc5FBEvSqs0TGDiBHeKyRDspJ0saYZjjz06C3;SslMode=Prefer;TrustServerCertificate=True;";
     if (string.IsNullOrEmpty(connectionString))
     {
         throw new InvalidOperationException("DATABASE_URL environment variable is not set");
@@ -195,8 +195,6 @@ builder.Services.AddCors(o => o.AddPolicy("AllowAllPolicy", builder =>
 var app = builder.Build();
 
 // Aplicar migrações automaticamente em produção
-// Comentado temporariamente pois o banco já está configurado
-/*
 if (!app.Environment.IsDevelopment())
 {
     using (var scope = app.Services.CreateScope())
@@ -215,7 +213,6 @@ if (!app.Environment.IsDevelopment())
         }
     }
 }
-*/
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

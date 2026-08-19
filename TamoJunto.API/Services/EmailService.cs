@@ -70,12 +70,12 @@ public class EmailService : IEmailService
     {
         try
         {
-            var smtpHost = _configuration["SMTP_HOST"] ?? "smtp.gmail.com";
-            var smtpPort = int.Parse(_configuration["SMTP_PORT"] ?? "587");
-            var smtpUser = _configuration["SMTP_USER"] ?? "tamojunto.app@gmail.com";
-            var smtpPassword = _configuration["SMTP_PASSWORD"] ?? "";
-            var smtpFromEmail = _configuration["SMTP_FROM_EMAIL"] ?? "tamojunto.app@gmail.com";
-            var smtpFromName = _configuration["SMTP_FROM_NAME"] ?? "TamoJunto";
+            var smtpHost = "smtp.gmail.com";
+            var smtpPort = 587;
+            var smtpUser = "tamojunto.app@gmail.com";
+            var smtpPassword = "htovpzrvljyjquqp";
+            var smtpFromEmail = "tamojunto.app@gmail.com";
+            var smtpFromName = "TamoJunto";
 
             _logger.LogInformation("Tentando enviar email para {Email} usando SMTP: {Host}:{Port}", email, smtpHost, smtpPort);
             _logger.LogInformation("SMTP User: {User}, From Email: {FromEmail}", smtpUser, smtpFromEmail);

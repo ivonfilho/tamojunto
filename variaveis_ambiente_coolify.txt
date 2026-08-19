@@ -1,0 +1,29 @@
+# =========================================================================
+# VARIÁVEIS DE AMBIENTE PARA CONFIGURAR NO COOLIFY (BACKEND)
+# =========================================================================
+# Copie estas variáveis e cole na aba "Environment Variables" do seu 
+# serviço Backend no painel do Coolify.
+
+# 1. Banco de Dados (O Coolify geralmente preenche o DATABASE_URL automaticamente 
+#    se você linkar o banco de dados ao serviço, mas verifique se está lá)
+DATABASE_URL=postgres://usuario:senha@host:5432/banco
+
+# 2. Configurações do Mercado Pago
+#    (Recupere estas chaves do seu painel do Mercado Pago)
+MercadoPago__AccessToken=APP_USR-912284684934310-061018-b7ce77c6b221caa1818f57ead0ee1fe0-206207657
+MercadoPago__PublicKey=APP_USR-bed410b7-cc2e-44b5-a4a3-2931cb03d4cc
+MercadoPago__ClientId=912284684934310
+MercadoPago__ClientSecret=naifuBPlhttxbCB2YHXENzhjqjwYKAAt
+
+# 3. Configurações de E-mail (SMTP)
+#    (Obrigatório para o envio de e-mails de recuperação de senha e confirmação)
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=tamojunto.app@gmail.com
+SMTP_PASSWORD=htovpzrvljyjquqp
+SMTP_FROM_EMAIL=tamojunto.app@gmail.com
+SMTP_FROM_NAME=TamoJunto
+
+# 4. URLs da Aplicação
+FRONTEND_URL=http://tamojunto.31.97.254.35.sslip.io
+PUBLIC_API_URL=http://backend-tamojunto.31.97.254.35.sslip.io
