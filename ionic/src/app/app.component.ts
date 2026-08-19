@@ -137,38 +137,8 @@ export class AppComponent implements OnInit {
     // Primeira tentativa imediata
     await this.carregarUsuario();
 
-    // Se não encontrou usuário, tenta novamente a cada 100ms por até 5 segundos
-    if (!this.usuario) {
-      console.log('[AppComponent] Usuário não encontrado, iniciando verificação agressiva...');
-      let tentativas = 0;
-      const maxTentativas = 50; // 5 segundos (50 * 100ms)
-
-      const verificarUsuario = async () => {
-        tentativas++;
-        console.log(`[AppComponent] Tentativa ${tentativas}/${maxTentativas} de carregar usuário...`);
-
-        await this.carregarUsuario();
-
-        if (this.usuario) {
-          console.log('[AppComponent] Usuário encontrado na tentativa', tentativas);
-          return; // Sucesso, para a verificação
-        }
-
-        if (tentativas < maxTentativas) {
-          // Agenda próxima tentativa com intervalo menor
-          setTimeout(verificarUsuario, 100);
-        } else {
-          console.log(' Máximo de tentativas atingido, usuário não encontrado');
-        }
-      };
-
-      // Inicia a verificação agressiva
-      setTimeout(verificarUsuario, 100);
-    }
-
-    // Garantir que o layout seja exibido mesmo sem usuário
-    if (!this.usuario) {
-    }
+    // Se não encontrou usuário e tem token válido, o login pode estar em andamento
+    // mas não precisamos fazer um loop de 50 tentativas. Os listeners do localStorage cuidarão disso.
   }
 
   async carregarUsuario() {
