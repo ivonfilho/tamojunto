@@ -351,13 +351,13 @@ public class UsuarioController : ControllerBase
         }
 
         // Contas novas: exige confirmação de e-mail. Contas antigas (sem token pendente) continuam com acesso.
-        if (!usuario.EmailConfirmed && !string.IsNullOrEmpty(usuario.EmailConfirmationToken))
+        /* if (!usuario.EmailConfirmed && !string.IsNullOrEmpty(usuario.EmailConfirmationToken))
         {
             return StatusCode(StatusCodes.Status403Forbidden, new
             {
                 message = "Confirme seu e-mail para acessar. Abra o link que enviamos no cadastro ou use \"Reenviar e-mail de confirmação\" na tela de login."
             });
-        }
+        } */
 
         var token = _tokenUtil.GenerateToken(usuario, model.LembrarMe);
 
