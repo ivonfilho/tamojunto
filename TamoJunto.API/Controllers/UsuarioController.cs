@@ -893,9 +893,9 @@ public class UsuarioController : ControllerBase
                 return BadRequest(ModelState);
             }
 
-            // Buscar usuário por email
+            var emailBuscado = (request.Email ?? "").Trim();
             var usuarios = await _repository.ListAsync(new GenericAllSpec<Usuario>());
-            var usuario = usuarios.FirstOrDefault(u => u.Email == request.Email);
+            var usuario = usuarios.FirstOrDefault(u => string.Equals(u.Email, emailBuscado, StringComparison.OrdinalIgnoreCase));
 
             if (usuario == null)
             {
