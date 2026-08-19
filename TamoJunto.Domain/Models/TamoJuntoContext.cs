@@ -494,17 +494,13 @@ public partial class TamoJuntoContext : DbContext
             // Se o banco tiver só as colunas da migration em camelCase (emailConfirmed), renomeie no Postgres
             // ou alinhe com um snapshot único — misturar nomes quebra SELECT/UPDATE.
             entity.Property(e => e.ResetPasswordToken)
-                .HasColumnName("ResetPasswordToken")
                 .HasMaxLength(255)
                 .IsUnicode(false);
             entity.Property(e => e.ResetPasswordTokenExpiry)
-                .HasColumnName("ResetPasswordTokenExpiry")
                 .HasColumnType("timestamp without time zone");
             entity.Property(e => e.EmailConfirmed)
-                .HasColumnName("EmailConfirmed")
                 .HasColumnType("boolean");
             entity.Property(e => e.EmailConfirmationToken)
-                .HasColumnName("EmailConfirmationToken")
                 .HasMaxLength(255)
                 .IsUnicode(false);
         });

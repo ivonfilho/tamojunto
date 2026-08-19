@@ -133,14 +133,6 @@ const routes: Routes = [
     loadChildren: () => import('./recuperar-senha-email/recuperar-senha-email.module').then( m => m.RecuperarSenhaEmailPageModule)
   },
   {
-    path: 'recuperar-senha-sms',
-    loadChildren: () => import('./recuperar-senha-sms/recuperar-senha-sms.module').then( m => m.RecuperarSenhaSmsPageModule)
-  },
-  {
-    path: 'confirmar-codigo-sms',
-    loadChildren: () => import('./confirmar-codigo-sms/confirmar-codigo-sms.module').then( m => m.ConfirmarCodigoSmsPageModule)
-  },
-  {
     path: 'ofertas-parceiro',
     canActivate: [ParceiroGuard],
     loadChildren: () => import('./ofertas-parceiro/ofertas-parceiro.module').then( m => m.OfertasParceiroPageModule)
