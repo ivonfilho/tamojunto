@@ -538,7 +538,7 @@ public partial class TamoJuntoContext : DbContext
     {
         //var dbServer = "localhost";
         //optionsBuilder.UseMySQL(
-        //$"server={dbServer};database=u880823656_tamo_junto;user=root;password=P@ssw0rd4TMJ",
+        //var connectionString = "";
         //mySqlOptions => mySqlOptions.CommandTimeout(60));
         //optionsBuilder.UseCamelCaseNamingConvention();
     }

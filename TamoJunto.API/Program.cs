@@ -111,7 +111,7 @@ if (builder.Environment.IsDevelopment())
     var dbServer = "104.196.117.15";
     builder.Services.AddDbContext<TamoJuntoContext>(opt =>
     {
-        opt.UseNpgsql($"Server={dbServer};Database=tamo-junto;User Id=luar;Password=Luar2024;TrustServerCertificate=True", sqlServerOptions =>
+        //opt.UseNpgsql($"Server={dbServer};Database=tamo-junto;User Id=luar;Password=;TrustServerCertificate=True", sqlServerOptions =>
             {
                 sqlServerOptions.CommandTimeout(60);
                 sqlServerOptions.MigrationsAssembly("TamoJunto.Domain");
@@ -124,10 +124,30 @@ if (builder.Environment.IsDevelopment())
 else
 {
     // Configuração para produção (PostgreSQL no Railway / Coolify)
-    var connectionString = "Server=uyv3qfxqzeum3yavomg0juac;Port=5432;Database=postgres;User Id=postgres;Password=ML2jK99ppwvEKvrmd60NjquUksUhc5FBEvSqs0TGDiBHeKyRDspJ0saYZjjz06C3;SslMode=Prefer;TrustServerCertificate=True;";
-    if (string.IsNullOrEmpty(connectionString))
+    var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+    var connectionString = "";
+
+    if (string.IsNullOrEmpty(databaseUrl))
     {
         throw new InvalidOperationException("DATABASE_URL environment variable is not set");
+    }
+
+    if (databaseUrl.StartsWith("postgres://") || databaseUrl.StartsWith("postgresql://"))
+    {
+        var uri = new Uri(databaseUrl);
+        var userInfo = uri.UserInfo.Split(':');
+        var user = userInfo[0];
+        var password = userInfo.Length > 1 ? userInfo[1] : "";
+        var host = uri.Host;
+        var port = uri.Port > 0 ? uri.Port : 5432;
+        var database = uri.AbsolutePath.TrimStart('/');
+
+        // Usando User Id e Password para ser compatível com Npgsql 8.0+
+        connectionString = $"Server={host};Port={port};Database={database};User Id={user};Password={password};SslMode=Prefer;TrustServerCertificate=True;";
+    }
+    else
+    {
+        connectionString = databaseUrl;
     }
     
     Console.WriteLine("Using DATABASE_URL from environment (connection string redacted in logs)");
