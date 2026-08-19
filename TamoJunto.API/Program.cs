@@ -106,22 +106,6 @@ builder.Services.AddResponseCompression(options =>
 });
 
 // Configuração do banco de dados
-if (builder.Environment.IsDevelopment())
-{
-    var dbServer = "104.196.117.15";
-    builder.Services.AddDbContext<TamoJuntoContext>(opt =>
-    {
-        //opt.UseNpgsql($"Server={dbServer};Database=tamo-junto;User Id=luar;Password=;TrustServerCertificate=True", sqlServerOptions =>
-            {
-                sqlServerOptions.CommandTimeout(60);
-                sqlServerOptions.MigrationsAssembly("TamoJunto.Domain");
-            });
-        opt.EnableSensitiveDataLogging();
-        opt.UseCamelCaseNamingConvention();
-    }, ServiceLifetime.Scoped);
-    AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-}
-else
 {
     // Configuração para produção (PostgreSQL no Railway / Coolify)
     var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
