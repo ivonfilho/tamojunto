@@ -487,6 +487,9 @@ public partial class TamoJuntoContext : DbContext
             entity.Property(e => e.UrlImagem)
                 .HasColumnName("UrlImagem")
                 .HasColumnType("text");
+            entity.Property(e => e.Contato)
+                .HasColumnName("Contato")
+                .HasColumnType("text");
             entity.Property(e => e.Role)
                 .HasColumnName("Role")
                 .HasConversion<int>();
