@@ -1,4 +1,4 @@
-/*
+﻿/*
  * App Global CSS
  * ----------------------------------------------------------------------------
  * Put style rules here that you want to apply globally. These styles are for
@@ -118,7 +118,7 @@ a {
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 // @import "@ionic/angular/css/palettes/dark.system.css";
 
-// Variáveis de cores do aplicativo
+// Vari�veis de cores do aplicativo
 $primary-color: #6a00f4;
 $secondary-color: #8a2be2;
 $success-color: #28a745;
@@ -130,7 +130,7 @@ $gradient-primary: linear-gradient(135deg, $primary-color, $secondary-color);
 $gradient-success: linear-gradient(135deg, #28a745, #20c997);
 $gradient-warning: linear-gradient(135deg, #ffc107, #fd7e14);
 
-// Dashboard: um único ion-content faz o scroll — fundo igual ao layout anterior (gradiente roxo)
+// Dashboard: um �nico ion-content faz o scroll � fundo igual ao layout anterior (gradiente roxo)
 $dashboard-bg-gradient: linear-gradient(135deg, #f8f9fa 0%, #f8f9fa 100%);
 
 .large-modal {
@@ -147,14 +147,14 @@ $dashboard-bg-gradient: linear-gradient(135deg, #f8f9fa 0%, #f8f9fa 100%);
   border-radius: var(--border-radius);
 }
 
-/* Nitidez global; text-rendering auto evita glifos estranhos com Poppins/WebKit após repaint. */
+/* Nitidez global; text-rendering auto evita glifos estranhos com Poppins/WebKit ap�s repaint. */
 * {
   -webkit-font-smoothing: antialiased !important;
   -moz-osx-font-smoothing: grayscale !important;
   text-rendering: auto;
 }
 
-/* Estilos para toolbar e botões - LETRAS BRANCAS */
+/* Estilos para toolbar e bot�es - LETRAS BRANCAS */
 ion-toolbar {
   ion-buttons {
     ion-button {
@@ -168,7 +168,7 @@ ion-toolbar {
   }
 }
 
-/* Garantir que labels dos botões sejam brancos */
+/* Garantir que labels dos bot�es sejam brancos */
 ion-button ion-label {
   color: white !important;
 }
@@ -223,7 +223,7 @@ ion-segment {
   }
 }
 
-/* Melhorias específicas para modais */
+/* Melhorias espec�ficas para modais */
 ion-modal {
   --backdrop-opacity: 0.4;
   --width: 85%;
@@ -364,15 +364,15 @@ ion-card,
   overflow: hidden;
 }
 
-/* Melhorias para dispositivos móveis */
+/* Melhorias para dispositivos m�veis */
 
 /* Melhorias para dispositivos de alta densidade */
 
-/* Melhorias específicas para iOS */
+/* Melhorias espec�ficas para iOS */
 
-/* Melhorias específicas para Android */
+/* Melhorias espec�ficas para Android */
 
-/* Regras específicas para o modal de perfil */
+/* Regras espec�ficas para o modal de perfil */
 app-profile-modal {
   ion-label {
     font-weight: 500 !important;
@@ -390,7 +390,7 @@ app-profile-modal {
   }
 }
 
-/* Regras específicas para mobile no modal de perfil */
+/* Regras espec�ficas para mobile no modal de perfil */
 @media (max-width: 768px) {
   app-profile-modal {
     ion-label {
@@ -407,7 +407,7 @@ app-profile-modal {
   }
 }
 
-/* Regras específicas para melhorar nitidez no modal de perfil */
+/* Regras espec�ficas para melhorar nitidez no modal de perfil */
 app-profile-modal .enhanced-label {
   font-weight: 500 !important;
   color: #666 !important;
@@ -436,7 +436,7 @@ app-profile-modal .enhanced-button {
   text-rendering: optimizeLegibility !important;
 }
 
-/* Regras específicas para mobile no modal de perfil com prioridade máxima */
+/* Regras espec�ficas para mobile no modal de perfil com prioridade m�xima */
 @media (max-width: 768px) {
   app-profile-modal .enhanced-label {
     font-weight: 500 !important;
@@ -455,7 +455,7 @@ app-profile-modal .enhanced-button {
   }
 }
 
-/* Regras específicas para dispositivos de alta densidade no modal de perfil */
+/* Regras espec�ficas para dispositivos de alta densidade no modal de perfil */
 @media (-webkit-min-device-pixel-ratio: 2),
 (min-resolution: 192dpi) {
   app-profile-modal .enhanced-label {
@@ -472,7 +472,7 @@ app-profile-modal .enhanced-button {
   }
 }
 
-/* Regras específicas para o segmento de tipo de cadastro */
+/* Regras espec�ficas para o segmento de tipo de cadastro */
 ion-segment {
   ion-segment-button {
     ion-label {
@@ -486,7 +486,7 @@ ion-segment {
   }
 }
 
-/* Regras específicas para mobile no segmento */
+/* Regras espec�ficas para mobile no segmento */
 @media (max-width: 768px) {
   ion-segment {
     ion-segment-button {
@@ -499,7 +499,7 @@ ion-segment {
   }
 }
 
-/* Regras específicas para dispositivos de alta densidade no segmento */
+/* Regras espec�ficas para dispositivos de alta densidade no segmento */
 @media (-webkit-min-device-pixel-ratio: 2),
 (min-resolution: 192dpi) {
   ion-segment {
@@ -512,7 +512,7 @@ ion-segment {
   }
 }
 
-/* Regras específicas para iOS no segmento */
+/* Regras espec�ficas para iOS no segmento */
 .platform-ios {
   ion-segment {
     ion-segment-button {
@@ -524,7 +524,7 @@ ion-segment {
   }
 }
 
-/* Regras específicas para Android no segmento */
+/* Regras espec�ficas para Android no segmento */
 .platform-android {
   ion-segment {
     ion-segment-button {
@@ -536,7 +536,7 @@ ion-segment {
   }
 }
 
-/* Regras específicas para o segmento no modal de perfil */
+/* Regras espec�ficas para o segmento no modal de perfil */
 app-profile-modal ion-segment {
   ion-segment-button {
     ion-label {
@@ -550,7 +550,7 @@ app-profile-modal ion-segment {
   }
 }
 
-/* Regras específicas para mobile no segmento do modal de perfil */
+/* Regras espec�ficas para mobile no segmento do modal de perfil */
 @media (max-width: 768px) {
   app-profile-modal ion-segment {
     ion-segment-button {
@@ -563,7 +563,7 @@ app-profile-modal ion-segment {
   }
 }
 
-/* Regras específicas para dispositivos de alta densidade no segmento do modal de perfil */
+/* Regras espec�ficas para dispositivos de alta densidade no segmento do modal de perfil */
 @media (-webkit-min-device-pixel-ratio: 2),
 (min-resolution: 192dpi) {
   app-profile-modal ion-segment {
@@ -576,7 +576,7 @@ app-profile-modal ion-segment {
   }
 }
 
-/* Regras específicas para o segmento no modal de perfil com prioridade máxima */
+/* Regras espec�ficas para o segmento no modal de perfil com prioridade m�xima */
 app-profile-modal ion-segment ion-segment-button ion-label {
   font-weight: 500 !important;
   color: #666 !important;
@@ -586,7 +586,7 @@ app-profile-modal ion-segment ion-segment-button ion-label {
   text-rendering: optimizeLegibility !important;
 }
 
-/* Regras específicas para mobile no segmento do modal de perfil com prioridade máxima */
+/* Regras espec�ficas para mobile no segmento do modal de perfil com prioridade m�xima */
 @media (max-width: 768px) {
   app-profile-modal ion-segment ion-segment-button ion-label {
     font-weight: 500 !important;
@@ -595,7 +595,7 @@ app-profile-modal ion-segment ion-segment-button ion-label {
   }
 }
 
-/* Regras específicas para dispositivos de alta densidade no segmento do modal de perfil com prioridade máxima */
+/* Regras espec�ficas para dispositivos de alta densidade no segmento do modal de perfil com prioridade m�xima */
 @media (-webkit-min-device-pixel-ratio: 2),
 (min-resolution: 192dpi) {
   app-profile-modal ion-segment ion-segment-button ion-label {
@@ -604,30 +604,30 @@ app-profile-modal ion-segment ion-segment-button ion-label {
   }
 }
 
-/* Regras específicas para iOS no segmento do modal de perfil com prioridade máxima */
+/* Regras espec�ficas para iOS no segmento do modal de perfil com prioridade m�xima */
 .platform-ios app-profile-modal ion-segment ion-segment-button ion-label {
   font-weight: 500 !important;
   color: #666 !important;
 }
 
-/* Regras específicas para Android no segmento do modal de perfil com prioridade máxima */
+/* Regras espec�ficas para Android no segmento do modal de perfil com prioridade m�xima */
 .platform-android app-profile-modal ion-segment ion-segment-button ion-label {
   font-weight: 500 !important;
   color: #666 !important;
 }
 
-/* Regras específicas para todos os elementos do modal de perfil com prioridade máxima */
+/* Regras espec�ficas para todos os elementos do modal de perfil com prioridade m�xima */
 app-profile-modal * {
   -webkit-font-smoothing: antialiased !important;
   -moz-osx-font-smoothing: grayscale !important;
   text-rendering: optimizeLegibility !important;
 }
 
-/* Regras específicas para todos os labels do modal de perfil com prioridade máxima */
+/* Regras espec�ficas para todos os labels do modal de perfil com prioridade m�xima */
 
-/* Regras específicas para todos os inputs do modal de perfil com prioridade máxima */
+/* Regras espec�ficas para todos os inputs do modal de perfil com prioridade m�xima */
 
-/* Regras específicas para mobile em todos os elementos do modal de perfil com prioridade máxima */
+/* Regras espec�ficas para mobile em todos os elementos do modal de perfil com prioridade m�xima */
 @media (max-width: 768px) {
   app-profile-modal * {
     -webkit-font-smoothing: antialiased !important;
@@ -636,7 +636,7 @@ app-profile-modal * {
   }
 }
 
-// Cores melhoradas para status dos cupons - aplicação global
+// Cores melhoradas para status dos cupons - aplica��o global
 ion-chip[color="success"] {
   --background: #059669 !important;
   --color: #ffffff !important;
@@ -667,7 +667,7 @@ ion-chip[color="primary"] {
   }
 }
 
-// Estilos para popover e alert (dropdowns de seleção)
+// Estilos para popover e alert (dropdowns de sele��o)
 .popover-content,
 .alert-wrapper {
   ion-list {
@@ -685,7 +685,7 @@ ion-chip[color="primary"] {
   }
 }
 
-// Estilos específicos para o select do Ionic
+// Estilos espec�ficos para o select do Ionic
 ion-select-popover {
   ion-list {
     background: var(--ion-color-primary);
@@ -728,8 +728,8 @@ ion-select-popover {
 }
 
 /*
-  Envelopamento Seguro para Formulários:
-  Apenas elementos dentro de .premium-form recebem essa formatação!
+  Envelopamento Seguro para Formul�rios:
+  Apenas elementos dentro de .premium-form recebem essa formata��o!
 */
 .premium-form {
   display: flex;
@@ -798,7 +798,7 @@ ion-select-popover {
   object-fit: contain;
 }
 
-/* Modais e páginas com toolbar-estilo padronizados com roxo */
+/* Modais e p�ginas com toolbar-estilo padronizados com roxo */
 ion-toolbar.toolbar-estilo {
   --background: var(--ion-color-primary) !important;
   --color: white !important;
@@ -995,7 +995,7 @@ ion-input {
 }
 
 /* ==================================================
-   ESTILOS MIGRADOS DOS COMPONENTES DE FORMUL�RIO
+   ESTILOS MIGRADOS DOS COMPONENTES DE FORMUL?RIO
    ================================================== */
 
 /* --- app/cadastro-form/cadastro-form.component.scss --- */
@@ -1019,7 +1019,7 @@ app-cadastro-form {
     overflow-x: hidden;
   }
 
-  // Estilos espec�ficos para formul�rio grande (Parceiro) - apenas mobile
+  // Estilos espec?ficos para formul?rio grande (Parceiro) - apenas mobile
   &.large-form {
     @media (max-width: 767px) {
       @media (max-width: 480px) {
@@ -1063,7 +1063,7 @@ app-cadastro-form {
   }
 }
 
-/* Borda �sucesso� s� ap�s o usu�rio tocar no campo */
+/* Borda ?sucesso? s? ap?s o usu?rio tocar no campo */
 :host ion-input:not(.ion-touched),
 :host ion-textarea:not(.ion-touched) {
   --highlight-color-valid: transparent;
@@ -1109,7 +1109,7 @@ ion-label.ng-invalid,
   }
 }
 
-// Estilos específicos para versão web
+// Estilos espec�ficos para vers�o web
 @media (min-width: 768px) {
   .form-container {
     width: 100% !important;
@@ -1156,7 +1156,7 @@ ion-label.ng-invalid,
         padding: 0.5rem;
       }
 
-      // Quando o formul�rio � grande (Parceiro), reduzir padding
+      // Quando o formul?rio ? grande (Parceiro), reduzir padding
       .large-form & {
         @media (max-width: 767px) {
           padding: 0.25rem;
@@ -1333,9 +1333,9 @@ ion-label.ng-invalid,
       --background-checked: var(--ion-color-primary);
       font-weight: 500;
       text-transform: none;
-      flex: 1 1 auto; // Permite que os bot�es se ajustem
-      min-width: 70px; // Largura m�nima para n�o cortar
-      white-space: nowrap; // Evita quebra dentro do bot�o
+      flex: 1 1 auto; // Permite que os bot?es se ajustem
+      min-width: 70px; // Largura m?nima para n?o cortar
+      white-space: nowrap; // Evita quebra dentro do bot?o
 
       @media (max-width: 480px) {
         font-size: 0.85rem;
@@ -1607,8 +1607,8 @@ app-profile-modal {
    CLASSES DE COMPONENTES IONIC (SOBRESCREVEM O SHADOW DOM)
    =================================================== */
 
-/* Botão Principal */
-/* Sobrescreve apenas esses parâmetros para TODOS os ion-button do app */
+/* Bot�o Principal */
+/* Sobrescreve apenas esses par�metros para TODOS os ion-button do app */
 ion-button {
   --padding-top: 17px;
   --padding-bottom: 17px;
@@ -1621,11 +1621,11 @@ ion-button {
 }
 
 /* ==========================================
-   RESET E PADRÃO PARA BOTÕES EM .card-header-actions
+   RESET E PADR�O PARA BOT�ES EM .card-header-actions
    ========================================== */
 .card-header-actions {
   ion-button {
-    /* Reseta as variáveis internas do Ionic */
+    /* Reseta as vari�veis internas do Ionic */
     --background: transparent !important;
     --box-shadow: none !important;
     --padding-top: 0 !important;
@@ -1634,7 +1634,7 @@ ion-button {
     --padding-end: 0 !important;
     --border-radius: 6px;
 
-    /* Remove limites de tamanho padrão */
+    /* Remove limites de tamanho padr�o */
     min-height: unset !important;
     min-width: unset !important;
     height: auto;
@@ -1644,7 +1644,7 @@ ion-button {
     --background-hover: rgba(0, 0, 0, 0.05);
     --background-activated: rgba(0, 0, 0, 0.1);
 
-    /* Centralização de ícones/texto */
+    /* Centraliza��o de �cones/texto */
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -1656,10 +1656,10 @@ ion-button {
 }
 
 /* ==========================================
-   RESET E PADRÃO PARA BOTÃO DE MENU (ICON-ONLY)
+   RESET E PADR�O PARA BOT�O DE MENU (ICON-ONLY)
    ========================================== */
 .menu-button {
-  /* Reseta variáveis do Ionic para evitar herança global */
+  /* Reseta vari�veis do Ionic para evitar heran�a global */
   --background: transparent !important;
   --background-hover: rgba(255, 255, 255, 0.1);
   --background-activated: rgba(255, 255, 255, 0.2);
@@ -1688,7 +1688,7 @@ ion-button {
   }
 }
 
-/* Regras específicas para telas muito pequenas */
+/* Regras espec�ficas para telas muito pequenas */
 @media (max-width: 320px) {
   .header-content {
     padding: 0.25rem;
@@ -1709,7 +1709,7 @@ ion-button {
   }
 }
 
-/* Botão Principal */
+/* Bot�o Principal */
 .btn-primary-custom {
   --background: var(--color-brand-midnight, #121c42);
   --color: #ffffff;
@@ -1727,7 +1727,7 @@ ion-button {
   --background-activated: #0d1430;
 }
 
-/* Botão Secundário / Cancelar */
+/* Bot�o Secund�rio / Cancelar */
 .btn-secondary-custom {
   --background: var(--color-brand-lilac, #c07ffb);
   --color: #ffffff;
@@ -1743,7 +1743,7 @@ ion-button {
   --background-activated: #9d52e0;
 }
 
-/* Botão de Destaque / Outline */
+/* Bot�o de Destaque / Outline */
 .btn-outline-custom {
   --background: transparent;
   --color: var(--color-brand-midnight, #121c42);
@@ -1821,7 +1821,7 @@ ion-content.dashboard-container {
   --overflow: auto;
   --scroll-y: true;
   --background: #{$dashboard-bg-gradient};
-  /* Espaço no fim da rolagem: safe area + folga para não cortar cards / botões */
+  /* Espa�o no fim da rolagem: safe area + folga para n�o cortar cards / bot�es */
   --padding-bottom: max(2rem, calc(1.25rem + env(safe-area-inset-bottom, 0px)));
 }
 
@@ -1965,7 +1965,7 @@ ion-content.dashboard-container {
     font-weight: 400;
   }
 
-  /* Item atual/ativo (último) em peso normal */
+  /* Item atual/ativo (�ltimo) em peso normal */
   ion-breadcrumb.breadcrumb-active {
     font-weight: 400;
   }

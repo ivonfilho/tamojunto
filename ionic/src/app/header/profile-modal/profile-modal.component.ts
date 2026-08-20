@@ -577,13 +577,13 @@ export class ProfileModalComponent implements OnInit {
         } else if (tipoCadastro === 'MEI') {
           // Para MEI
           if (usuarioData.empresa) {
-            this.profileSettingsForm.patchValue({
-              cnpj: usuarioData.empresa.cnpj || '',
-              nomeEmpresa: usuarioData.empresa.nome || '',
-              contato: applyMaskTelefoneBR(
-                onlyDigits(String(usuarioData.empresa?.contato || ''))
-              ),
-            });
+              this.profileSettingsForm.patchValue({
+                cnpj: usuarioData.empresa.cnpj || '',
+                nomeEmpresa: usuarioData.empresa.nome || '',
+                contato: applyMaskTelefoneBR(
+                  onlyDigits(String(usuarioData.contato || usuarioData.usuario?.contato || usuarioData.empresa?.contato || ''))
+                ),
+              });
           }
           
           // Garantir que o campo CNPJ esteja habilitado e o CPF desabilitado
@@ -610,18 +610,20 @@ export class ProfileModalComponent implements OnInit {
           // Para pessoa jurídica
           if (usuarioData.empresa) {
             this.profileSettingsForm.patchValue({
-              cnpj: usuarioData.empresa.cnpj || '',
-              nomeEmpresa: usuarioData.empresa.nome || '',
-              atividade: usuarioData.empresa.atividade || '',
-              contato: applyMaskTelefoneBR(
-                onlyDigits(
-                  String(
-                    usuarioData.parceiro?.contato ||
+                cnpj: usuarioData.empresa.cnpj || '',
+                nomeEmpresa: usuarioData.empresa.nome || '',
+                atividade: usuarioData.empresa.atividade || '',
+                contato: applyMaskTelefoneBR(
+                  onlyDigits(
+                    String(
+                      usuarioData.contato ||
+                      usuarioData.usuario?.contato ||
+                      usuarioData.parceiro?.contato ||
                       usuarioData.empresa?.contato ||
                       ''
+                    )
                   )
-                )
-              ),
+                ),
               website: usuarioData.parceiro?.website || '',
             });
           }

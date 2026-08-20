@@ -1,4 +1,4 @@
-using System.Data;
+﻿using System.Data;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -55,8 +55,8 @@ public class UsuarioController : ControllerBase
     }
 
     /// <summary>
-    /// Alguns bancos PostgreSQL têm colunas camelCase da migration (emailConfirmed) e colunas PascalCase do EF (EmailConfirmed).
-    /// A confirmação pode atualizar só um lado; o login lê o outro e devolve 403. Esta rotina unifica no par canônico mapeado pelo EF.
+    /// Alguns bancos PostgreSQL tÃªm colunas camelCase da migration (emailConfirmed) e colunas PascalCase do EF (EmailConfirmed).
+    /// A confirmaÃ§Ã£o pode atualizar sÃ³ um lado; o login lÃª o outro e devolve 403. Esta rotina unifica no par canÃ´nico mapeado pelo EF.
     /// </summary>
     private async Task TryNormalizeUsuarioEmailConfirmationLegacyPostgresAsync(Guid usuarioId, CancellationToken cancellationToken = default)
     {
@@ -122,25 +122,25 @@ public class UsuarioController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogWarning(ex, "Falha ao normalizar colunas legadas de confirmação de e-mail para usuário {UserId}", usuarioId);
+            _logger.LogWarning(ex, "Falha ao normalizar colunas legadas de confirmaÃ§Ã£o de e-mail para usuÃ¡rio {UserId}", usuarioId);
         }
     }
 
     /// <summary>
-    /// Aplica confirmação de e-mail (persistência). Usado pelo POST e pelo GET do link do e-mail.
+    /// Aplica confirmaÃ§Ã£o de e-mail (persistÃªncia). Usado pelo POST e pelo GET do link do e-mail.
     /// </summary>
     private async Task<(Usuario? usuario, string? errorMessage)> TryApplyEmailConfirmationAsync(string? tokenRaw, CancellationToken cancellationToken = default)
     {
         var tokenNormalizado = (tokenRaw ?? string.Empty).Trim();
         if (string.IsNullOrEmpty(tokenNormalizado))
-            return (null, "Token é obrigatório");
+            return (null, "Token Ã© obrigatÃ³rio");
 
         var usuario = await _repository.FirstOrDefaultAsync(
             new UsuarioByEmailConfirmationTokenSpec(tokenNormalizado),
             cancellationToken);
 
         if (usuario == null)
-            return (null, "Token inválido ou expirado");
+            return (null, "Token invÃ¡lido ou expirado");
 
         usuario.EmailConfirmed = true;
         usuario.EmailConfirmationToken = null;
@@ -162,12 +162,12 @@ public class UsuarioController : ControllerBase
 
         if (requestModel == null)
         {
-            return BadRequest(new { message = "Dados do usuário não fornecidos" });
+            return BadRequest(new { message = "Dados do usuÃ¡rio nÃ£o fornecidos" });
         }
 
         if (string.IsNullOrEmpty(requestModel.Email) || string.IsNullOrEmpty(requestModel.Senha) || string.IsNullOrEmpty(requestModel.Nome))
         {
-            return BadRequest(new { message = "Email, senha e nome são obrigatórios" });
+            return BadRequest(new { message = "Email, senha e nome sÃ£o obrigatÃ³rios" });
         }
 
         requestModel.Email = requestModel.Email.Trim();
@@ -177,7 +177,7 @@ public class UsuarioController : ControllerBase
 
         if (!string.IsNullOrEmpty(usuario?.Email))
         {
-            return BadRequest(new { message = "Usuário já cadastrado com email informado! " });
+            return BadRequest(new { message = "UsuÃ¡rio jÃ¡ cadastrado com email informado! " });
         }
 
         var usuarioModel = new Usuario
@@ -189,7 +189,7 @@ public class UsuarioController : ControllerBase
         usuarioModel.Email = requestModel.Email;
         usuarioModel.Senha = SegurancaUtil.SHA1Hash(requestModel.Senha);
         usuarioModel.DataCadastro = DateTime.Now;
-        // usuarioModel.Contato = requestModel.Contato;
+        usuarioModel.Contato = requestModel.Contato;
         usuarioModel.EmailConfirmed = false;
         usuarioModel.EmailConfirmationToken = Convert.ToHexString(RandomNumberGenerator.GetBytes(32));
 
@@ -200,11 +200,11 @@ public class UsuarioController : ControllerBase
         {
             if (string.IsNullOrEmpty(requestModel.CNPJ) || string.IsNullOrEmpty(requestModel.NomeEmpresa) || string.IsNullOrEmpty(requestModel.Atividade))
             {
-                return BadRequest(new { message = "Para cadastro PJ, CNPJ, nome da empresa e atividade são obrigatórios" });
+                return BadRequest(new { message = "Para cadastro PJ, CNPJ, nome da empresa e atividade sÃ£o obrigatÃ³rios" });
             }
 
-            // Validação adicional: Verificar se o CNPJ é válido para Parceiro
-            // Esta validação deve ser feita no frontend, mas mantemos aqui como backup
+            // ValidaÃ§Ã£o adicional: Verificar se o CNPJ Ã© vÃ¡lido para Parceiro
+            // Esta validaÃ§Ã£o deve ser feita no frontend, mas mantemos aqui como backup
             Console.WriteLine($"[UsuarioController] Cadastrando Parceiro (PJ) para: {requestModel.Email}");
 
             var empresa = new Empresa
@@ -224,7 +224,7 @@ public class UsuarioController : ControllerBase
                 IdEmpresa = empresa.Id,
                 Nome = requestModel.Nome,
                 Website = requestModel.Website ?? string.Empty,
-                // Contato = requestModel.Contato ?? string.Empty,
+                Contato = requestModel.Contato ?? string.Empty,
                 DataCriacao = DateTime.Now,
                 Status = true
             };
@@ -235,10 +235,10 @@ public class UsuarioController : ControllerBase
         {
             Console.WriteLine($"[UsuarioController] Iniciando cadastro MEI para: {requestModel.Email}");
             
-            if (string.IsNullOrEmpty(requestModel.CNPJ) || string.IsNullOrEmpty(requestModel.NomeEmpresa) /* || string.IsNullOrEmpty(requestModel.Contato) */)
+            if (string.IsNullOrEmpty(requestModel.CNPJ) || string.IsNullOrEmpty(requestModel.NomeEmpresa) || string.IsNullOrEmpty(requestModel.Contato))
             {
-                Console.WriteLine($"[UsuarioController] Validação falhou para MEI: CNPJ={requestModel.CNPJ}, NomeEmpresa={requestModel.NomeEmpresa}");
-                return BadRequest(new { message = "Para cadastro MEI, CNPJ, e nome da empresa são obrigatórios" });
+                Console.WriteLine($"[UsuarioController] ValidaÃ§Ã£o falhou para MEI: CNPJ={requestModel.CNPJ}, NomeEmpresa={requestModel.NomeEmpresa}");
+                return BadRequest(new { message = "Para cadastro MEI, CNPJ, e nome da empresa sÃ£o obrigatÃ³rios" });
             }
 
             Console.WriteLine($"[UsuarioController] Criando empresa para MEI: {requestModel.NomeEmpresa}");
@@ -272,7 +272,7 @@ public class UsuarioController : ControllerBase
             var cliente = new Cliente
             {
                 Id = Guid.NewGuid(),
-                Cpf = null, // MEI não tem CPF individual
+                Cpf = null, // MEI nÃ£o tem CPF individual
                 IdUsuario = usuarioModel.Id,
                 IdEmpresa = empresa.Id
             };
@@ -293,13 +293,13 @@ public class UsuarioController : ControllerBase
                 return BadRequest(new { message = $"Erro ao criar cliente: {ex.Message}" });
             }
             
-            Console.WriteLine($"[UsuarioController] Cadastro MEI concluído com sucesso!");
+            Console.WriteLine($"[UsuarioController] Cadastro MEI concluÃ­do com sucesso!");
         }
         else
         {
             if (string.IsNullOrEmpty(requestModel.CPF))
             {
-                return BadRequest(new { message = "CPF é obrigatório para cadastro PF" });
+                return BadRequest(new { message = "CPF Ã© obrigatÃ³rio para cadastro PF" });
             }
 
             var cliente = new Cliente
@@ -320,13 +320,13 @@ public class UsuarioController : ControllerBase
         if (!emailConfirmacaoEnviado)
         {
             _logger.LogWarning(
-                "Cadastro concluído mas falha ao enviar e-mail de confirmação para {Email}",
+                "Cadastro concluÃ­do mas falha ao enviar e-mail de confirmaÃ§Ã£o para {Email}",
                 usuarioModel.Email);
         }
 
         return Ok(new
         {
-            message = "Usuário cadastrado com sucesso! Confirme seu e-mail pelo link que enviamos para ativar o acesso.",
+            message = "UsuÃ¡rio cadastrado com sucesso! Confirme seu e-mail pelo link que enviamos para ativar o acesso.",
             emailConfirmacaoEnviado
         });
     }
@@ -351,12 +351,12 @@ public class UsuarioController : ControllerBase
             return Unauthorized(new { message = "Email ou senha incorretos!" });
         }
 
-        // Contas novas: exige confirmação de e-mail. Contas antigas (sem token pendente) continuam com acesso.
+        // Contas novas: exige confirmaÃ§Ã£o de e-mail. Contas antigas (sem token pendente) continuam com acesso.
         /* if (!usuario.EmailConfirmed && !string.IsNullOrEmpty(usuario.EmailConfirmationToken))
         {
             return StatusCode(StatusCodes.Status403Forbidden, new
             {
-                message = "Confirme seu e-mail para acessar. Abra o link que enviamos no cadastro ou use \"Reenviar e-mail de confirmação\" na tela de login."
+                message = "Confirme seu e-mail para acessar. Abra o link que enviamos no cadastro ou use \"Reenviar e-mail de confirmaÃ§Ã£o\" na tela de login."
             });
         } */
 
@@ -381,7 +381,7 @@ public class UsuarioController : ControllerBase
             var authorizationHeader = Request.Headers["Authorization"].ToString();
             if (string.IsNullOrEmpty(authorizationHeader) || !authorizationHeader.StartsWith("Bearer "))
             {
-                return Unauthorized(new { message = "Usuário não autenticado!" });
+                return Unauthorized(new { message = "UsuÃ¡rio nÃ£o autenticado!" });
             }
 
             var token = authorizationHeader.Substring("Bearer ".Length).Trim();
@@ -391,26 +391,26 @@ public class UsuarioController : ControllerBase
             var usuarioIdStr = jwtToken?.Claims.FirstOrDefault(c => c.Type == "Id")?.Value;
             if (string.IsNullOrEmpty(usuarioIdStr) || !Guid.TryParse(usuarioIdStr, out var usuarioId))
             {
-                return BadRequest(new { message = "ID do usuário inválido!" });
+                return BadRequest(new { message = "ID do usuÃ¡rio invÃ¡lido!" });
             }
 
-            // Validar dados obrigatórios
+            // Validar dados obrigatÃ³rios
             if (string.IsNullOrEmpty(requestModel.Nome) || string.IsNullOrEmpty(requestModel.Email))
             {
-                return BadRequest(new { message = "Nome e email são obrigatórios!" });
+                return BadRequest(new { message = "Nome e email sÃ£o obrigatÃ³rios!" });
             }
 
             var usuario = await _repository.GetByIdAsync(usuarioId);
             if (usuario == null)
             {
-                return NotFound(new { message = "Usuário não encontrado!" });
+                return NotFound(new { message = "UsuÃ¡rio nÃ£o encontrado!" });
             }
 
-            // Atualizar dados do usuário
+            // Atualizar dados do usuÃ¡rio
             usuario.Nome = requestModel.Nome;
             usuario.Email = requestModel.Email;
             
-            // Só atualizar senha se for fornecida
+            // SÃ³ atualizar senha se for fornecida
             if (!string.IsNullOrEmpty(requestModel.Senha))
             {
                 usuario.Senha = SegurancaUtil.SHA1Hash(requestModel.Senha);
@@ -420,7 +420,7 @@ public class UsuarioController : ControllerBase
 
             string tipoCadastroOriginal = "PF";
 
-            // Verifica se é parceiro ou cliente
+            // Verifica se Ã© parceiro ou cliente
             if (usuario.Role == TamoJunto.Domain.Models.UserRole.Parceiro)
             {
                 // Busca dados do parceiro
@@ -429,13 +429,13 @@ public class UsuarioController : ControllerBase
 
                 if (parceiro == null)
                 {
-                    return NotFound(new { message = "Parceiro não encontrado!" });
+                    return NotFound(new { message = "Parceiro nÃ£o encontrado!" });
                 }
 
                 var empresa = await _repositoryEmpresa.GetByIdAsync(parceiro.IdEmpresa);
                 if (empresa == null)
                 {
-                    return NotFound(new { message = "Empresa do parceiro não encontrada!" });
+                    return NotFound(new { message = "Empresa do parceiro nÃ£o encontrada!" });
                 }
 
                 tipoCadastroOriginal = "PJ";
@@ -443,13 +443,13 @@ public class UsuarioController : ControllerBase
                 // Validar tipo de cadastro
                 if (requestModel.TipoCadastro != tipoCadastroOriginal)
                 {
-                    return BadRequest(new { message = "Não é permitido alterar o tipo de cadastro." });
+                    return BadRequest(new { message = "NÃ£o Ã© permitido alterar o tipo de cadastro." });
                 }
 
-                // Validar campos obrigatórios para PJ
+                // Validar campos obrigatÃ³rios para PJ
                 if (string.IsNullOrEmpty(requestModel.NomeEmpresa) || string.IsNullOrEmpty(requestModel.Atividade))
                 {
-                    return BadRequest(new { message = "Nome da empresa e atividade são obrigatórios para PJ!" });
+                    return BadRequest(new { message = "Nome da empresa e atividade sÃ£o obrigatÃ³rios para PJ!" });
                 }
 
                 // Atualizar dados da empresa
@@ -459,10 +459,10 @@ public class UsuarioController : ControllerBase
                 await _repositoryEmpresa.SaveChangesAsync();
 
                 // Atualizar dados do parceiro (contato e website)
-                //if (!string.IsNullOrEmpty(requestModel.Contato))
-                //{
-                //    parceiro.Contato = requestModel.Contato;
-                //}
+                if (!string.IsNullOrEmpty(requestModel.Contato))
+                {
+                parceiro.Contato = requestModel.Contato;
+                }
                 if (!string.IsNullOrEmpty(requestModel.Website))
                 {
                     parceiro.Website = requestModel.Website;
@@ -478,24 +478,24 @@ public class UsuarioController : ControllerBase
                 
                 if (cliente == null)
                 {
-                    return NotFound(new { message = "Cliente não encontrado!" });
+                    return NotFound(new { message = "Cliente nÃ£o encontrado!" });
                 }
 
                 // Verificar se o tipo de cadastro mudou
-                // MEI e PJ ambos têm IdEmpresa, então verificamos se tem empresa
+                // MEI e PJ ambos tÃªm IdEmpresa, entÃ£o verificamos se tem empresa
                 tipoCadastroOriginal = cliente.IdEmpresa.HasValue ? (requestModel.TipoCadastro == "MEI" ? "MEI" : "PJ") : "PF";
                 
-                // Validar que o tipo não pode mudar de forma inconsistente
+                // Validar que o tipo nÃ£o pode mudar de forma inconsistente
                 if (cliente.IdEmpresa.HasValue && requestModel.TipoCadastro == "PF")
                 {
-                    return BadRequest(new { message = "Não é permitido alterar o tipo de cadastro de PJ/MEI para PF." });
+                    return BadRequest(new { message = "NÃ£o Ã© permitido alterar o tipo de cadastro de PJ/MEI para PF." });
                 }
                 if (!cliente.IdEmpresa.HasValue && (requestModel.TipoCadastro == "PJ" || requestModel.TipoCadastro == "MEI"))
                 {
-                    return BadRequest(new { message = "Não é permitido alterar o tipo de cadastro de PF para PJ/MEI." });
+                    return BadRequest(new { message = "NÃ£o Ã© permitido alterar o tipo de cadastro de PF para PJ/MEI." });
                 }
 
-                // Atualizar dados específicos baseado no tipo de cadastro (MEI ou PJ)
+                // Atualizar dados especÃ­ficos baseado no tipo de cadastro (MEI ou PJ)
                 if (tipoCadastroOriginal == "PJ" || tipoCadastroOriginal == "MEI")
                 {
                     if (cliente.IdEmpresa.HasValue)
@@ -503,12 +503,12 @@ public class UsuarioController : ControllerBase
                         var empresa = await _repositoryEmpresa.GetByIdAsync(cliente.IdEmpresa.Value);
                         if (empresa != null)
                         {
-                            // Para PJ, validar campos obrigatórios
+                            // Para PJ, validar campos obrigatÃ³rios
                             if (tipoCadastroOriginal == "PJ")
                             {
                                 if (string.IsNullOrEmpty(requestModel.NomeEmpresa) || string.IsNullOrEmpty(requestModel.Atividade))
                                 {
-                                    return BadRequest(new { message = "Nome da empresa e atividade são obrigatórios para PJ!" });
+                                    return BadRequest(new { message = "Nome da empresa e atividade sÃ£o obrigatÃ³rios para PJ!" });
                                 }
                                 empresa.Atividade = requestModel.Atividade;
                             }
@@ -517,7 +517,7 @@ public class UsuarioController : ControllerBase
                                 // Para MEI, validar apenas nome da empresa
                                 if (string.IsNullOrEmpty(requestModel.NomeEmpresa))
                                 {
-                                    return BadRequest(new { message = "Nome da empresa é obrigatório para MEI!" });
+                                    return BadRequest(new { message = "Nome da empresa Ã© obrigatÃ³rio para MEI!" });
                                 }
                             }
 
@@ -528,21 +528,21 @@ public class UsuarioController : ControllerBase
                 }
             }
 
-            //if (requestModel.Contato != null)
-            //{
-            //    usuario.Contato = requestModel.Contato;
-            //}
-                // Para PF, não precisamos fazer alterações específicas além do usuário
+            if (requestModel.Contato != null)
+            {
+            usuario.Contato = requestModel.Contato;
+            }
+                // Para PF, nÃ£o precisamos fazer alteraÃ§Ãµes especÃ­ficas alÃ©m do usuÃ¡rio
             }
 
-            // Salvar alterações do usuário
+            // Salvar alteraÃ§Ãµes do usuÃ¡rio
             await _repository.UpdateAsync(usuario);
             await _repository.SaveChangesAsync();
 
             // Retornar dados atualizados
             var usuarioAtualizado = new
             {
-                message = "Usuário atualizado com sucesso!",
+                message = "UsuÃ¡rio atualizado com sucesso!",
                 usuario = new
                 {
                     id = usuario.Id,
@@ -556,8 +556,8 @@ public class UsuarioController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Erro ao alterar usuário: {Message}", ex.Message);
-            return StatusCode(500, new { message = "Erro interno do servidor ao processar a alteração." });
+            _logger.LogError(ex, "Erro ao alterar usuÃ¡rio: {Message}", ex.Message);
+            return StatusCode(500, new { message = "Erro interno do servidor ao processar a alteraÃ§Ã£o." });
         }
     }
 
@@ -570,7 +570,7 @@ public class UsuarioController : ControllerBase
         var authorizationHeader = Request.Headers["Authorization"].ToString();
         if (string.IsNullOrEmpty(authorizationHeader) || !authorizationHeader.StartsWith("Bearer "))
         {
-            return Unauthorized(new { message = "Usuário não autenticado!" });
+            return Unauthorized(new { message = "UsuÃ¡rio nÃ£o autenticado!" });
         }
 
         var token = authorizationHeader.Substring("Bearer ".Length).Trim();
@@ -580,16 +580,16 @@ public class UsuarioController : ControllerBase
         var usuarioIdStr = jwtToken?.Claims.FirstOrDefault(c => c.Type == "Id")?.Value;
         if (string.IsNullOrEmpty(usuarioIdStr) || !Guid.TryParse(usuarioIdStr, out var usuarioId))
         {
-            return BadRequest(new { message = "ID do usuário inválido!" });
+            return BadRequest(new { message = "ID do usuÃ¡rio invÃ¡lido!" });
         }
 
         var usuario = await _repository.GetByIdAsync(usuarioId);
         if (usuario == null)
         {
-            return NotFound(new { message = "Usuário não encontrado!" });
+            return NotFound(new { message = "UsuÃ¡rio nÃ£o encontrado!" });
         }
 
-        // Verifica se é parceiro ou cliente
+        // Verifica se Ã© parceiro ou cliente
         if (usuario.Role == TamoJunto.Domain.Models.UserRole.Parceiro)
         {
             // Busca dados do parceiro
@@ -598,20 +598,16 @@ public class UsuarioController : ControllerBase
 
             if (parceiro == null)
             {
-                return NotFound(new { message = "Parceiro não encontrado!" });
+                return NotFound(new { message = "Parceiro nÃ£o encontrado!" });
             }
 
             var empresa = await _repositoryEmpresa.GetByIdAsync(parceiro.IdEmpresa);
             if (empresa == null)
             {
-                return NotFound(new { message = "Empresa do parceiro não encontrada!" });
+                return NotFound(new { message = "Empresa do parceiro nÃ£o encontrada!" });
             }
 
-            var usuarioVm = new UsuarioVm()
-            {
-                Nome = usuario.Nome,
-                Email = usuario.Email,
-                ImagemUrl = usuario.UrlImagem,
+            var usuarioVm = new UsuarioVm() { Nome = usuario.Nome, Email = usuario.Email, ImagemUrl = usuario.UrlImagem, Contato = usuario.Contato,
             };
 
             return Ok(new
@@ -642,19 +638,15 @@ public class UsuarioController : ControllerBase
 
         if (cliente == null)
         {
-            return NotFound(new { message = "Cliente não encontrado!" });
+            return NotFound(new { message = "Cliente nÃ£o encontrado!" });
         }
 
         var cpfCliente = cliente.Cpf;  
         var assinaturasCliente = cliente.Assinatura;  
-        // Cliente com IdEmpresa = MEI (só MEI cria Cliente+Empresa); sem empresa = PF
+        // Cliente com IdEmpresa = MEI (sÃ³ MEI cria Cliente+Empresa); sem empresa = PF
         var tipoCadastro = cliente.IdEmpresa.HasValue ? "MEI" : "PF";
 
-        var usuarioVm = new UsuarioVm()
-        {
-            Nome = usuario.Nome,
-            Email = usuario.Email,
-            ImagemUrl = usuario.UrlImagem,
+        var usuarioVm = new UsuarioVm() { Nome = usuario.Nome, Email = usuario.Email, ImagemUrl = usuario.UrlImagem, Contato = usuario.Contato,
         };
 
         if (cliente.IdEmpresa.HasValue)
@@ -666,7 +658,7 @@ public class UsuarioController : ControllerBase
                 {
                     Usuario = usuarioVm,
                     Cpf = cpfCliente, 
-                    // Contato = usuario.Contato,
+                    Contato = usuario.Contato,
                     TipoCadastro = tipoCadastro,  
                         Role = "Cliente",
                     Assinaturas = assinaturasCliente.Select(a => new { a.Id }),  
@@ -684,7 +676,7 @@ public class UsuarioController : ControllerBase
         {
             Usuario = usuarioVm,
             Cpf = cpfCliente, 
-            // Contato = usuario.Contato,
+            Contato = usuario.Contato,
             TipoCadastro = tipoCadastro,  
                 Role = "Cliente",
             Assinaturas = assinaturasCliente.Select(a => new { a.Id }) 
@@ -702,7 +694,7 @@ public class UsuarioController : ControllerBase
         {
             if (string.IsNullOrEmpty(request.Token) || string.IsNullOrEmpty(request.NovaSenha))
             {
-                return BadRequest(new { message = "Token e nova senha são obrigatórios" });
+                return BadRequest(new { message = "Token e nova senha sÃ£o obrigatÃ³rios" });
             }
 
             if (request.NovaSenha.Length < 6)
@@ -717,7 +709,7 @@ public class UsuarioController : ControllerBase
 
             if (usuario == null)
             {
-                return BadRequest(new { message = "Token inválido ou expirado" });
+                return BadRequest(new { message = "Token invÃ¡lido ou expirado" });
             }
 
             // Atualizar senha
@@ -768,7 +760,7 @@ public class UsuarioController : ControllerBase
     }
 
     /// <summary>
-    /// Aberto pelo link do e-mail (navegador). Confirma no servidor e redireciona para o front — evita
+    /// Aberto pelo link do e-mail (navegador). Confirma no servidor e redireciona para o front â€” evita
     /// bloqueio quando o app no e-mail usa outro apiUrl que o da API real.
     /// </summary>
     [HttpGet("confirmar-email-link")]
@@ -781,12 +773,12 @@ public class UsuarioController : ControllerBase
             var (usuario, err) = await TryApplyEmailConfirmationAsync(token, HttpContext.RequestAborted);
             if (err != null)
             {
-                _logger.LogWarning("Confirmação via link falhou: {Erro}", err);
-                var q = err.Contains("obrigatório", StringComparison.OrdinalIgnoreCase) ? "missing" : "invalid";
+                _logger.LogWarning("ConfirmaÃ§Ã£o via link falhou: {Erro}", err);
+                var q = err.Contains("obrigatÃ³rio", StringComparison.OrdinalIgnoreCase) ? "missing" : "invalid";
                 return Redirect($"{fe}/#/?confirmEmail={Uri.EscapeDataString(q)}");
             }
 
-            _logger.LogInformation("E-mail confirmado via link para usuário {UserId}", usuario!.Id);
+            _logger.LogInformation("E-mail confirmado via link para usuÃ¡rio {UserId}", usuario!.Id);
             return Redirect($"{fe}/#/?confirmEmail={Uri.EscapeDataString("ok")}");
         }
         catch (Exception ex)
@@ -798,7 +790,7 @@ public class UsuarioController : ControllerBase
     }
 
     /// <summary>
-    /// Reenvia o link de confirmação para contas com e-mail ainda não confirmado (resposta genérica por segurança).
+    /// Reenvia o link de confirmaÃ§Ã£o para contas com e-mail ainda nÃ£o confirmado (resposta genÃ©rica por seguranÃ§a).
     /// </summary>
     [HttpPost("reenviar-confirmacao-email")]
     [AllowAnonymous]
@@ -808,7 +800,7 @@ public class UsuarioController : ControllerBase
             return BadRequest(ModelState);
 
         const string mensagemGenerica =
-            "Se o e-mail estiver cadastrado e pendente de confirmação, enviaremos um novo link.";
+            "Se o e-mail estiver cadastrado e pendente de confirmaÃ§Ã£o, enviaremos um novo link.";
 
         var emailSolicitado = (request.Email ?? string.Empty).Trim();
         var usuario = await _repository.FirstOrDefaultAsync(new UsuarioEmailSpec(emailSolicitado));
@@ -823,15 +815,15 @@ public class UsuarioController : ControllerBase
 
         if (!enviado)
         {
-            _logger.LogWarning("Falha ao reenviar e-mail de confirmação para {Email}", usuario.Email);
+            _logger.LogWarning("Falha ao reenviar e-mail de confirmaÃ§Ã£o para {Email}", usuario.Email);
         }
 
         return Ok(new { message = mensagemGenerica });
     }
 
     /// <summary>
-    /// Diagnóstico do estado de confirmação de e-mail para suporte operacional.
-    /// NÃO expõe token completo; retorna apenas metadados e um preview mascarado.
+    /// DiagnÃ³stico do estado de confirmaÃ§Ã£o de e-mail para suporte operacional.
+    /// NÃƒO expÃµe token completo; retorna apenas metadados e um preview mascarado.
     /// </summary>
     [HttpPost("diagnostico-confirmacao-email")]
     [AllowAnonymous]
@@ -847,7 +839,7 @@ public class UsuarioController : ControllerBase
         {
             return NotFound(new
             {
-                message = "Usuário não encontrado para o e-mail informado."
+                message = "UsuÃ¡rio nÃ£o encontrado para o e-mail informado."
             });
         }
 
@@ -863,7 +855,7 @@ public class UsuarioController : ControllerBase
         {
             var railwayPublicDomain = _configuration["RAILWAY_PUBLIC_DOMAIN"]?.Trim();
             if (!string.IsNullOrEmpty(railwayPublicDomain))
-                publicApi = $"https://{railwayPublicDomain.TrimEnd('/')}";
+                publicApi = $"https:{railwayPublicDomain.TrimEnd('/')}";
         }
 
         var apiLink = hasToken
@@ -907,14 +899,14 @@ public class UsuarioController : ControllerBase
 
             if (usuario == null)
             {
-                return BadRequest(new { message = "Email não encontrado em nossa base de dados" });
+                return BadRequest(new { message = "Email nÃ£o encontrado em nossa base de dados" });
             }
 
-            // Gerar nova senha temporária
+            // Gerar nova senha temporÃ¡ria
             var novaSenha = _passwordRecoveryService.GenerateSecurePassword(12);
             var senhaHash = _passwordRecoveryService.HashPassword(novaSenha);
 
-            // Atualizar senha do usuário
+            // Atualizar senha do usuÃ¡rio
             usuario.Senha = senhaHash;
             await _repository.UpdateAsync(usuario);
 

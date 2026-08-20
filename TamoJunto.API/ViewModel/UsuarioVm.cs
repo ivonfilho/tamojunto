@@ -9,6 +9,7 @@ public class UsuarioVm
     public string? ImagemUrl { get; set; }
 
     public string? Token { get; set; }
-
     public string Role { get; set; }
+
+    public string? Contato { get; set; }
 }

@@ -27,6 +27,8 @@ public class UsuarioRequest
 
     public string? CPF { get; set; }
 
+    public string? Contato { get; set; }
+
     public string? UrlImagem { get; set; } = null!;
 
     // Propriedades adicionais para compatibilidade com frontend

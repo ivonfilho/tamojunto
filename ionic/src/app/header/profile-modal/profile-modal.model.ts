@@ -4,10 +4,12 @@ export interface UsuarioResponse {
     email: string;
     imagemUrl?: string | null;
     token?: string | null;
+    contato?: string | null;
   };
   cpf?: string;
   tipoCadastro: 'PF' | 'MEI' | 'PJ';
   role?: string;
+  contato?: string;
   assinaturas?: any[];
   empresa?: {
     nome: string;

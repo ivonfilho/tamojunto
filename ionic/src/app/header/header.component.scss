@@ -1,4 +1,4 @@
-.header-container {
+﻿.header-container {
   display: flex;
   justify-content: center;
   width: 100%;
@@ -19,7 +19,7 @@
   @media (max-width: 768px) {
     gap: 0.5rem;
     padding: 0.75rem 0.75rem;
-    justify-content: space-between; // MantÃ©m distribuiÃ§Ã£o equilibrada
+    justify-content: space-between; // Mantém distribuição equilibrada
     --min-height: 0px;
   }
 
@@ -36,9 +36,9 @@
   }
 }
 
-/* BotÃ£o de menu (apenas para mobile) */
+/* Botão de menu (apenas para mobile) */
 .menu-button {
-  // O Angular controla a visibilidade via *ngIf, entÃ£o sempre mostra quando presente no DOM
+  // O Angular controla a visibilidade via *ngIf, então sempre mostra quando presente no DOM
   display: flex !important;
   align-items: center;
   justify-content: center;
@@ -101,7 +101,7 @@
     max-width: 180px;
     margin: 0 0.5rem;
     flex: 1;
-    min-width: 120px; // Largura mÃ­nima para manter usabilidade
+    min-width: 120px; // Largura mínima para manter usabilidade
   }
 
   @media (max-width: 480px) {
@@ -130,7 +130,7 @@
   @media (max-width: 768px) {
     gap: 0.5rem;
     margin-left: auto; // Empurra para a direita em mobile
-    min-width: 120px; // Largura mÃ­nima para garantir visibilidade
+    min-width: 120px; // Largura mínima para garantir visibilidade
   }
 
   @media (max-width: 480px) {
@@ -182,7 +182,7 @@
       padding: 0;
     }
 
-    // Badge de notificaÃ§Ã£o
+    // Badge de notificação
     ion-badge {
       position: absolute;
       top: -2px;
@@ -385,7 +385,7 @@ ion-searchbar {
   --placeholder-opacity: 0.7;
   --min-height: 40px;
 
-  // Garantir que o texto digitado seja visÃ­vel
+  // Garantir que o texto digitado seja visível
   ::ng-deep {
     .searchbar-input-container {
       input {
@@ -496,7 +496,7 @@ ion-avatar {
   opacity: 1 !important;
   cursor: pointer;
 
-  // Garantir que o avatar dentro do chip seja sempre visÃ­vel
+  // Garantir que o avatar dentro do chip seja sempre visível
   ion-avatar {
     display: flex !important;
     visibility: visible !important;
@@ -570,7 +570,7 @@ ion-toolbar .sc-ion-searchbar-md-h {
   color: red;
 }
 
-// Regras especÃ­ficas para garantir visibilidade em telas muito pequenas
+// Regras específicas para garantir visibilidade em telas muito pequenas
 @media (max-width: 320px) {
   .header-content {
     padding: 0.25rem 0.25rem;
@@ -661,7 +661,7 @@ ion-toolbar .sc-ion-searchbar-md-h {
   }
 }
 
-/* NOVO MODAL DE BUSCA DINÂMICA */
+/* NOVO MODAL DE BUSCA DIN�MICA */
 ::ng-deep .search-modal-custom {
   --width: 90%;
   --max-width: 600px;
@@ -860,7 +860,7 @@ ion-toolbar .sc-ion-searchbar-md-h {
 
 .logo-desktop {
   object-fit: contain;
-  /* Margem já aplicada inline, mas garante que não quebre */
+  /* Margem j� aplicada inline, mas garante que n�o quebre */
 }
 
 .logo-mobile-container {
