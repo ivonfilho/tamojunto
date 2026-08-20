@@ -66,7 +66,7 @@
           <ion-card-title class="label-list">Informações do Produto</ion-card-title>
         </ion-card-header>
         <ion-card-content style="padding-top: 16px;">
-          <ion-input label="Nome do Produto *" type="text" [(ngModel)]="oferta.nomeProduto" name="nomeProduto"
+          <ion-input autocomplete="on" label="Nome do Produto *" type="text" [(ngModel)]="oferta.nomeProduto" name="nomeProduto"
             labelPlacement="stacked" fill="outline" placeholder="Digite o nome do Produto" required>
           </ion-input>
 
@@ -91,7 +91,7 @@
             </div>
 
             <div class="form-group" *ngIf="mostrarCategoriaPersonalizada">
-              <ion-input label="Categoria Personalizada *" [(ngModel)]="categoriaPersonalizada"
+              <ion-input autocomplete="on" label="Categoria Personalizada *" [(ngModel)]="categoriaPersonalizada"
                 name="categoriaPersonalizada" placeholder="Digite a categoria" labelPlacement="stacked" fill="outline"
                 (ionInput)="onCategoriaPersonalizadaChange()" required>
               </ion-input>
@@ -116,17 +116,17 @@
         <ion-card-content style="padding-top: 16px;">
           <div class="form-row">
             <div class="form-group">
-              <ion-input label="Rua *" id="rua" type="text" placeholder="Digite a rua" [(ngModel)]="endereco.rua"
+              <ion-input autocomplete="on" label="Rua *" id="rua" type="text" placeholder="Digite a rua" [(ngModel)]="endereco.rua"
                 name="rua" labelPlacement="stacked" fill="outline" required>
               </ion-input>
             </div>
             <div class="form-group">
-              <ion-input label="Bairro *" id="bairro" type="text" placeholder="Digite o bairro"
+              <ion-input autocomplete="on" label="Bairro *" id="bairro" type="text" placeholder="Digite o bairro"
                 [(ngModel)]="endereco.bairro" name="bairro" labelPlacement="stacked" fill="outline" required>
               </ion-input>
             </div>
             <div class="form-group">
-              <ion-input label="Cidade *" id="cidade" type="text" placeholder="Digite a cidade"
+              <ion-input autocomplete="on" label="Cidade *" id="cidade" type="text" placeholder="Digite a cidade"
                 [(ngModel)]="endereco.cidade" name="cidade" labelPlacement="stacked" fill="outline" required>
               </ion-input>
             </div>
@@ -150,21 +150,21 @@
         <ion-card-content style="padding-top: 16px;">
           <div class="form-row">
             <div class="form-group">
-              <ion-input label="Valor original da oferta (R$) *" type="text" (ionInput)="onPrecoInput($event)"
+              <ion-input autocomplete="on" label="Valor original da oferta (R$) *" type="text" (ionInput)="onPrecoInput($event)"
                 (ionBlur)="onPrecoBlur()" [value]="precoInput" name="preco" required placeholder="0,00"
                 labelPlacement="stacked" fill="outline" inputmode="decimal">
               </ion-input>
             </div>
 
             <div class="form-group">
-              <ion-input label="Desconto (%) *" type="text" (ionInput)="onDescontoInput($event)"
+              <ion-input autocomplete="on" label="Desconto (%) *" type="text" (ionInput)="onDescontoInput($event)"
                 (ionBlur)="onDescontoBlur()" [value]="descontoInput" name="desconto" required placeholder="0%"
                 labelPlacement="stacked" fill="outline" inputmode="decimal">
               </ion-input>
             </div>
 
             <div class="form-group">
-              <ion-input label="Valor final da oferta (R$)" type="text" [value]="valorFinalStr" readonly
+              <ion-input autocomplete="on" label="Valor final da oferta (R$)" type="text" [value]="valorFinalStr" readonly
                 labelPlacement="stacked" fill="outline" class="valor-final">
               </ion-input>
             </div>
@@ -213,10 +213,10 @@
             <div class="form-group">
               <div class="labels-extras">Data personalizada:</div>
               <div class="data-personalizada">
-                <ion-input type="date" [(ngModel)]="oferta.dataCriacao" name="dataCriacao" placeholder="dd/mm/aaaa"
+                <ion-input autocomplete="on" type="date" [(ngModel)]="oferta.dataCriacao" name="dataCriacao" placeholder="dd/mm/aaaa"
                   fill="outline" readonly />
                 <span>até</span>
-                <ion-input type="date" [(ngModel)]="oferta.validade" name="validade" placeholder="dd/mm/aaaa"
+                <ion-input autocomplete="on" type="date" [(ngModel)]="oferta.validade" name="validade" placeholder="dd/mm/aaaa"
                   fill="outline" />
               </div>
             </div>

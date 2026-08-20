@@ -8,7 +8,7 @@
     <!-- Split pane apenas para desktop -->
     <ion-split-pane contentId="main-content" *ngIf="isDesktop && usuario" class="split-pane-global">
       <!-- Menu lateral para desktop -->
-      <ion-menu contentId="main-content" type="overlay">
+      <ion-menu contentId="main-content" type="reveal">
         <ion-content>
           <ion-list id="inbox-list">
             <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">

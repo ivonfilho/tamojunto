@@ -14,7 +14,7 @@ import { isUsuarioParceiroComercial } from 'src/app/utils/usuario-sessao.util';
 export class LoginFormComponent implements OnInit {
   /** Texto fixo (evita divergência entre template e build; facilita revisão de cópia) */
   readonly labelEsqueciSenha = 'Esqueci minha senha';
-  readonly labelReenviarConfirmacao = 'Reenviar e-mail de confirmação';
+  //readonly labelReenviarConfirmacao = 'Reenviar e-mail de confirmação';
 
   loginForm?: any;
   spinner = false;
@@ -34,7 +34,7 @@ export class LoginFormComponent implements OnInit {
     this.loginForm = this.formBuilder.group({
       email: ['', Validators.required],
       senha: ['', Validators.required],
-      lembrarMe: [false]
+      lembrarMe: [true]
     });
   }
 
@@ -71,13 +71,13 @@ export class LoginFormComponent implements OnInit {
     if (this.loginForm.valid) {
       this.spinner = true;
       console.log(' Iniciando processo de login...');
-      
+
       this.usuarioService
         .login(this.loginForm.value)
         .then((data: any) => {
           console.log('Login bem-sucedido:', data);
           this.authService.setToken(data.token);
-          
+
           try {
             localStorage.setItem('tamo_junto_user', JSON.stringify(data));
           } catch (e: any) {
@@ -87,7 +87,7 @@ export class LoginFormComponent implements OnInit {
               try { localStorage.setItem('tamo_junto_user', JSON.stringify(dataSafe)); } catch (e2) {}
             }
           }
-          
+
           if (isUsuarioParceiroComercial(data)) {
             console.log('[Login] Usuário parceiro, redirecionando para dashboard-parceiro');
             window.location.href = '/#/dashboard-parceiro';
@@ -99,7 +99,7 @@ export class LoginFormComponent implements OnInit {
         .catch((e) => {
           console.error('Erro no login:', e);
           let mensagemErro = 'Erro ao fazer login';
-          
+
           if (e.status === 0) {
             mensagemErro = 'Sem conexão com o servidor. Verifique sua internet.';
           } else if (e.status === 401) {
@@ -113,7 +113,7 @@ export class LoginFormComponent implements OnInit {
               e.error?.message ||
               'Confirme seu e-mail antes de entrar. Verifique a caixa de entrada e o spam.';
           }
-          
+
           this.presentToastErro(mensagemErro);
         })
         .finally(() => {

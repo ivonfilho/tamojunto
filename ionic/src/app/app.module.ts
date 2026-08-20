@@ -34,8 +34,8 @@ registerLocaleData(localePt, 'pt-BR');
   declarations: [AppComponent, HeaderComponent, ProfileModalComponent],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(),
-//    IonicModule.forRoot({ mode: 'md' }), // Forçando 'md' para manter o mesmo visual em Desktop e Celular (iOS/Android)
+    IonicModule.forRoot({ mode: 'md' }),
+    //    IonicModule.forRoot({ mode: 'md' }), // Forçando 'md' para manter o mesmo visual em Desktop e Celular (iOS/Android)
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
@@ -57,4 +57,4 @@ registerLocaleData(localePt, 'pt-BR');
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

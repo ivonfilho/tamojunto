@@ -43,6 +43,7 @@ export class CadastroFormComponent implements OnInit {
   cnpjNaoMEI: boolean = false; 
   empresaInativa: boolean = false; 
   isFormLarge: boolean = false;
+  currentStep: number = 1;
 
 
   @Output() Cadastro = new EventEmitter<void>();
@@ -119,6 +120,7 @@ export class CadastroFormComponent implements OnInit {
     this.empresaInativa = false;
     this.cpfInvalid = false;
     this.consultandoCNPJ = false;
+    this.currentStep = 1;
     
     // Definir se o formulário é grande (PJ tem mais campos)
     this.isFormLarge = tipoCadastro === 'PJ';
@@ -360,6 +362,57 @@ export class CadastroFormComponent implements OnInit {
     }
 
     return backendMessage || 'Erro ao realizar cadastro. Verifique os dados e tente novamente.';
+  }
+
+  prosseguir() {
+    if (this.currentStep === 1) {
+      if (this.isEtapa1Valida()) {
+        this.currentStep = 2;
+      } else {
+        this.loginForm.markAllAsTouched();
+        this.presentToastErro('Preencha os campos obrigatórios desta etapa corretamente.');
+      }
+    } else if (this.currentStep === 2) {
+      if (this.isEtapa2Valida()) {
+        this.currentStep = 3;
+      } else {
+        this.loginForm.markAllAsTouched();
+        this.presentToastErro('Preencha os campos de contato corretamente.');
+      }
+    }
+  }
+
+  voltar() {
+    if (this.currentStep > 1) {
+      this.currentStep--;
+    }
+  }
+
+  isEtapa1Valida(): boolean {
+    const cnpj = this.loginForm.get('cnpj');
+    const nomeEmpresa = this.loginForm.get('nomeEmpresa');
+    
+    let valid = cnpj?.valid && !this.cnpjInvalid && !this.consultandoCNPJ && nomeEmpresa?.valid;
+    
+    if (this.isPessoaJuridica()) {
+      const atividade = this.loginForm.get('atividade');
+      valid = valid && atividade?.valid;
+    }
+    
+    return !!valid;
+  }
+
+  isEtapa2Valida(): boolean {
+    const contato = this.loginForm.get('contato');
+    const nome = this.loginForm.get('nome');
+    const email = this.loginForm.get('email');
+    return !!(contato?.valid && nome?.valid && email?.valid);
+  }
+
+  isEtapa3Valida(): boolean {
+    const senha = this.loginForm.get('senha');
+    const confSenha = this.loginForm.get('confirmacaoSenha');
+    return !!(senha?.valid && confSenha?.valid && !this.loginForm.errors?.['mismatch']);
   }
 
   cadastrar() {

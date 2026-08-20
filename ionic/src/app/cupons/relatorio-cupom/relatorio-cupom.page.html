@@ -31,7 +31,7 @@
       <ion-card-content>
         <form [formGroup]="filtrosForm" class="ion-padding premium-form">
           <div style="margin-bottom: 16px;">
-            <ion-input formControlName="nomeProduto" label="Nome do Produto" labelPlacement="stacked" fill="outline" placeholder="Buscar por nome"></ion-input>
+            <ion-input autocomplete="on" formControlName="nomeProduto" label="Nome do Produto" labelPlacement="stacked" fill="outline" placeholder="Buscar por nome"></ion-input>
           </div>
           <div style="margin-bottom: 16px;">
             <ion-select formControlName="categoria" label="Categoria" labelPlacement="stacked" fill="outline" interface="popover" placeholder="Selecione uma categoria">

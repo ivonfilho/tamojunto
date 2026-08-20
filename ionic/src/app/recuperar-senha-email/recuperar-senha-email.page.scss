@@ -25,7 +25,6 @@
 
 .form-container {
   background: white;
-  padding: 2rem 0;
   flex: 1;
   max-width: 518px;
   margin: 0 auto;
@@ -46,28 +45,6 @@ h2 {
   margin-bottom: 2rem;
   font-size: 15px;
   line-height: 1.5;
-}
-
-
-
-.error-message {
-  color: #e74c3c;
-  font-size: 12px;
-  margin-top: -15px;
-  margin-bottom: 15px;
-  margin-left: 16px;
-}
-
-.submit-button {
-  --background: var(--ion-color-primary);
-  --color: white;
-  height: 3rem;
-  font-size: 16px;
-  margin-top: 1rem;
-}
-
-.submit-button[disabled] {
-  opacity: 0.6;
 }
 
 .alternative-options {
@@ -144,5 +121,3 @@ ion-spinner {
     font-size: 20px;
   }
 }
-
-

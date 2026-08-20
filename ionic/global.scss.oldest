@@ -763,8 +763,8 @@ ion-select-popover {
     }
   }
 
-  .error-messages,
-  .error-message {
+  10pxssages,
+  10pxssage {
     color: var(--form-error);
     font-size: 0.8rem;
     margin-top: 0.4rem;

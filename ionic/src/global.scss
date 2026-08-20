@@ -48,6 +48,58 @@ button {
   font-family: "Ubuntu", sans-serif !important;
 }
 
+a {
+  cursor: pointer;
+}
+
+.flex.gap-15 {
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+}
+
+@media (min-width: 767px) {
+  .flex.gap-15 {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 15px;
+  }
+}
+
+.btn-padrao {
+  padding: 15px;
+  height: auto;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  background: transparent;
+  box-shadow: none;
+  border: 1px solid;
+  color: inherit;
+  border-radius: 10px;
+  gap: 5px;
+  cursor: pointer;
+  font-size: unset;
+  font-family: inherit;
+  transition: 0.2s;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.btn-prosseguir {
+  background: #5a56a0;
+  color: white;
+  opacity: 1;
+}
+
+.btn-voltar {
+  background: inherit;
+  color: inherit;
+  opacity: .5;
+}
+
 /* Optional CSS utils that can be commented out */
 @import "@ionic/angular/css/padding.css";
 @import "@ionic/angular/css/float-elements.css";
@@ -311,6 +363,7 @@ ion-card,
   border: none;
   overflow: hidden;
 }
+
 /* Melhorias para dispositivos móveis */
 
 /* Melhorias para dispositivos de alta densidade */
@@ -403,7 +456,8 @@ app-profile-modal .enhanced-button {
 }
 
 /* Regras específicas para dispositivos de alta densidade no modal de perfil */
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+@media (-webkit-min-device-pixel-ratio: 2),
+(min-resolution: 192dpi) {
   app-profile-modal .enhanced-label {
     font-weight: 500 !important;
     color: #666 !important;
@@ -446,7 +500,8 @@ ion-segment {
 }
 
 /* Regras específicas para dispositivos de alta densidade no segmento */
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+@media (-webkit-min-device-pixel-ratio: 2),
+(min-resolution: 192dpi) {
   ion-segment {
     ion-segment-button {
       ion-label {
@@ -509,7 +564,8 @@ app-profile-modal ion-segment {
 }
 
 /* Regras específicas para dispositivos de alta densidade no segmento do modal de perfil */
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+@media (-webkit-min-device-pixel-ratio: 2),
+(min-resolution: 192dpi) {
   app-profile-modal ion-segment {
     ion-segment-button {
       ion-label {
@@ -540,7 +596,8 @@ app-profile-modal ion-segment ion-segment-button ion-label {
 }
 
 /* Regras específicas para dispositivos de alta densidade no segmento do modal de perfil com prioridade máxima */
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+@media (-webkit-min-device-pixel-ratio: 2),
+(min-resolution: 192dpi) {
   app-profile-modal ion-segment ion-segment-button ion-label {
     font-weight: 500 !important;
     color: #666 !important;
@@ -698,7 +755,8 @@ ion-select-popover {
   .error-message {
     color: var(--form-error);
     font-size: 0.8rem;
-    margin-top: 0.4rem;
+    margin-top: -5px;
+    margin-bottom: 5px;
     display: flex;
     align-items: center;
     gap: 4px;
@@ -707,10 +765,10 @@ ion-select-popover {
   ion-button {
     --border-radius: var(--form-border-radius);
     --box-shadow: 0 4px 6px -1px rgb(91 33 182 / 0.4);
-    height: 52px;
+    height: auto;
     margin-top: 1rem;
     font-weight: 700;
-    letter-spacing: 0.5px;
+    letter-spacing: 0px;
 
     ion-label {
       color: white !important;
@@ -788,6 +846,7 @@ ion-toolbar.toolbar-estilo {
   .form-row {
     flex-direction: row;
   }
+
   .form-row .form-group {
     flex: 1;
   }
@@ -802,6 +861,7 @@ ion-toolbar.toolbar-estilo {
 }
 
 @media (min-width: 768px) {
+
   .radio-group,
   .checkbox-group {
     flex-direction: row;
@@ -1015,7 +1075,10 @@ ion-label.ng-invalid,
   color: var(--error-primary);
 }
 
+
+
 .text-error {
+  color: var(--form-error);
   display: flex;
   align-items: center;
   gap: 0.2rem;
@@ -1026,6 +1089,7 @@ ion-label.ng-invalid,
   flex-direction: column;
   gap: 8px;
   margin: 15px 0;
+  width: 100%;
 
   a {
     color: rgb(89, 79, 185);
@@ -1075,7 +1139,7 @@ ion-label.ng-invalid,
 .right-content {
   .form-container {
     width: 100%;
-    padding: 1rem 0;
+    padding: 0;
     max-width: 518px;
     box-sizing: border-box;
 
@@ -1213,8 +1277,7 @@ ion-label.ng-invalid,
       transform: translateX(-50%);
       border-width: 6px;
       border-style: solid;
-      border-color: var(--ion-color-segundary) transparent transparent
-        transparent;
+      border-color: var(--ion-color-segundary) transparent transparent transparent;
     }
 
     label:hover .tooltip {
@@ -1285,6 +1348,7 @@ ion-label.ng-invalid,
         min-width: 60px;
         padding: 0 4px;
       }
+
       font-size: 0.9rem;
       padding: 8px 12px;
       min-height: 40px;
@@ -1306,8 +1370,7 @@ ion-label.ng-invalid,
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
 
-    @media (min-width: 768px) {
-    }
+    @media (min-width: 768px) {}
   }
 
   .button-group-submit {
@@ -1536,6 +1599,7 @@ app-profile-modal {
   margin-bottom: 10px;
   margin-top: 20px;
 }
+
 .no-margin {
   margin: 0 !important;
 }
@@ -1692,6 +1756,7 @@ ion-button {
   --padding-bottom: 12px;
   --font-weight: 600;
 }
+
 .stat-card {
   background: white;
   border-radius: 20px;
@@ -1720,6 +1785,7 @@ ion-button {
 }
 
 .stat-card {
+
   ion-input,
   ion-select,
   ion-textarea {
@@ -1743,6 +1809,7 @@ ion-button {
     text-transform: none !important;
   }
 }
+
 .dashboard-container {
   --ion-background-color: #f8fafc;
   background: $dashboard-bg-gradient;
@@ -1761,10 +1828,8 @@ ion-content.dashboard-container {
 
 @media (max-width: 768px) {
   ion-content.dashboard-container {
-    --padding-bottom: max(
-      5.5rem,
-      calc(3.5rem + env(safe-area-inset-bottom, 0px))
-    );
+    --padding-bottom: max(5.5rem,
+        calc(3.5rem + env(safe-area-inset-bottom, 0px)));
   }
 }
 
@@ -1775,11 +1840,9 @@ ion-content.dashboard-container {
 }
 
 .dashboard-header {
-  background: linear-gradient(
-    135deg,
-    var(--ion-color-primary) 0%,
-    #667eea 100%
-  );
+  background: linear-gradient(135deg,
+      var(--ion-color-primary) 0%,
+      #667eea 100%);
   padding: 40px 20px 30px;
   position: relative;
   overflow: hidden;
@@ -1840,10 +1903,12 @@ ion-content.dashboard-container {
 }
 
 @keyframes float {
+
   0%,
   100% {
     transform: translateY(0px);
   }
+
   50% {
     transform: translateY(-20px);
   }
@@ -2146,6 +2211,7 @@ ion-content.dashboard-container {
     --padding-end: 2px;
     min-width: 0;
   }
+
   .tab-text {
     font-size: 10px;
   }
@@ -2159,4 +2225,40 @@ ion-content.dashboard-container {
 
 .mb-10 {
   margin-bottom: 1rem;
+}
+
+/* Layout Side-by-Side para Desktop */
+.side-by-side-desktop {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    gap: 15px;
+
+    .flex-1 {
+      flex: 1;
+    }
+  }
+}
+
+
+
+.col-padding-right {
+  padding-right: 0;
+}
+
+.col-padding-left {
+  padding-left: 0;
+}
+
+@media (min-width: 768px) {
+  .col-padding-right {
+    padding-right: 7.5px !important;
+  }
+
+  .col-padding-left {
+    padding-left: 7.5px !important;
+  }
 }

@@ -38,7 +38,7 @@
               <!-- CPF (PF) -->
               <ion-col size="12" size-md="6" *ngIf="usuarioTipoAtual === 'PF'">
                 <div class="input-group">
-                  <ion-input
+                  <ion-input autocomplete="on"
                     formControlName="cpf"
                     placeholder="Digite o seu CPF"
                     fill="outline"
@@ -55,7 +55,7 @@
               <!-- CNPJ (MEI/PJ) -->
               <ion-col size="12" size-md="6" *ngIf="usuarioTipoAtual === 'MEI' || usuarioTipoAtual === 'PJ'">
                 <div class="input-group">
-                  <ion-input
+                  <ion-input autocomplete="on"
                     formControlName="cnpj"
                     placeholder="Digite o seu CNPJ"
                     fill="outline"
@@ -72,7 +72,7 @@
               <!-- Nome da Empresa (MEI/PJ) -->
               <ion-col size="12" size-md="6" *ngIf="usuarioTipoAtual === 'MEI' || usuarioTipoAtual === 'PJ'">
                 <div class="input-group">
-                  <ion-input formControlName="nomeEmpresa" fill="outline" placeholder="Nome da empresa" labelPlacement="stacked"><div slot="label">Nome da empresa <span class="required-mark" aria-hidden="true">*</span></div></ion-input>
+                  <ion-input autocomplete="on" formControlName="nomeEmpresa" fill="outline" placeholder="Nome da empresa" labelPlacement="stacked"><div slot="label">Nome da empresa <span class="required-mark" aria-hidden="true">*</span></div></ion-input>
                   <span *ngIf="deveMostrarErro('nomeEmpresa')" class="error-message">{{ mensagemErroCampo('nomeEmpresa') }}</span>
                 </div>
               </ion-col>
@@ -88,7 +88,7 @@
                     placeholder="(00) 00000-0000"
                     type="tel"
                     inputmode="tel"
-                    autocomplete="tel-national"
+                    autocomplete="on"
                     (ionInput)="applyMaskContato($event)"
                    labelPlacement="stacked"><div slot="label">Contato <span class="required-mark" aria-hidden="true">*</span></div></ion-input>
                   <span *ngIf="deveMostrarErro('contato')" class="error-message">{{ mensagemErroCampo('contato') }}</span>
@@ -97,7 +97,7 @@
 
               <ion-col size="12" size-md="6" *ngIf="usuarioTipoAtual === 'PJ'">
                 <div class="input-group">
-                  <ion-input formControlName="atividade" fill="outline" placeholder="Atividade principal" labelPlacement="stacked"><div slot="label">Atividade principal <span class="required-mark" aria-hidden="true">*</span></div></ion-input>
+                  <ion-input autocomplete="on" formControlName="atividade" fill="outline" placeholder="Atividade principal" labelPlacement="stacked"><div slot="label">Atividade principal <span class="required-mark" aria-hidden="true">*</span></div></ion-input>
                   <span *ngIf="deveMostrarErro('atividade')" class="error-message">{{ mensagemErroCampo('atividade') }}</span>
                 </div>
               </ion-col>
@@ -107,7 +107,7 @@
             <ion-row *ngIf="usuarioTipoAtual === 'PJ'">
               <ion-col size="12" size-md="12">
                 <div class="input-group">
-                  <ion-input formControlName="website" fill="outline" placeholder="Seu website" type="url" labelPlacement="stacked"><div slot="label">Website <span class="optional-hint">(opcional)</span></div></ion-input>
+                  <ion-input autocomplete="on" formControlName="website" fill="outline" placeholder="Seu website" type="url" labelPlacement="stacked"><div slot="label">Website <span class="optional-hint">(opcional)</span></div></ion-input>
                 </div>
               </ion-col>
             </ion-row>
@@ -116,14 +116,14 @@
             <ion-row>
               <ion-col size="12" size-md="6">
                 <div class="input-group">
-                  <ion-input formControlName="nome" fill="outline" placeholder="Seu nome" type="text" labelPlacement="stacked"><div slot="label">Nome <span class="required-mark" aria-hidden="true">*</span></div></ion-input>
+                  <ion-input autocomplete="on" formControlName="nome" fill="outline" placeholder="Seu nome" type="text" labelPlacement="stacked"><div slot="label">Nome <span class="required-mark" aria-hidden="true">*</span></div></ion-input>
                   <span *ngIf="deveMostrarErro('nome')" class="error-message">{{ mensagemErroCampo('nome') }}</span>
                 </div>
               </ion-col>
 
               <ion-col size="12" size-md="6">
                 <div class="input-group">
-                  <ion-input formControlName="email" fill="outline" placeholder="Seu e-mail" type="email" labelPlacement="stacked"><div slot="label">E-mail <span class="required-mark" aria-hidden="true">*</span></div></ion-input>
+                  <ion-input autocomplete="on" formControlName="email" fill="outline" placeholder="Seu e-mail" type="email" labelPlacement="stacked"><div slot="label">E-mail <span class="required-mark" aria-hidden="true">*</span></div></ion-input>
                   <span *ngIf="deveMostrarErro('email')" class="error-message">{{ mensagemErroCampo('email') }}</span>
                 </div>
               </ion-col>
@@ -133,14 +133,14 @@
             <ion-row>
               <ion-col size="12" size-md="6">
                 <div class="input-group">
-                  <ion-input formControlName="senha" fill="outline" placeholder="Deixe em branco para manter a atual" type="password" labelPlacement="stacked"><div slot="label">Nova Senha <span class="optional-hint">(opcional)</span></div><ion-input-password-toggle slot="end"></ion-input-password-toggle></ion-input>
+                  <ion-input autocomplete="on" formControlName="senha" fill="outline" placeholder="Deixe em branco para manter a atual" type="password" labelPlacement="stacked"><div slot="label">Nova Senha <span class="optional-hint">(opcional)</span></div><ion-input-password-toggle slot="end"></ion-input-password-toggle></ion-input>
                   <span *ngIf="deveMostrarErro('senha')" class="error-message">{{ mensagemErroCampo('senha') }}</span>
                 </div>
               </ion-col>
 
               <ion-col size="12" size-md="6">
                 <div class="input-group">
-                  <ion-input formControlName="confirmacaoSenha" fill="outline" placeholder="Confirme a nova senha" type="password" labelPlacement="stacked"><div slot="label">Confirmar senha <span class="optional-hint">(opcional)</span></div><ion-input-password-toggle slot="end"></ion-input-password-toggle></ion-input>
+                  <ion-input autocomplete="on" formControlName="confirmacaoSenha" fill="outline" placeholder="Confirme a nova senha" type="password" labelPlacement="stacked"><div slot="label">Confirmar senha <span class="optional-hint">(opcional)</span></div><ion-input-password-toggle slot="end"></ion-input-password-toggle></ion-input>
                   <span *ngIf="deveMostrarErro('confirmacaoSenha')" class="error-message">{{ mensagemErroCampo('confirmacaoSenha') }}</span>
                   <span *ngIf="deveMostrarErroSenhas()" class="error-message">As senhas não conferem.</span>
                 </div>

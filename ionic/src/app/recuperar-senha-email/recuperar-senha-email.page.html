@@ -7,39 +7,35 @@
       </div>
 
       <div class="form-component">
-        <h2 class="titulo-logins">Recuperar Senha</h2>
+        <h2 class="titulo-logins">Digite seu email para receber sua nova senha:</h2>
         <div class="form-container premium-form">
           <form [formGroup]="recuperarForm" (ngSubmit)="enviarEmail()" class="form-group">
-            <p class="form-subtitle">Digite seu email para receber uma nova senha temporária</p>
+            <!--<p class="form-subtitle">Digite seu email para receber uma nova senha temporária</p>-->
 
             <div class="input-group">
-              <ion-input
-                label="E-mail"
-                labelPlacement="stacked"
-                formControlName="email"
-                fill="outline"
-                placeholder="seu@email.com"
-                type="email"
-                required
+              <ion-input autocomplete="on" label="E-mail" labelPlacement="stacked" formControlName="email"
+                fill="outline" placeholder="seu@email.com" type="email" required
                 [class.ng-invalid]="recuperarForm.get('email')?.touched && recuperarForm.get('email')?.invalid">
               </ion-input>
 
-              <div *ngIf="recuperarForm.get('email')?.invalid && recuperarForm.get('email')?.touched" class="error-messages">
+              <div *ngIf="recuperarForm.get('email')?.invalid && recuperarForm.get('email')?.touched"
+                class="error-messages">
                 <small *ngIf="recuperarForm.get('email')?.errors?.['required']" class="text-error">
-                  <ion-icon name="alert-circle-outline"></ion-icon> O email é obrigatório.
+                  <ion-icon src="assets/icon/AlertCircleOutline.svg"></ion-icon> O email é obrigatório.
                 </small>
                 <small *ngIf="recuperarForm.get('email')?.errors?.['email']" class="text-error">
-                  <ion-icon name="alert-circle-outline"></ion-icon> Digite um email válido.
+                  <ion-icon src="assets/icon/AlertCircleOutline.svg"></ion-icon> Digite um email válido.
                 </small>
               </div>
             </div>
 
-            <ion-button expand="full" type="submit" [disabled]="recuperarForm.invalid || loading">
+            <button class="btn-padrao btn-prosseguir" type="submit" [disabled]="recuperarForm.invalid || loading">
               <ion-spinner *ngIf="loading" name="crescent"></ion-spinner>
               <ng-container *ngIf="!loading">Enviar Nova Senha</ng-container>
-            </ion-button>
+            </button>
 
-            <p><a (click)="voltarParaLogin()" class="cursor-pointer">Voltar para Login</a></p>
+            <p class="mt-15"><a (click)="voltarParaLogin()" class="svg-icon">
+                <ion-icon src="assets/icon/LogOutOutline.svg"></ion-icon> Voltar para o Login</a></p>
           </form>
         </div>
       </div>

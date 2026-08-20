@@ -63,7 +63,7 @@
         <ion-card-title class="label-list">Informações do Produto</ion-card-title>
       </ion-card-header>
       <ion-card-content style="padding-top: 16px;">
-        <ion-input label="Nome do Produto *" labelPlacement="stacked" fill="outline" [(ngModel)]="oferta.nomeProduto"
+        <ion-input autocomplete="on" label="Nome do Produto *" labelPlacement="stacked" fill="outline" [(ngModel)]="oferta.nomeProduto"
           required></ion-input>
         <ion-text color="danger" *ngIf="errors?.nomeProduto">
           <p>{{ errors.nomeProduto }}</p>
@@ -87,7 +87,7 @@
           </div>
 
           <div class="form-group" *ngIf="mostrarCategoriaPersonalizada">
-            <ion-input label="Categoria Personalizada *" labelPlacement="stacked" fill="outline"
+            <ion-input autocomplete="on" label="Categoria Personalizada *" labelPlacement="stacked" fill="outline"
               [(ngModel)]="categoriaPersonalizada" placeholder="Digite a categoria"
               (ionInput)="onCategoriaPersonalizadaChange()" required>
             </ion-input>
@@ -119,7 +119,7 @@
       <ion-card-content style="padding-top: 16px;">
         <div class="form-row">
           <div class="form-group">
-            <ion-input label="Preço *" labelPlacement="stacked" fill="outline" type="text" [value]="precoInput"
+            <ion-input autocomplete="on" label="Preço *" labelPlacement="stacked" fill="outline" type="text" [value]="precoInput"
               [ngModel]="precoInput" required (ionInput)="onPrecoInput($event)" (ionBlur)="onPrecoBlur()"></ion-input>
             <ion-text color="danger" *ngIf="errors?.preco">
               <p>{{ errors.preco }}</p>
@@ -127,12 +127,12 @@
           </div>
 
           <div class="form-group">
-            <ion-input label="Desconto (%)" labelPlacement="stacked" fill="outline" type="text" [value]="descontoInput"
+            <ion-input autocomplete="on" label="Desconto (%)" labelPlacement="stacked" fill="outline" type="text" [value]="descontoInput"
               [ngModel]="descontoInput" (ionInput)="onDescontoInput($event)" (ionBlur)="onDescontoBlur()"></ion-input>
           </div>
 
           <div class="form-group">
-            <ion-input label="Valor Final" labelPlacement="stacked" fill="outline" type="text"
+            <ion-input autocomplete="on" label="Valor Final" labelPlacement="stacked" fill="outline" type="text"
               [value]="formatarParaBRL(valorFinal)" readonly></ion-input>
           </div>
         </div>
@@ -182,10 +182,10 @@
             <div class="labels-extras" style="margin-bottom: 8px; font-weight: 500; color: #666;">Data personalizada:
             </div>
             <div class="data-personalizada" style="display: flex; gap: 10px; align-items: center;">
-              <ion-input type="date" [(ngModel)]="dataCriacaoFormatada" name="dataCriacaoFormatada"
+              <ion-input autocomplete="on" type="date" [(ngModel)]="dataCriacaoFormatada" name="dataCriacaoFormatada"
                 placeholder="dd/mm/aaaa" fill="outline" readonly></ion-input>
               <span>até</span>
-              <ion-input type="date" [(ngModel)]="oferta.validade" name="validadeDate" placeholder="dd/mm/aaaa"
+              <ion-input autocomplete="on" type="date" [(ngModel)]="oferta.validade" name="validadeDate" placeholder="dd/mm/aaaa"
                 fill="outline"></ion-input>
             </div>
           </div>

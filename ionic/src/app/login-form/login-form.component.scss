@@ -7,13 +7,16 @@ ion-label.ng-invalid,
   display: flex;
   align-items: center;
   gap: 0.2rem;
+  color: var(--form-error);
 }
 
 .forgot-password-options {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin: 15px 0;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  margin: 15px 0 0;
 
   a {
     color: rgb(89, 79, 185);
@@ -36,6 +39,7 @@ ion-label.ng-invalid,
 p {
   font-size: 15px !important;
   text-align: center;
+
   a {
     font-size: 15px !important;
     color: rgb(89, 79, 185);
@@ -50,6 +54,16 @@ p {
     max-width: 518px !important;
     display: block !important;
     box-sizing: border-box !important;
+  }
+
+  .forgot-password-options {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    margin: 15px 0;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
   }
 
   form {
@@ -70,6 +84,70 @@ p {
     width: 100% !important;
   }
 }
+
 .titulo-logins {
-  font-size: medium !important;
+  font-size: 14px;
+  font-weight: 400;
+  color: #666666;
+  margin-top: 25px;
+}
+
+
+.btn-padrao {
+  padding: 15px;
+  height: auto;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  background: transparent;
+  box-shadow: none;
+  border: 1px solid;
+  color: inherit;
+  border-radius: 10px;
+  gap: 5px;
+  cursor: pointer;
+  font-size: unset;
+  font-family: inherit;
+  transition: 0.2s;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.btn-prosseguir {
+  background: #5a56a0;
+  color: white;
+  opacity: 1;
+}
+
+.btn-voltar {
+  background: inherit;
+  color: inherit;
+  opacity: .5;
+}
+
+a.svg-icon {
+  cursor: pointer;
+  display: flex;
+  align-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.label-text-wrapper {
+  -webkit-margin-start: 10px;
+  margin-inline-start: 10px;
+  -webkit-margin-end: 0;
+  margin-inline-end: 0;
+}
+
+ion-checkbox {
+  --checkbox-background: #fff;
+  --border-color: #ddd;
 }

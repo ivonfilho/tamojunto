@@ -1,14 +1,17 @@
-
-
 .error-message {
-  color: red;
-  font-size: 12px;
-  display: block;
+  color: var(--form-error);
+  font-size: 10px;
+  margin-top: -5px;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 p {
   font-size: 15px !important;
   text-align: center;
+
   a {
     font-size: 15px !important;
     color: rgb(89, 79, 185);
@@ -27,8 +30,6 @@ p {
 }
 
 h2 {
-
-
   @media (max-width: 767px) {
     padding: 0 1rem;
     word-wrap: break-word;
@@ -75,12 +76,136 @@ h2 {
   }
 }
 
-
-
 .field-hint {
   font-size: 12px;
   color: var(--ion-color-medium);
   margin: 4px 0 0 0;
   padding: 0 4px;
   line-height: 1.35;
+}
+
+.loading-cnpj {
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+
+  span {
+    margin-left: 8px;
+  }
+}
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 1rem;
+  width: 100%;
+
+  ion-button {
+    flex: 1;
+  }
+}
+
+.secondary-action-container {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.btn-secondary-action {
+  text-transform: none;
+  font-weight: normal;
+  --box-shadow: none;
+  height: auto;
+}
+
+.login-link {
+  cursor: pointer;
+  display: block;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.flex.gap-15 {
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+}
+
+@media (min-width: 767px) {
+  .flex.gap-15 {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 15px;
+  }
+}
+
+a.svg-icon {
+  cursor: pointer;
+  display: flex;
+  align-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.btn-padrao {
+  padding: 15px;
+  height: auto;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  background: transparent;
+  box-shadow: none;
+  border: 1px solid;
+  color: inherit;
+  border-radius: 10px;
+  gap: 5px;
+  cursor: pointer;
+  font-size: unset;
+  font-family: inherit;
+  transition: 0.2s;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.btn-prosseguir {
+  background: #5a56a0;
+  color: white;
+  opacity: 1;
+}
+
+.btn-voltar {
+  background: inherit;
+  color: inherit;
+  opacity: .5;
+}
+
+/* Estilos para segmentos - melhor contraste */
+ion-segment {
+  ion-segment-button {
+    --color: #999;
+    --color-checked: #5a56a0;
+    --background-checked: #f9f8fb;
+    --indicator-height: 0px;
+    border: 1px solid #b3b3b3;
+    opacity: .4;
+    --opacity-checked: 1;
+    --border-radius: 10px;
+    letter-spacing: 0px;
+    min-height: 0px;
+
+    &.segment-button-checked {
+      --background: #f9f8fb;
+      --color: #5a56a0;
+      border: 1px solid #5a56a0;
+      opacity: 1;
+    }
+  }
+}
+
+.botoes-cadastro-login {
+  ion-segment {
+    gap: 15px;
+  }
 }

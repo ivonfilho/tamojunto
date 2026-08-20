@@ -1,20 +1,23 @@
-<h2 class="titulo-logins">Faça login na sua conta</h2>
+<h2 class="titulo-logins">Olá, Visitante👋 Faça login para entrar!</h2>
+
 <div class="form-container premium-form container-entrar">
   <form [formGroup]="loginForm" class="form-group">
     <div class="input-group">
-      <ion-input label="E-mail" label-placement="stacked" formControlName="email" fill="outline" placeholder="Seu e-mail" type="email" autocomplete="email" required
+      <ion-input label="E-mail" label-placement="stacked" formControlName="email" fill="outline"
+        placeholder="Seu e-mail" type="email" autocomplete="on" required
         [class.ng-invalid]="loginForm.get('email')?.touched && loginForm.get('email')?.invalid"></ion-input>
 
       <div *ngIf="submitted || (loginForm.get('email')?.touched && loginForm.get('email')?.invalid)"
         class="error-messages">
         <small *ngIf="loginForm.get('email')?.errors?.required" class="text-error">
-          <ion-icon name="alert-circle-outline"></ion-icon>
+          <ion-icon src="assets/icon/AlertCircleOutline.svg"></ion-icon>
           O e-mail é obrigatório.</small>
       </div>
     </div>
 
     <div class="input-group">
-      <ion-input label="Senha" label-placement="stacked" formControlName="senha" fill="outline" placeholder="Sua senha" type="password" autocomplete="current-password" required
+      <ion-input label="Senha" label-placement="stacked" formControlName="senha" fill="outline" placeholder="Sua senha"
+        type="password" autocomplete="on" required
         [class.ng-invalid]="loginForm.get('senha')?.touched && loginForm.get('senha')?.invalid">
         <ion-input-password-toggle slot="end"></ion-input-password-toggle>
       </ion-input>
@@ -22,7 +25,7 @@
       <div *ngIf="submitted || (loginForm.get('senha')?.touched && loginForm.get('senha')?.invalid)"
         class="error-messages">
         <small *ngIf="loginForm.get('senha')?.errors?.required" class="text-error">
-          <ion-icon name="alert-circle-outline"></ion-icon>
+          <ion-icon src="assets/icon/AlertCircleOutline.svg"></ion-icon>
           A senha é obrigatória.</small>
       </div>
     </div>
@@ -31,19 +34,21 @@
       <ion-checkbox formControlName="lembrarMe" labelPlacement="end" justify="start">Lembrar de mim</ion-checkbox>
     </div>
 
-    <ion-button (click)="login()" expand="full" [disabled]="spinner">
+    <button (click)="login()" class="btn-padrao btn-prosseguir" [disabled]="spinner">
       <ng-container *ngIf="!spinner; else loadingSpinner">
         Entrar
       </ng-container>
       <ng-template #loadingSpinner>
         <ion-spinner name="crescent"></ion-spinner>
       </ng-template>
-    </ion-button>
+    </button>
 
     <div class="forgot-password-options">
-      <a (click)="irParaRecuperarEmail()" style="cursor: pointer;">{{ labelEsqueciSenha }}</a>
-      <a (click)="reenviarConfirmacaoEmail()" style="cursor: pointer;">{{ labelReenviarConfirmacao }}</a>
-      <p>Não tem uma conta? <a (click)="alterarForm()" style="cursor: pointer;">Cadastre-se</a></p>
+      <a (click)="irParaRecuperarEmail()" class="svg-icon"><ion-icon
+          src="assets/icon/AlertCircleOutline.svg"></ion-icon> {{ labelEsqueciSenha }}</a>
+      <!--<a (click)="reenviarConfirmacaoEmail()" style="cursor: pointer;">{{ labelReenviarConfirmacao }}</a>-->
+      <a (click)="alterarForm()" class="svg-icon"><ion-icon src="assets/icon/LogOutOutline.svg"></ion-icon>
+        Cadastre-se agora!</a>
     </div>
 
   </form>
