@@ -189,7 +189,7 @@ public class UsuarioController : ControllerBase
         usuarioModel.Email = requestModel.Email;
         usuarioModel.Senha = SegurancaUtil.SHA1Hash(requestModel.Senha);
         usuarioModel.DataCadastro = DateTime.Now;
-        usuarioModel.Contato = requestModel.Contato;
+        // usuarioModel.Contato = requestModel.Contato;
         usuarioModel.EmailConfirmed = false;
         usuarioModel.EmailConfirmationToken = Convert.ToHexString(RandomNumberGenerator.GetBytes(32));
 
@@ -224,7 +224,7 @@ public class UsuarioController : ControllerBase
                 IdEmpresa = empresa.Id,
                 Nome = requestModel.Nome,
                 Website = requestModel.Website ?? string.Empty,
-                Contato = requestModel.Contato ?? string.Empty,
+                // Contato = requestModel.Contato ?? string.Empty,
                 DataCriacao = DateTime.Now,
                 Status = true
             };
@@ -235,10 +235,10 @@ public class UsuarioController : ControllerBase
         {
             Console.WriteLine($"[UsuarioController] Iniciando cadastro MEI para: {requestModel.Email}");
             
-            if (string.IsNullOrEmpty(requestModel.CNPJ) || string.IsNullOrEmpty(requestModel.NomeEmpresa) || string.IsNullOrEmpty(requestModel.Contato))
+            if (string.IsNullOrEmpty(requestModel.CNPJ) || string.IsNullOrEmpty(requestModel.NomeEmpresa) /* || string.IsNullOrEmpty(requestModel.Contato) */)
             {
-                Console.WriteLine($"[UsuarioController] Validação falhou para MEI: CNPJ={requestModel.CNPJ}, NomeEmpresa={requestModel.NomeEmpresa}, Contato={requestModel.Contato}");
-                return BadRequest(new { message = "Para cadastro MEI, CNPJ, nome da empresa e contato são obrigatórios" });
+                Console.WriteLine($"[UsuarioController] Validação falhou para MEI: CNPJ={requestModel.CNPJ}, NomeEmpresa={requestModel.NomeEmpresa}");
+                return BadRequest(new { message = "Para cadastro MEI, CNPJ, e nome da empresa são obrigatórios" });
             }
 
             Console.WriteLine($"[UsuarioController] Criando empresa para MEI: {requestModel.NomeEmpresa}");
@@ -459,10 +459,10 @@ public class UsuarioController : ControllerBase
                 await _repositoryEmpresa.SaveChangesAsync();
 
                 // Atualizar dados do parceiro (contato e website)
-                if (!string.IsNullOrEmpty(requestModel.Contato))
-                {
-                    parceiro.Contato = requestModel.Contato;
-                }
+                //if (!string.IsNullOrEmpty(requestModel.Contato))
+                //{
+                //    parceiro.Contato = requestModel.Contato;
+                //}
                 if (!string.IsNullOrEmpty(requestModel.Website))
                 {
                     parceiro.Website = requestModel.Website;
@@ -528,10 +528,10 @@ public class UsuarioController : ControllerBase
                 }
             }
 
-            if (requestModel.Contato != null)
-            {
-                usuario.Contato = requestModel.Contato;
-            }
+            //if (requestModel.Contato != null)
+            //{
+            //    usuario.Contato = requestModel.Contato;
+            //}
                 // Para PF, não precisamos fazer alterações específicas além do usuário
             }
 
@@ -666,7 +666,7 @@ public class UsuarioController : ControllerBase
                 {
                     Usuario = usuarioVm,
                     Cpf = cpfCliente, 
-                    Contato = usuario.Contato,
+                    // Contato = usuario.Contato,
                     TipoCadastro = tipoCadastro,  
                         Role = "Cliente",
                     Assinaturas = assinaturasCliente.Select(a => new { a.Id }),  
@@ -684,7 +684,7 @@ public class UsuarioController : ControllerBase
         {
             Usuario = usuarioVm,
             Cpf = cpfCliente, 
-            Contato = usuario.Contato,
+            // Contato = usuario.Contato,
             TipoCadastro = tipoCadastro,  
                 Role = "Cliente",
             Assinaturas = assinaturasCliente.Select(a => new { a.Id }) 
