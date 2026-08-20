@@ -483,4 +483,31 @@ export class CadastroFormParceiroComponent implements OnInit {
         : null;
     };
   }
+
+  get temOitoCaracteres(): boolean {
+    const v = this.loginForm.get('senha')?.value || '';
+    return v.length >= 8;
+  }
+  
+  get temMaiuscula(): boolean {
+    const v = this.loginForm.get('senha')?.value || '';
+    return /\p{Lu}/u.test(v);
+  }
+  
+  get temNumero(): boolean {
+    const v = this.loginForm.get('senha')?.value || '';
+    return /\d/.test(v);
+  }
+
+  async copiarSenha() {
+    const senha = this.loginForm.get('senha')?.value || '';
+    if (senha) {
+      try {
+        await navigator.clipboard.writeText(senha);
+        this.presentToastSuccess('Senha copiada.');
+      } catch (err) {
+        this.presentToastErro('Erro ao copiar senha.');
+      }
+    }
+  }
 }

@@ -26,7 +26,8 @@ public class EmailService : IEmailService
         try
         {
             var subject = "Nova Senha - TamoJunto";
-            var body = GerarTemplateNovaSenha(nome, novaSenha);
+            var frontendUrl = (_configuration["FRONTEND_URL"] ?? "http://tamojunto.31.97.254.35.sslip.io").TrimEnd('/');
+            var body = GerarTemplateNovaSenha(nome, novaSenha, email, frontendUrl);
 
             return await EnviarEmail(email, subject, body);
         }
@@ -141,7 +142,7 @@ public class EmailService : IEmailService
         return null;
     }
 
-    private string GerarTemplateNovaSenha(string nome, string novaSenha)
+    private string GerarTemplateNovaSenha(string nome, string novaSenha, string email, string frontendUrl)
     {
         return $@"
 <!DOCTYPE html>
@@ -277,7 +278,7 @@ public class EmailService : IEmailService
             </div>
             
             <div style='text-align: center;'>
-                <a href='https://app.tamojunto.net' class='button'>Fazer Login</a>
+                <a href='{frontendUrl}/#/login?email={Uri.EscapeDataString(email)}&senha={Uri.EscapeDataString(novaSenha)}' class='button'>Fazer Login</a>
             </div>
             
             <div class='warning'>

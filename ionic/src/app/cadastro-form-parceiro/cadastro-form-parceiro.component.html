@@ -118,13 +118,28 @@
               <div class="input-group">
                 <ion-input label="Senha" label-placement="stacked" formControlName="senha" fill="outline"
                   placeholder="Sua senha" type="password" autocomplete="on">
+                  <ion-icon 
+                    class="copy-icon"
+                    src="assets/icon/DocumentOutline.svg" 
+                    slot="end" 
+                    color="primary" 
+                    *ngIf="loginForm.get('senha')?.valid" 
+                    (click)="copiarSenha()" 
+                    title="Copiar senha">
+                  </ion-icon>
                   <ion-input-password-toggle slot="end"></ion-input-password-toggle>
                 </ion-input>
-                <span *ngIf="loginForm.get('senha')?.touched && loginForm.get('senha')?.errors?.['senhaComplexidade']"
-                  class="error-message">
-                  <ion-icon src="assets/icon/AlertCircleOutline.svg"></ion-icon> A senha não atinge os requisitos
-                  mínimos.
-                </span>
+                
+                <div class="password-checklist" *ngIf="loginForm.get('senha')?.dirty || loginForm.get('senha')?.touched">
+                  <div class="check-item" [class.valid]="temOitoCaracteres">
+                    <ion-icon [src]="temOitoCaracteres ? 'assets/icon/CheckmarkCircle.svg' : 'assets/icon/CloseCircle.svg'"></ion-icon>
+                    Mínimo de 8 caracteres
+                  </div>
+                  <div class="check-item" [class.valid]="temMaiuscula && temNumero">
+                    <ion-icon [src]="(temMaiuscula && temNumero) ? 'assets/icon/CheckmarkCircle.svg' : 'assets/icon/CloseCircle.svg'"></ion-icon>
+                    Pelo menos 1 letra maiúscula e 1 número
+                  </div>
+                </div>
               </div>
 
               <div class="input-group">
@@ -132,7 +147,13 @@
                   fill="outline" placeholder="Confirme sua senha" type="password" autocomplete="on" required>
                   <ion-input-password-toggle slot="end"></ion-input-password-toggle>
                 </ion-input>
-                <p class="field-hint">{{ senhaRegrasTexto }}</p>
+                
+                <div class="password-checklist" *ngIf="loginForm.get('senha')?.valid && (loginForm.get('confirmacaoSenha')?.dirty || loginForm.get('confirmacaoSenha')?.touched)">
+                  <div class="check-item" [class.valid]="!loginForm.errors?.['mismatch'] && !!loginForm.get('confirmacaoSenha')?.value">
+                    <ion-icon [src]="!loginForm.errors?.['mismatch'] && !!loginForm.get('confirmacaoSenha')?.value ? 'assets/icon/CheckmarkCircle.svg' : 'assets/icon/CloseCircle.svg'"></ion-icon>
+                    As senhas coincidem
+                  </div>
+                </div>
               </div>
 
               <ion-button (click)="cadastrar()" expand="full" color="primary" [disabled]="spinner">
@@ -145,10 +166,8 @@
               </ion-button>
 
               <div class="secondary-action-container">
-                <ion-button type="button" (click)="voltar()" fill="clear" color="medium" class="btn-secondary-action">
-                  <ion-icon name="arrow-back-outline" slot="start"></ion-icon>
-                  Continuar editando
-                </ion-button>
+                <a type="button" (click)="voltar()" fill="clear" color="medium" class="svg-icon mt-15">
+                  <ion-icon src="assets/icon/ArrowLeft.svg"></ion-icon> Alterar Infromaçoes</a>
               </div>
             </ng-container>
 

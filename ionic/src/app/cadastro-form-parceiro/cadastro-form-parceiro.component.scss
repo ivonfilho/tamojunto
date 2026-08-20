@@ -95,6 +95,7 @@ p {
 }
 
 a.svg-icon {
+  font-size: 14px;
   cursor: pointer;
   display: flex;
   align-content: center;
@@ -164,4 +165,37 @@ ion-segment {
   ion-segment {
     gap: 15px;
   }
+}
+
+.password-checklist {
+  margin-top: 5px;
+  margin-left: 5px;
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #ec616b;
+
+    ion-icon {
+      font-size: 14px;
+    }
+
+    &.valid {
+      color: #28a745;
+    }
+  }
+}
+
+.copy-icon {
+  font-size: 18px;
+  cursor: pointer;
+  z-index: 10;
+  margin-inline-start: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }

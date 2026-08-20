@@ -3,7 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { ToastController } from '@ionic/angular';
 import { UsuarioService } from 'src/app/services/api/usuario.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { isUsuarioParceiroComercial } from 'src/app/utils/usuario-sessao.util';
 
 @Component({
@@ -27,7 +27,8 @@ export class LoginFormComponent implements OnInit {
     private usuarioService: UsuarioService,
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
@@ -36,6 +37,19 @@ export class LoginFormComponent implements OnInit {
       senha: ['', Validators.required],
       lembrarMe: [true]
     });
+
+    const queryEmail = this.route.snapshot.queryParamMap.get('email');
+    const querySenha = this.route.snapshot.queryParamMap.get('senha');
+    
+    if (queryEmail && querySenha) {
+      this.loginForm.patchValue({
+        email: queryEmail,
+        senha: querySenha
+      });
+      setTimeout(() => {
+        this.login();
+      }, 500);
+    }
   }
 
   async presentToastErro(text: string) {

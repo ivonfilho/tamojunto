@@ -21,7 +21,6 @@ ion-label.ng-invalid,
   a {
     color: rgb(89, 79, 185);
     text-decoration: none;
-    font-size: 15px !important;
     text-align: center;
     padding: 8px;
     border-radius: 8px;
@@ -37,11 +36,11 @@ ion-label.ng-invalid,
 }
 
 p {
-  font-size: 15px !important;
+  font-size: 14px !important;
   text-align: center;
 
   a {
-    font-size: 15px !important;
+    font-size: 14px !important;
     color: rgb(89, 79, 185);
     text-decoration: none;
   }
@@ -92,7 +91,6 @@ p {
   margin-top: 25px;
 }
 
-
 .btn-padrao {
   padding: 15px;
   height: auto;
@@ -133,6 +131,7 @@ p {
 }
 
 a.svg-icon {
+  font-size: 14px;
   cursor: pointer;
   display: flex;
   align-content: center;
