@@ -22,6 +22,8 @@ public partial class Usuario : BaseEntity
 
     public string Senha { get; set; } = null!;
 
+    public string? Contato { get; set; }
+
     public DateTime DataCadastro { get; set; }
     
     public string? UrlImagem { get; set; } = null!;
