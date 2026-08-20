@@ -34,7 +34,7 @@
       <ion-checkbox formControlName="lembrarMe" labelPlacement="end" justify="start">Lembrar de mim</ion-checkbox>
     </div>
 
-    <button (click)="login()" class="btn-padrao btn-prosseguir" [disabled]="spinner">
+    <button (click)="login()" class="btn-padrao btn-prosseguir text-14" [disabled]="spinner">
       <ng-container *ngIf="!spinner; else loadingSpinner">
         Entrar
       </ng-container>

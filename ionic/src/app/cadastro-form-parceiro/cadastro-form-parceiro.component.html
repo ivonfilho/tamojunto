@@ -27,27 +27,32 @@
 
             <!-- ==================== ETAPA 1 ==================== -->
             <ng-container *ngIf="currentStep === 1">
-              <div class="input-group" *ngIf="isMEI()">
-                <ion-input label="CNPJ" label-placement="stacked" formControlName="cnpj" placeholder="Digite o seu CNPJ"
-                  fill="outline" type="text" (ionInput)="applyMaskCNPJ($event)" (ionBlur)="validateCNPJ()"
-                  maxlength="18" autocomplete="on" required></ion-input>
+
+              <div class="input-group" *ngIf="isPessoaJuridica()">
+                <ion-input label="CNPJ" label-placement="stacked" formControlName="cnpj"
+                  placeholder="Digite o CNPJ da empresa" fill="outline" type="text" (ionInput)="applyMaskCNPJ($event)"
+                  (ionBlur)="validateCNPJ()" maxlength="18" autocomplete="on" required></ion-input>
 
                 <div *ngIf="consultandoCNPJ" class="loading-cnpj">
                   <ion-spinner name="dots" color="primary"></ion-spinner>
                   <span>Consultando CNPJ...</span>
                 </div>
 
-                <span *ngIf="cnpjInvalid && !consultandoCNPJ && cnpjNaoMEI" class="error-message"><ion-icon
-                    src="assets/icon/AlertCircleOutline.svg"></ion-icon> Este CNPJ não é de MEI. Apenas MEIs podem se
-                  cadastrar
-                  nesta categoria.</span>
-                <span *ngIf="cnpjInvalid && !consultandoCNPJ && !cnpjNaoMEI" class="error-message"><ion-icon
+                <span *ngIf="cnpjInvalid && !consultandoCNPJ && empresaInativa" class="error-message"><ion-icon
+                    src="assets/icon/AlertCircleOutline.svg"></ion-icon> A empresa não está ativa. Verifique a situação
+                  cadastral.</span>
+                <span *ngIf="cnpjInvalid && !consultandoCNPJ && !empresaInativa" class="error-message"><ion-icon
                     src="assets/icon/AlertCircleOutline.svg"></ion-icon> CNPJ inválido</span>
               </div>
 
-              <div class="input-group" *ngIf="isMEI()">
+              <div class="input-group" *ngIf="isPessoaJuridica()">
                 <ion-input label="Nome Fantasia" label-placement="stacked" formControlName="nomeEmpresa" fill="outline"
                   placeholder="Nome da empresa" rows="1" class="nome-fantasia-input" autocomplete="on"></ion-input>
+              </div>
+
+              <div class="input-group" *ngIf="isPessoaJuridica()">
+                <ion-input label="Atividade principal" label-placement="stacked" formControlName="atividade"
+                  fill="outline" placeholder="Atividade principal" autocomplete="on" required></ion-input>
               </div>
 
               <button (click)="prosseguir()" class="btn-prosseguir btn-padrao">
@@ -81,7 +86,7 @@
                 </div>
 
 
-                <div class="input-group" *ngIf="isMEI()">
+                <div class="input-group">
                   <div class="input-group">
                     <ion-input label="Telefone" label-placement="stacked" formControlName="contato" fill="outline"
                       placeholder="(00) 00000-0000" type="tel" inputmode="tel" autocomplete="on"

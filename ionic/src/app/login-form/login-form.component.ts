@@ -28,7 +28,7 @@ export class LoginFormComponent implements OnInit {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
@@ -53,19 +53,19 @@ export class LoginFormComponent implements OnInit {
         },
       ],
     });
-    toast.onDidDismiss().then((e) => {});
+    toast.onDidDismiss().then((e) => { });
     toast.present();
   }
 
   alterarForm() {
-    this.Cadastro.emit();
+    this.router.navigate(['/cadastro-form']);
   }
 
   irParaRecuperarEmail() {
     this.router.navigate(['/recuperar-senha-email']);
   }
 
-   login() {
+  login() {
     this.submitted = true;
 
     if (this.loginForm.valid) {
@@ -84,7 +84,7 @@ export class LoginFormComponent implements OnInit {
             if (e && e.name === 'QuotaExceededError') {
               console.warn('[Login] QuotaExceededError ao salvar tamo_junto_user. Removendo imagens Base64.');
               const dataSafe = { ...data, imagemUrl: '', ImagemUrl: '', urlImagem: '', UrlImagem: '' };
-              try { localStorage.setItem('tamo_junto_user', JSON.stringify(dataSafe)); } catch (e2) {}
+              try { localStorage.setItem('tamo_junto_user', JSON.stringify(dataSafe)); } catch (e2) { }
             }
           }
 
@@ -148,7 +148,7 @@ export class LoginFormComponent implements OnInit {
       const data: any = await this.usuarioService.reenviarConfirmacaoEmail({ email });
       await this.presentToastSucesso(
         data?.message ||
-          'Se o e-mail estiver cadastrado e pendente de confirmação, enviaremos um novo link.'
+        'Se o e-mail estiver cadastrado e pendente de confirmação, enviaremos um novo link.'
       );
     } catch (err: any) {
       console.error('Erro ao reenviar confirmação:', err);

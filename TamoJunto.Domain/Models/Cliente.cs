@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace TamoJunto.Domain.Models;
@@ -8,6 +8,8 @@ public partial class Cliente : BaseEntity
     public Guid Id { get; set; }
     public string? Cpf { get; set; }
     public Guid IdUsuario { get; set; }
+
+    public string? Contato { get; set; }
 
     public Guid? IdEmpresa { get; set; }
 

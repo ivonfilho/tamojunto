@@ -151,3 +151,12 @@ ion-checkbox {
   --checkbox-background: #fff;
   --border-color: #ddd;
 }
+
+:host {
+  display: block;
+  height: 100%;
+}
+
+ion-content {
+  --background: transparent;
+}

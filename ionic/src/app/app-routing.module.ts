@@ -109,7 +109,7 @@ const routes: Routes = [
   },
   {
     path: 'parceiros',
-    loadChildren: () => import('./parceiros/parceiros.module').then( m => m.ParceirosPageModule)
+    loadChildren: () => import('./parceiros/parceiros.module').then(m => m.ParceirosPageModule)
   },
   {
     path: 'cadastro-parceiro',
@@ -126,16 +126,24 @@ const routes: Routes = [
   },
   {
     path: 'confirmar-email',
-    loadChildren: () => import('./confirmar-email/confirmar-email.module').then( m => m.ConfirmarEmailPageModule)
+    loadChildren: () => import('./confirmar-email/confirmar-email.module').then(m => m.ConfirmarEmailPageModule)
   },
   {
     path: 'recuperar-senha-email',
-    loadChildren: () => import('./recuperar-senha-email/recuperar-senha-email.module').then( m => m.RecuperarSenhaEmailPageModule)
+    loadChildren: () => import('./recuperar-senha-email/recuperar-senha-email.module').then(m => m.RecuperarSenhaEmailPageModule)
+  },
+  {
+    path: 'cadastro-form',
+    loadChildren: () => import('./cadastro-form/cadastro-form.module').then(m => m.CadastroFormModule)
+  },
+  {
+    path: 'cadastro-form-parceiro',
+    loadChildren: () => import('./cadastro-form-parceiro/cadastro-form-parceiro.module').then(m => m.CadastroFormParceiroModule)
   },
   {
     path: 'ofertas-parceiro',
     canActivate: [ParceiroGuard],
-    loadChildren: () => import('./ofertas-parceiro/ofertas-parceiro.module').then( m => m.OfertasParceiroPageModule)
+    loadChildren: () => import('./ofertas-parceiro/ofertas-parceiro.module').then(m => m.OfertasParceiroPageModule)
   }
 ];
 
@@ -145,4 +153,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

@@ -3,14 +3,13 @@
     <div class="left"></div>
     <div class="right-content">
       <div class="img-container">
-        <img src="../../assets/tamo-junto-logo.png" alt="Tamo Junto Logo" class="logo cursor-pointer" (click)="goToHome()" />
+        <img src="../../assets/tamo-junto-logo.png" alt="Tamo Junto Logo" class="logo cursor-pointer"
+          (click)="goToHome()" />
       </div>
 
-      <div class="form-component">
-        <app-login-form (Cadastro)="alterarForm()" *ngIf="!cadastro"></app-login-form>
-        <app-cadastro-form (Cadastro)="alterarForm()" *ngIf="cadastro"></app-cadastro-form>
+      <div class="form-component" #formContainer>
+        <app-login-form></app-login-form>
       </div>
     </div>
   </div>
 </ion-content>
-

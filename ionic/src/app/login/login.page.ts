@@ -24,7 +24,7 @@ export class LoginPage implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private platform: Platform
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     const confirmEmail = this.route.snapshot.queryParamMap.get('confirmEmail');
@@ -88,7 +88,7 @@ export class LoginPage implements OnInit, OnDestroy {
     const sessionEnded = localStorage.getItem('sessionEnded');
 
     if (sessionEnded) {
-       const toast = this.toastController.create({
+      const toast = this.toastController.create({
         message: 'Sessão encerrada com sucesso.',
         position: 'top',
         duration: 2000,
@@ -139,7 +139,7 @@ export class LoginPage implements OnInit, OnDestroy {
   goToConnectivityTest() {
     this.router.navigate(['/connectivity-test']);
   }
-  
+
   goToHome() {
     window.location.href = '/';
   }

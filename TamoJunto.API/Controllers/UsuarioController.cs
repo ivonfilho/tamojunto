@@ -273,6 +273,7 @@ public class UsuarioController : ControllerBase
                 Id = Guid.NewGuid(),
                 Cpf = null, // MEI não tem CPF individual
                 IdUsuario = usuarioModel.Id,
+                Contato = requestModel.Contato ?? string.Empty,
                 IdEmpresa = empresa.Id
             };
             
@@ -525,6 +526,12 @@ public class UsuarioController : ControllerBase
                             await _repositoryEmpresa.SaveChangesAsync();
                         }
                     }
+                    if (requestModel.Contato != null)
+                    {
+                        cliente.Contato = requestModel.Contato;
+                        await _repositoryCliente.UpdateAsync(cliente);
+                        await _repositoryCliente.SaveChangesAsync();
+                    }
                 }
                 // Para PF, não precisamos fazer alterações específicas além do usuário
             }
@@ -660,6 +667,7 @@ public class UsuarioController : ControllerBase
                 {
                     Usuario = usuarioVm,
                     Cpf = cpfCliente, 
+                    Contato = cliente.Contato,
                     TipoCadastro = tipoCadastro,  
                         Role = "Cliente",
                     Assinaturas = assinaturasCliente.Select(a => new { a.Id }),  
@@ -677,6 +685,7 @@ public class UsuarioController : ControllerBase
         {
             Usuario = usuarioVm,
             Cpf = cpfCliente, 
+            Contato = cliente.Contato,
             TipoCadastro = tipoCadastro,  
                 Role = "Cliente",
             Assinaturas = assinaturasCliente.Select(a => new { a.Id }) 

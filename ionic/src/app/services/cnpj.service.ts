@@ -9,7 +9,7 @@ export class CnpjService {
   constructor(
     private http: HttpClient,
     private apiConfig: ApiConfig
-  ) {}
+  ) { }
 
   consultarCNPJ(cnpj: string) {
     const cnpjNumeros = cnpj.replace(/\D/g, '');

@@ -29,12 +29,12 @@ import {
 } from '../utils/senha-policy';
 
 @Component({
-  selector: 'app-cadastro-form',
-  templateUrl: './cadastro-form.component.html',
-  styleUrls: ['./cadastro-form.component.scss'],
+  selector: 'app-cadastro-form-parceiro',
+  templateUrl: './cadastro-form-parceiro.component.html',
+  styleUrls: ['./cadastro-form-parceiro.component.scss'],
   encapsulation: ViewEncapsulation.ShadowDom,
 })
-export class CadastroFormComponent implements OnInit {
+export class CadastroFormParceiroComponent implements OnInit {
   readonly senhaRegrasTexto = SENHA_COMPLEXIDADE_TEXTO;
 
   loginForm: any;
@@ -61,11 +61,11 @@ export class CadastroFormComponent implements OnInit {
   ngOnInit() {
     this.loginForm = this.formBuilder.group(
       {
-        tipoCadastro: ['MEI', Validators.required],
+        tipoCadastro: ['PJ', Validators.required],
         cpf: [''],
         cnpj: ['', Validators.required],
         nomeEmpresa: ['', Validators.required],
-        atividade: [''],
+        atividade: ['', Validators.required],
         website: [''],
         contato: ['', [Validators.required, telefoneBrValidator()]],
         nome: ['', [Validators.required, nomeCompletoBrValidator()]],
@@ -78,10 +78,10 @@ export class CadastroFormComponent implements OnInit {
       }
     );
 
-    this.isFormLarge = false;
+    this.isFormLarge = true;
   }
 
-  isMEI(): boolean {
+  isPessoaJuridica(): boolean {
     return true;
   }
 
@@ -102,8 +102,8 @@ export class CadastroFormComponent implements OnInit {
   }
 
   onSegmentChange(event: any) {
-    if (event.detail.value === 'PJ') {
-      this.router.navigate(['/cadastro-form-parceiro']);
+    if (event.detail.value === 'MEI') {
+      this.router.navigate(['/cadastro-form']);
     }
   }
 
@@ -193,7 +193,7 @@ export class CadastroFormComponent implements OnInit {
     if (this.loginForm.errors?.['mismatch']) {
       msgs.push('A confirmação de senha não coincide com a senha.');
     }
-    if (this.isMEI()) {
+    if (this.isPessoaJuridica()) {
       const ne = this.loginForm.get('nomeEmpresa');
       if (ne?.errors?.['required']) {
         msgs.push('Informe o nome fantasia da empresa.');
@@ -209,6 +209,11 @@ export class CadastroFormComponent implements OnInit {
       const telErr = contato?.errors?.['telefoneBr'];
       if (typeof telErr === 'string') {
         msgs.push(`Telefone: ${telErr}`);
+      }
+      
+      const at = this.loginForm.get('atividade');
+      if (at?.errors?.['required']) {
+        msgs.push('Informe a atividade principal.');
       }
     }
     if (msgs.length === 0) {
@@ -281,6 +286,9 @@ export class CadastroFormComponent implements OnInit {
 
     let valid = cnpj?.valid && !this.cnpjInvalid && !this.consultandoCNPJ && nomeEmpresa?.valid;
 
+    const atividade = this.loginForm.get('atividade');
+    valid = valid && atividade?.valid;
+
     return !!valid;
   }
 
@@ -304,17 +312,19 @@ export class CadastroFormComponent implements OnInit {
       return;
     }
 
-    if (this.isMEI()) {
+    if (this.isPessoaJuridica()) {
       if (this.cnpjInvalid) {
-        if (this.cnpjNaoMEI) {
-          this.presentToastErro('Este CNPJ não é de MEI. Apenas empresas com porte ME e natureza jurídica "Empresário (Individual)" podem se cadastrar nesta categoria.');
+        if (this.empresaInativa) {
+          this.presentToastErro('A empresa não está ativa. Verifique a situação cadastral antes de continuar.');
+        } else if (this.cnpjNaoMEI) {
+          this.presentToastErro('Este CNPJ não é válido para Parceiro. Apenas empresas com natureza jurídica "Sociedade Empresária Limitada" podem se cadastrar como Parceiros.');
         } else {
           this.presentToastErro('CNPJ inválido ou inativo. Corrija para continuar.');
         }
         return;
       }
-      if (!this.loginForm.get('nomeEmpresa').value || !this.loginForm.get('contato').value) {
-        this.presentToastErro('Por favor, preencha todos os campos obrigatórios para MEI.');
+      if (!this.loginForm.get('nomeEmpresa').value || !this.loginForm.get('atividade').value) {
+        this.presentToastErro('Por favor, preencha todos os campos da empresa.');
         return;
       }
     }
@@ -329,8 +339,8 @@ export class CadastroFormComponent implements OnInit {
       confirmacaoSenha: this.loginForm.get('confirmacaoSenha').value,
       cnpj: this.loginForm.get('cnpj').value,
       nomeEmpresa: this.loginForm.get('nomeEmpresa').value,
-      atividade: null,
-      website: null,
+      atividade: this.loginForm.get('atividade').value,
+      website: this.loginForm.get('website').value,
       contato: onlyDigits(this.loginForm.get('contato')?.value)
     };
 
@@ -412,13 +422,9 @@ export class CadastroFormComponent implements OnInit {
         const tipoCadastro = this.loginForm.get('tipoCadastro')?.value;
 
         if (situacao && situacao.toUpperCase() === 'ATIVA') {
-          // Verificação específica para MEI
-          if (tipoCadastro === 'MEI') {
-            // Porte ME (API pode retornar "ME" ou "Micro Empresa") e natureza jurídica "Empresário (Individual)"
-            const porteME = porte && (porte === 'ME' || porte === 'Micro Empresa');
-            const naturezaMEI = naturezaJuridica && naturezaJuridica === 'Empresário (Individual)';
-            if (porteME && naturezaMEI) {
-              // CNPJ é MEI válido
+          // Para PJ (Parceiro), verificar se a natureza jurídica é "Sociedade Empresária Limitada"
+          if (naturezaJuridica && naturezaJuridica === 'Sociedade Empresária Limitada') {
+              // CNPJ é válido para Parceiro
               this.cnpjInvalid = false;
               this.cnpjNaoMEI = false;
 
@@ -429,14 +435,13 @@ export class CadastroFormComponent implements OnInit {
                 atividade: data.estabelecimento.atividade_principal?.descricao || ''
               });
 
-              await this.presentToastSuccess('CNPJ MEI válido! Dados preenchidos automaticamente.');
+              await this.presentToastSuccess('CNPJ válido para Parceiro! Dados preenchidos automaticamente.');
             } else {
-              // CNPJ não é MEI
+              // CNPJ não é válido para Parceiro
               this.cnpjInvalid = true;
               this.cnpjNaoMEI = true;
-              await this.presentToastErro(`Este CNPJ não é de MEI. Porte: ${porte || 'Não informado'}, Natureza Jurídica: ${naturezaJuridica || 'Não informado'}. Apenas MEIs podem se cadastrar nesta categoria.`);
+              await this.presentToastErro(`Este CNPJ não é válido para Parceiro. Natureza Jurídica atual: ${naturezaJuridica || 'Não informado'}. Apenas Sociedades Empresárias Limitadas podem se cadastrar como Parceiros.`);
             }
-          }
         } else {
           // CNPJ não está ativo
           this.cnpjInvalid = true;

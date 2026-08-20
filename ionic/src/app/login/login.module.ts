@@ -8,7 +8,6 @@ import { LoginPageRoutingModule } from './login-routing.module';
 
 import { LoginPage } from './login.page';
 import { LoginFormComponent } from '../login-form/login-form.component';
-import { CadastroFormComponent } from '../cadastro-form/cadastro-form.component';
 
 @NgModule({
   imports: [
@@ -18,6 +17,6 @@ import { CadastroFormComponent } from '../cadastro-form/cadastro-form.component'
     LoginPageRoutingModule,
     ReactiveFormsModule,
   ],
-  declarations: [LoginPage, LoginFormComponent, CadastroFormComponent],
+  declarations: [LoginPage, LoginFormComponent],
 })
-export class LoginPageModule {}
+export class LoginPageModule { }
