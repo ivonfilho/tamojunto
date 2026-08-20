@@ -9,8 +9,6 @@ public partial class Cliente : BaseEntity
     public string? Cpf { get; set; }
     public Guid IdUsuario { get; set; }
 
-    public string? Contato { get; set; }
-
     public Guid? IdEmpresa { get; set; }
 
     public virtual ICollection<Assinatura> Assinatura { get; set; } = new List<Assinatura>();
