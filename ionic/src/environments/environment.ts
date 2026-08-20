@@ -4,10 +4,10 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://backend-tamojunto.31.97.254.35.sslip.io'
+  apiUrl: 'https://api.tamojunto.net'
 };
 
-//export let SERVER_URL = 'http://backend-tamojunto.31.97.254.35.sslip.io';
+//export let SERVER_URL = 'https://api.tamojunto.net';
 
 /*
  * For easier debugging in development mode, you can import the following file

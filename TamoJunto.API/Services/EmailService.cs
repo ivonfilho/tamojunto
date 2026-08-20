@@ -26,7 +26,7 @@ public class EmailService : IEmailService
         try
         {
             var subject = "Nova Senha - TamoJunto";
-            var frontendUrl = (_configuration["FRONTEND_URL"] ?? "http://tamojunto.31.97.254.35.sslip.io").TrimEnd('/');
+            var frontendUrl = (_configuration["FRONTEND_URL"] ?? "https://app.tamojunto.net").TrimEnd('/');
             var body = GerarTemplateNovaSenha(nome, novaSenha, email, frontendUrl);
 
             return await EnviarEmail(email, subject, body);

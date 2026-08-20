@@ -9,12 +9,12 @@ import { environment } from '../../environments/environment';
 export class ApiConnectivityService {
   private fallbackUrls = [
     environment.apiUrl,
-    'http://backend-tamojunto.31.97.254.35.sslip.io'
+    'https://api.tamojunto.net'
   ];
 
   private currentApiUrl = new BehaviorSubject<string>(environment.apiUrl);
   public currentApiUrl$ = this.currentApiUrl.asObservable();
-  
+
   private isConnected = new BehaviorSubject<boolean>(false);
   public isConnected$ = this.isConnected.asObservable();
 
