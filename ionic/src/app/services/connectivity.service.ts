@@ -39,7 +39,7 @@ export class ConnectivityService {
         console.log('[Connectivity Service] ❌ Erro HTTP:', response.status, response.statusText);
         return { success: false, error: `HTTP ${response.status}: ${response.statusText}` };
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('[Connectivity Service] 🚨 Erro no teste de conectividade:', error);
       return { success: false, error: error.message || 'Erro desconhecido' };
     }
@@ -99,7 +99,7 @@ export class ConnectivityService {
           statusText: response.statusText
         };
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('[Connectivity Service] 🚨 Erro no teste básico:', error);
       return { 
         success: false, 
@@ -157,7 +157,7 @@ export class ConnectivityService {
         }
       };
       
-    } catch (error) {
+    } catch (error: any) {
       console.error('[Connectivity Service] 🚨 Erro no teste Android:', error);
       return { 
         success: false, 
@@ -214,7 +214,7 @@ export class ConnectivityService {
           statusText: response.statusText
         };
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('[Connectivity Service] 🚨 Erro no teste com timeout:', error);
       
       if (error.name === 'AbortError') {

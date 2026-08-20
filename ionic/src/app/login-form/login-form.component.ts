@@ -104,10 +104,10 @@ export class LoginFormComponent implements OnInit {
 
           if (isUsuarioParceiroComercial(data)) {
             console.log('[Login] Usuário parceiro, redirecionando para dashboard-parceiro');
-            this.router.navigate(['/dashboard-parceiro']).then(() => window.location.reload());
+            this.router.navigate(['/dashboard-parceiro']);
           } else {
             console.log('[Login] Usuário cliente, redirecionando para dashboard');
-            this.router.navigate(['/dashboard']).then(() => window.location.reload());
+            this.router.navigate(['/dashboard']);
           }
         })
         .catch((e) => {

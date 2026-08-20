@@ -7,7 +7,7 @@
         <ion-breadcrumbs>
           <ion-icon slot="separator" name="chevron-forward-outline"></ion-icon>
           <ion-breadcrumb routerLink="/dashboard"><ion-icon src="../assets/icon/HomeOutline.svg" slot="start" style="margin-right: 4px; filter: brightness(0) invert(1);"></ion-icon> </ion-breadcrumb>
-          <ion-breadcrumb class="breadcrumb-active">Ofertas</ion-breadcrumb>
+          <ion-breadcrumb class="breadcrumb-active" (click)="limparBusca()" style="cursor: pointer;">Ofertas</ion-breadcrumb>
           <ion-breadcrumb class="demo-2" *ngIf="textoDescritivo" class="breadcrumb-active">{{ textoDescritivo }}</ion-breadcrumb>
         </ion-breadcrumbs>
       </div>

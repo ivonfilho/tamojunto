@@ -1,7 +1,7 @@
 <ion-header class="ion-no-border header-global">
   <ion-toolbar>
     <div class="header-container">
-      <div class="header-content" style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+      <div class="header-content" style="display: flex; align-items: center; justify-content: space-between; width: 100%; z-index: 999;">
 
         <!-- Lado esquerdo: Logo e Menu -->
         <div class="left-components" style="display: flex; align-items: center;">
@@ -143,7 +143,7 @@
                <!-- Card Menor (Compact) -->
                <div class="compact-offer-card" *ngFor="let item of resultadosBusca" (click)="goToItem(item)"
                     [ngClass]="{'offer-relampago': (item.tipoOferta || '').toLowerCase().replace('â', 'a').trim() === 'relampago'}">
-                 
+
                  <div class="compact-header">
                    <img
                      class="compact-avatar"

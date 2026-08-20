@@ -19,10 +19,7 @@ const config: CapacitorConfig = {
     // Configurações específicas para resolver problemas de conectividade
     allowMixedContent: false,
     captureInput: true,
-    webContentsDebuggingEnabled: true,
-    // Permitir download de arquivos
-    allowFileAccess: true,
-    allowContentAccess: true
+    webContentsDebuggingEnabled: true
   },
   ios: {
     // Configurações para iOS

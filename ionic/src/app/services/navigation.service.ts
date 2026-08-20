@@ -29,18 +29,18 @@ export class NavigationService {
       // Verifica se é parceiro pelo role
       if (usuario.role === 'Parceiro') {
         console.log('[NavigationService] Usuário é parceiro, redirecionando para dashboard-parceiro');
-        this.router.navigate(['/dashboard-parceiro']).then(() => window.location.reload());
+        this.router.navigate(['/dashboard-parceiro']);
         return;
       }
 
       // Se não é parceiro, redireciona para dashboard do cliente
       console.log('[NavigationService] Usuário é cliente, redirecionando para dashboard');
-      this.router.navigate(['/dashboard']).then(() => window.location.reload());
+      this.router.navigate(['/dashboard']);
       
     } catch (error) {
       console.error('[NavigationService] Erro ao redirecionar:', error);
       // Em caso de erro, redireciona para dashboard padrão
-      this.router.navigate(['/dashboard']).then(() => window.location.reload());
+      this.router.navigate(['/dashboard']);
     }
   }
 

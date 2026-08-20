@@ -31,10 +31,8 @@ ion-content.dashboard-container {
 
 @media (max-width: 768px) {
   ion-content.dashboard-container {
-    --padding-bottom: max(
-      5.5rem,
-      calc(3.5rem + env(safe-area-inset-bottom, 0px))
-    );
+    --padding-bottom: max(5.5rem,
+        calc(3.5rem + env(safe-area-inset-bottom, 0px)));
   }
 }
 
@@ -45,11 +43,9 @@ ion-content.dashboard-container {
 }
 
 .dashboard-header {
-  background: linear-gradient(
-    135deg,
-    var(--ion-color-primary) 0%,
-    #667eea 100%
-  );
+  background: linear-gradient(135deg,
+      var(--ion-color-primary) 0%,
+      #667eea 100%);
   padding: 40px 20px 30px;
   position: relative;
   overflow: hidden;
@@ -110,10 +106,12 @@ ion-content.dashboard-container {
 }
 
 @keyframes float {
+
   0%,
   100% {
     transform: translateY(0px);
   }
+
   50% {
     transform: translateY(-20px);
   }
@@ -621,11 +619,13 @@ ion-content.dashboard-container {
 
 // Animação para o ícone de raio
 @keyframes flash-pulse {
+
   0%,
   100% {
     opacity: 1;
     transform: scale(1);
   }
+
   50% {
     opacity: 0.8;
     transform: scale(1.1);
@@ -952,6 +952,7 @@ ion-content.dashboard-container {
 }
 
 :host ::ng-deep .analytics-content .chart-container {
+
   .apexcharts-canvas,
   .apexcharts-svg {
     width: 100% !important;
@@ -1058,6 +1059,7 @@ ion-icon[name="refresh"].spin {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -1192,7 +1194,7 @@ ion-icon[name="refresh"].spin {
     }
 
     .offers-grid {
-      padding: 0.75rem 0.25rem;
+      padding: 0.75rem 1.25rem;
 
       ion-col {
         padding: 0 0.25rem;
@@ -1707,13 +1709,11 @@ ion-icon[name="refresh"].spin {
 
 .linha-pontilhada-detalhes {
   height: 2px;
-  background: repeating-linear-gradient(
-    to right,
-    #e9ecef 0px,
-    #e9ecef 10px,
-    transparent 10px,
-    transparent 20px
-  );
+  background: repeating-linear-gradient(to right,
+      #e9ecef 0px,
+      #e9ecef 10px,
+      transparent 10px,
+      transparent 20px);
   margin: 1.5rem 0;
 }
 
@@ -1972,8 +1972,11 @@ ion-chip[color="primary"] {
       &::-webkit-scrollbar {
         display: none;
       }
-      -ms-overflow-style: none; /* IE and Edge */
-      scrollbar-width: none; /* Firefox */
+
+      -ms-overflow-style: none;
+      /* IE and Edge */
+      scrollbar-width: none;
+      /* Firefox */
     }
 
     ion-col {
@@ -1989,6 +1992,7 @@ ion-chip[color="primary"] {
   }
 
   .offer-button {
+
     /* If there's only an icon left, center it */
     ion-icon {
       margin: 0 !important;
@@ -2004,36 +2008,43 @@ ion-chip[color="primary"] {
   border-radius: 8px;
   border-left: 4px solid var(--ion-color-primary);
 }
+
 .price-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 6px;
 }
+
 .price-row:last-child {
   margin-bottom: 0;
 }
+
 .price-label {
   font-size: 14px;
   font-weight: 500;
   color: #6c757d;
 }
+
 .price-value {
   font-size: 14px;
   font-weight: 600;
 }
+
 .price-value.initial-price {
   color: #6c757d;
   text-decoration: line-through;
 }
+
 .price-value.discount {
   color: var(--ion-color-danger);
 }
+
 .price-value.final-price {
   color: var(--ion-color-success);
   font-size: 16px;
 }
+
 .offer-relampago .price-info {
   border-left-color: #fbbf24 !important;
 }
-

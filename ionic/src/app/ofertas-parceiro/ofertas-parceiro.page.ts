@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { LoadingController } from '@ionic/angular';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { LoadingController, IonContent } from '@ionic/angular';
 import { OfertaService } from '../services/oferta.service';
 import { Oferta } from '../ofertas/oferta.model';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -14,6 +14,7 @@ import { ofertaExpirada } from '../utils/oferta-validade.util';
   styleUrls: ['./ofertas-parceiro.page.scss'],
 })
 export class OfertasParceiroPage implements OnInit {
+  @ViewChild(IonContent, { static: false }) content!: IonContent;
   ofertas: any[] = [];
   ofertasFiltradas: any[] = [];
   usuario: any = null;
@@ -100,6 +101,9 @@ export class OfertasParceiroPage implements OnInit {
     this.tipoFiltro = 'todas';
     this.ofertasFiltradas = [...this.ofertas];
     this.aplicarFiltroAtual();
+    if (this.content) {
+      this.content.scrollToTop(500);
+    }
   }
 
   // Método centralizado para carregar todos os dados necessários
@@ -135,7 +139,11 @@ export class OfertasParceiroPage implements OnInit {
   }
   
   async carregarOfertas() {
-    const loading = await this.exibirLoading('Carregando ofertas...');
+    let loading: any = null;
+    
+    if (!this.ofertas || this.ofertas.length === 0) {
+      loading = await this.exibirLoading('Carregando ofertas...');
+    }
     
     try {
       // Verificar se o usuário é parceiro
@@ -174,13 +182,13 @@ export class OfertasParceiroPage implements OnInit {
                 this.buscarOfertas(termoBusca.trim());
               }
             });
-            loading.dismiss();
+            if (loading) loading.dismiss();
           },
           error: (error) => {
             console.error('Erro ao carregar ofertas do parceiro:', error);
             this.ofertas = [];
             this.ofertasFiltradas = [];
-            loading.dismiss();
+            if (loading) loading.dismiss();
           }
         });
       } else {
@@ -230,13 +238,13 @@ export class OfertasParceiroPage implements OnInit {
                 this.buscarOfertas(termoBusca.trim());
               }
             });
-            loading.dismiss();
+            if (loading) loading.dismiss();
           },
           error: (error) => {
             console.error('Erro ao carregar ofertas:', error);
             this.ofertas = [];
             this.ofertasFiltradas = [];
-            loading.dismiss();
+            if (loading) loading.dismiss();
           }
         });
       }
@@ -244,7 +252,7 @@ export class OfertasParceiroPage implements OnInit {
       console.error('Erro ao carregar ofertas:', error);
       this.ofertas = [];
       this.ofertasFiltradas = [];
-      loading.dismiss();
+      if (loading) loading.dismiss();
     }
   }
 
@@ -300,7 +308,7 @@ export class OfertasParceiroPage implements OnInit {
       }
       console.log('Ofertas filtradas:', this.ofertasFiltradas);
     } finally {
-      loading.dismiss();
+      if (loading) loading.dismiss();
     }
   }
 
@@ -317,7 +325,7 @@ export class OfertasParceiroPage implements OnInit {
   
     const loading = await this.exibirLoading('Redirecionando...');
     this.router.navigate(['/cadastro-oferta']).finally(() => {
-      loading.dismiss();
+      if (loading) loading.dismiss();
     });
   }
   
@@ -347,7 +355,7 @@ export class OfertasParceiroPage implements OnInit {
         }
       },
       () => {
-        loading.dismiss();
+        if (loading) loading.dismiss();
       }
     );
   }
@@ -426,7 +434,7 @@ export class OfertasParceiroPage implements OnInit {
       this.aplicarFiltroAtual();
       console.log('Ofertas filtradas:', this.ofertasFiltradas);
     } finally {
-      loading.dismiss();
+      if (loading) loading.dismiss();
     }
   }  
     
