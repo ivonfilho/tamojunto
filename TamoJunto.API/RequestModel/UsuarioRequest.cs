@@ -35,5 +35,4 @@ public class UsuarioRequest
     // Campos específicos do parceiro
     public string? Website { get; set; } = null!;
 
-    public string? Contato { get; set; } = null!;
 }
