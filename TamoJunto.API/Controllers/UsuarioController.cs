@@ -189,6 +189,7 @@ public class UsuarioController : ControllerBase
         usuarioModel.Email = requestModel.Email;
         usuarioModel.Senha = SegurancaUtil.SHA1Hash(requestModel.Senha);
         usuarioModel.DataCadastro = DateTime.Now;
+        usuarioModel.Contato = requestModel.Contato;
         usuarioModel.EmailConfirmed = false;
         usuarioModel.EmailConfirmationToken = Convert.ToHexString(RandomNumberGenerator.GetBytes(32));
 
@@ -273,7 +274,6 @@ public class UsuarioController : ControllerBase
                 Id = Guid.NewGuid(),
                 Cpf = null, // MEI não tem CPF individual
                 IdUsuario = usuarioModel.Id,
-                Contato = requestModel.Contato ?? string.Empty,
                 IdEmpresa = empresa.Id
             };
             
@@ -525,14 +525,13 @@ public class UsuarioController : ControllerBase
                             await _repositoryEmpresa.UpdateAsync(empresa);
                             await _repositoryEmpresa.SaveChangesAsync();
                         }
-                    }
-                    if (requestModel.Contato != null)
-                    {
-                        cliente.Contato = requestModel.Contato;
-                        await _repositoryCliente.UpdateAsync(cliente);
-                        await _repositoryCliente.SaveChangesAsync();
-                    }
                 }
+            }
+
+            if (requestModel.Contato != null)
+            {
+                usuario.Contato = requestModel.Contato;
+            }
                 // Para PF, não precisamos fazer alterações específicas além do usuário
             }
 
@@ -667,7 +666,7 @@ public class UsuarioController : ControllerBase
                 {
                     Usuario = usuarioVm,
                     Cpf = cpfCliente, 
-                    Contato = cliente.Contato,
+                    Contato = usuario.Contato,
                     TipoCadastro = tipoCadastro,  
                         Role = "Cliente",
                     Assinaturas = assinaturasCliente.Select(a => new { a.Id }),  
@@ -685,7 +684,7 @@ public class UsuarioController : ControllerBase
         {
             Usuario = usuarioVm,
             Cpf = cpfCliente, 
-            Contato = cliente.Contato,
+            Contato = usuario.Contato,
             TipoCadastro = tipoCadastro,  
                 Role = "Cliente",
             Assinaturas = assinaturasCliente.Select(a => new { a.Id }) 
