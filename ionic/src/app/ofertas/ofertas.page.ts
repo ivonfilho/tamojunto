@@ -43,6 +43,9 @@ export class OfertasPage implements OnInit {
 
   ngOnInit() {
     this.carregarUsuarioLogado();
+    window.addEventListener('resetFilters', () => {
+      this.limparBusca();
+    });
   }
 
   // Hook do Ionic que é executado sempre que a página é acessada

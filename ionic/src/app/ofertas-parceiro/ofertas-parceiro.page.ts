@@ -43,6 +43,9 @@ export class OfertasParceiroPage implements OnInit {
 
   ngOnInit() {
     this.carregarUsuarioLogado();
+    window.addEventListener('resetFilters', () => {
+      this.limparBusca();
+    });
   }
 
   // Hook do Ionic que é executado sempre que a página é acessada
@@ -92,7 +95,9 @@ export class OfertasParceiroPage implements OnInit {
 
   limparBusca() {
     this.termoAtivo = '';
-    this.router.navigate(['/ofertas']);
+    this.filtroCategoria = '';
+    this.filtroTipo = '';
+    this.tipoFiltro = 'todas';
     this.ofertasFiltradas = [...this.ofertas];
     this.aplicarFiltroAtual();
   }

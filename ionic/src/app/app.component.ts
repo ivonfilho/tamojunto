@@ -266,6 +266,9 @@ export class AppComponent implements OnInit {
   }
 
   public navegarPara(rota: string, isLogoClick: boolean = false) {
+    if (this.router.url === rota || this.router.url.split('?')[0] === rota) {
+      window.dispatchEvent(new CustomEvent('resetFilters'));
+    }
     this.navigationService.navegarPara(rota);
     if (isLogoClick) {
       setTimeout(() => {
