@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -7,6 +7,6 @@ import { environment } from 'src/environments/environment';
 export class ApiConfig {
   public URL_API = environment.apiUrl;
   
-  // URL do frontend para produção
-  public FRONTEND_URL = 'https://app.tamojunto.net';
+  // URL do frontend para produÃ§Ã£o
+  public FRONTEND_URL = 'http://tamojunto.31.97.254.35.sslip.io';
 }
