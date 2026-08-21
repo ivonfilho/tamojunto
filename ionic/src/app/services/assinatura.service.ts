@@ -302,6 +302,8 @@ export class AssinaturaService {
    * Verifica se a assinatura está próxima do vencimento (7 dias ou menos)
    * Retorna informações sobre a assinatura que está expirando, se houver
    */
+  private assinaturaVencimentoCache: any = null;
+
   async verificarAssinaturaProximaVencimento(): Promise<{ 
     estaProximaVencimento: boolean, 
     diasRestantes?: number, 
@@ -309,8 +311,11 @@ export class AssinaturaService {
     planoTitulo?: string,
     planoTipo?: string 
   }> {
+    if (this.assinaturaVencimentoCache !== null) {
+      return this.assinaturaVencimentoCache;
+    }
+
     if (!this.authService.isTokenValid()) {
-      console.log('[verificarAssinaturaProximaVencimento] Token inválido');
       return { estaProximaVencimento: false };
     }
 
@@ -404,18 +409,22 @@ export class AssinaturaService {
           planoTitulo: assinaturaProxima.plano?.titulo || assinaturaProxima.plano?.Titulo
         });
         const dataRenovacaoFinal = new Date(assinaturaProxima.dataRenovacao || assinaturaProxima.DataRenovacao);
-        return {
+        const resultado = {
           estaProximaVencimento: true,
           diasRestantes: menorDiasRestantes,
           dataRenovacao: dataRenovacaoFinal,
           planoTitulo: assinaturaProxima.plano?.titulo || assinaturaProxima.plano?.Titulo || 'Plano',
           planoTipo: assinaturaProxima.plano?.tipo || assinaturaProxima.plano?.Tipo
         };
+        this.assinaturaVencimentoCache = resultado;
+        return resultado;
       }
-      return { estaProximaVencimento: false };
+      this.assinaturaVencimentoCache = { estaProximaVencimento: false };
+      return this.assinaturaVencimentoCache;
     } catch (error) {
       console.error('Erro ao verificar assinatura próxima do vencimento:', error);
-      return { estaProximaVencimento: false };
+      this.assinaturaVencimentoCache = { estaProximaVencimento: false };
+      return this.assinaturaVencimentoCache;
     }
   }
 } 

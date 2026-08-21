@@ -13,6 +13,13 @@ using Microsoft.EntityFrameworkCore;
 using System.Text;
 using System.Text.Json;
 using Microsoft.Extensions.Caching.Distributed;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
+using SixLabors.ImageSharp.Formats.Webp;
+using TamoJunto.Domain.Entities;
 
 namespace TamoJunto.API.Controllers;
 
@@ -568,14 +575,23 @@ public async Task<IActionResult> ListarComDescontoECategoria()
                 Console.WriteLine("Imagens antigas deletadas com sucesso");
             }
 
-            // Converter imagem para base64
+            // Redimensionar e converter para WebP usando ImageSharp
+            using var imageStream = file.OpenReadStream();
+            using var image = await Image.LoadAsync(imageStream);
+            
+            image.Mutate(x => x.Resize(new ResizeOptions
+            {
+                Size = new Size(600, 300),
+                Mode = ResizeMode.Max
+            }));
+
             using var memoryStream = new MemoryStream();
-            await file.CopyToAsync(memoryStream);
+            await image.SaveAsWebpAsync(memoryStream, new WebpEncoder { Quality = 80 });
             var fileBytes = memoryStream.ToArray();
             var base64String = Convert.ToBase64String(fileBytes);
-            var dataUrl = $"data:{file.ContentType};base64,{base64String}";
+            var dataUrl = $"data:image/webp;base64,{base64String}";
 
-            Console.WriteLine($"Imagem convertida para base64. Tamanho do base64: {base64String.Length}");
+            Console.WriteLine($"Imagem convertida para WebP e redimensionada. Tamanho do base64: {base64String.Length}");
 
         var imagem = new Imagem
         {
