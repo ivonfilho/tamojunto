@@ -86,11 +86,21 @@
          style="cursor: pointer;">
 
       <!-- Imagem de topo com overlay gradiente -->
-      <div class="card-image-wrapper">
+      <div class="card-image-wrapper" style="position: relative;">
+        <!-- Skeleton para a imagem -->
+        <ion-skeleton-text 
+          animated 
+          style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 1;" 
+          *ngIf="oferta.imagem && oferta.imagem.length > 0 && !oferta.imageLoaded">
+        </ion-skeleton-text>
+        
         <img
           *ngIf="oferta.imagem && oferta.imagem.length > 0; else placeholder"
           [src]="oferta.imagem[0].path"
           alt="Imagem da oferta"
+          (load)="oferta.imageLoaded = true"
+          [style.opacity]="oferta.imageLoaded ? 1 : 0"
+          style="transition: opacity 0.3s ease-in-out;"
         />
         <ng-template #placeholder>
           <div class="placeholder-container">
@@ -115,15 +125,13 @@
         <!-- Linha 2: Parceiro e Validade -->
         <div class="card-company-row">
           <div class="company-info-block">
-            <img
+            <!-- <img
               class="company-avatar"
               *ngIf="oferta.idParceiroNavigation?.fotoPerfil || oferta.idParceiroNavigation?.FotoPerfil; else defaultAvatar"
               [src]="oferta.idParceiroNavigation?.fotoPerfil || oferta.idParceiroNavigation?.FotoPerfil"
               alt="Foto do estabelecimento"
-            />
-            <ng-template #defaultAvatar>
-              <img class="company-avatar" alt="Avatar padrão" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
-            </ng-template>
+            /> -->
+            <img class="company-avatar" alt="Avatar padrão" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
             <div class="company-names">
               <span class="company-label">Estabelecimento</span>
               <span class="company-name">{{ oferta.idParceiroNavigation?.idEmpresaNavigation?.nome || 'Estabelecimento' }}</span>

@@ -20,7 +20,8 @@ export interface Cupom {
     aUtilizacao?: string, // Data de utilização do cupom
     status?: 'Gerados' | 'Utilizados' | 'Indisponíveis',
     valorComDesconto?: number | string;
-    
+    qrLoaded?: boolean;
+    [key: string]: any;
 }
 
 export interface RelatorioCupom {

@@ -51,8 +51,12 @@ export class OfertasPage implements OnInit {
 
   // Hook do Ionic que é executado sempre que a página é acessada
   ionViewWillEnter() {
-    console.log('[OfertasPage] ionViewWillEnter - Recarregando dados...');
-    this.carregarDados();
+    if (!this.ofertas || this.ofertas.length === 0) {
+      console.log('[OfertasPage] ionViewWillEnter - Primeira vez carregando dados...');
+      this.carregarDados();
+    } else {
+      console.log('[OfertasPage] ionViewWillEnter - Dados já em cache, ignorando busca no banco.');
+    }
     this.aplicarBusca();
   }
 
@@ -178,28 +182,7 @@ export class OfertasPage implements OnInit {
           next: (data: Oferta[]) => {
             this.ofertas = data || [];
             this.aplicarFiltroAtual();
-            console.log('Ofertas do parceiro carregadas:', this.ofertas.length);
-            console.log('Estrutura da primeira oferta:', this.ofertas[0]);
 
-            // Log específico para foto de perfil
-            if (this.ofertas[0]?.idParceiroNavigation) {
-              console.log('[OfertasPage] idParceiroNavigation:', this.ofertas[0].idParceiroNavigation);
-              console.log('[OfertasPage] fotoPerfil:', this.ofertas[0].idParceiroNavigation.fotoPerfil);
-              console.log('[OfertasPage] FotoPerfil:', this.ofertas[0].idParceiroNavigation.FotoPerfil);
-              console.log('[OfertasPage] Todas as propriedades:', Object.keys(this.ofertas[0].idParceiroNavigation));
-            }
-
-            if (this.ofertas[0]?.imagem) {
-              console.log('Imagens da primeira oferta:', this.ofertas[0].imagem);
-              console.log('Quantidade de imagens:', this.ofertas[0].imagem.length);
-              if (this.ofertas[0].imagem.length > 0) {
-                console.log('Primeira imagem path:', this.ofertas[0].imagem[0].path);
-              }
-            } else {
-              console.log('Primeira oferta não tem propriedade imagem');
-              console.log('Propriedades disponíveis:', Object.keys(this.ofertas[0] || {}));
-            }
-            // Aplicar busca se houver termo na URL
             this.route.queryParams.subscribe(params => {
               const termoBusca = params['busca'];
               const categoria = params['categoria'];
@@ -218,13 +201,19 @@ export class OfertasPage implements OnInit {
                 this.aplicarFiltros();
               }
             });
-            if (loading) loading.dismiss();
+            if (loading) {
+              loading.dismiss();
+              loading = null;
+            }
           },
           error: (error) => {
             console.error('Erro ao carregar ofertas do parceiro:', error);
             this.ofertas = [];
             this.ofertasFiltradas = [];
-            if (loading) loading.dismiss();
+            if (loading) {
+              loading.dismiss();
+              loading = null;
+            }
           }
         });
       } else {
@@ -234,38 +223,6 @@ export class OfertasPage implements OnInit {
             this.ofertas = data || [];
             this.aplicarFiltroAtual();
 
-            // Log para debug - verificar se fotoPerfil está sendo retornada
-            if (this.ofertas.length > 0) {
-              const primeiraOferta = this.ofertas[0];
-              console.log('[OfertasPage] Primeira oferta recebida:', {
-                id: primeiraOferta.id,
-                idParceiroNavigation: primeiraOferta.idParceiroNavigation,
-                fotoPerfil: primeiraOferta.idParceiroNavigation?.fotoPerfil,
-                FotoPerfil: primeiraOferta.idParceiroNavigation?.FotoPerfil,
-                todasPropriedades: Object.keys(primeiraOferta.idParceiroNavigation || {})
-              });
-            }
-            console.log('Todas as ofertas carregadas:', this.ofertas.length);
-            console.log('Estrutura da primeira oferta:', this.ofertas[0]);
-
-            // Log específico para foto de perfil
-            if (this.ofertas[0]?.idParceiroNavigation) {
-              console.log('[OfertasPage] idParceiroNavigation:', this.ofertas[0].idParceiroNavigation);
-              console.log('[OfertasPage] fotoPerfil:', this.ofertas[0].idParceiroNavigation.fotoPerfil);
-              console.log('[OfertasPage] FotoPerfil:', this.ofertas[0].idParceiroNavigation.FotoPerfil);
-              console.log('[OfertasPage] Todas as propriedades:', Object.keys(this.ofertas[0].idParceiroNavigation));
-            }
-
-            if (this.ofertas[0]?.imagem) {
-              console.log('Imagens da primeira oferta:', this.ofertas[0].imagem);
-              console.log('Quantidade de imagens:', this.ofertas[0].imagem.length);
-              if (this.ofertas[0].imagem.length > 0) {
-                console.log('Primeira imagem path:', this.ofertas[0].imagem[0].path);
-              }
-            } else {
-              console.log('Primeira oferta não tem propriedade imagem');
-              console.log('Propriedades disponíveis:', Object.keys(this.ofertas[0] || {}));
-            }
             // Aplicar busca se houver termo na URL
             this.route.queryParams.subscribe(params => {
               const termoBusca = params['busca'];
@@ -285,13 +242,19 @@ export class OfertasPage implements OnInit {
                 this.aplicarFiltros();
               }
             });
-            if (loading) loading.dismiss();
+            if (loading) {
+              loading.dismiss();
+              loading = null;
+            }
           },
           error: (error) => {
-            console.error('Erro ao carregar ofertas:', error);
+            console.error('Erro ao carregar ofertas (todas):', error);
             this.ofertas = [];
             this.ofertasFiltradas = [];
-            if (loading) loading.dismiss();
+            if (loading) {
+              loading.dismiss();
+              loading = null;
+            }
           }
         });
       }

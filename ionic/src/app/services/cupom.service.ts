@@ -28,38 +28,36 @@ export class CupomService extends ApiConfig {
       })
     );
   }
+  
+  private cuponsCache: { [key: string]: any } = {};
 
   listarCupoms(idCliente: string): Observable<any> {
     const url = `${this.URL_API}/api/cupomCliente/Listar?idCliente=${idCliente}`;
   
-    return this.http.get<any>(url).pipe(
+    const request = this.http.get<any>(url).pipe(
       tap((response) => {
-        
-        if (response && response.length > 0) {
-          // Verificar se tem ofertaParceiro
-          const oferta = response[0].ofertaParceiro || response[0].OfertaParceiro;
-          if (oferta) {
-            
-            // Verificar se tem parceiro
-            const parceiro = oferta.idParceiroNavigation || oferta.IdParceiroNavigation;
-            if (parceiro) {
-              // Verificar se tem empresa
-              const empresa = parceiro.idEmpresaNavigation || parceiro.IdEmpresaNavigation;
-              if (empresa) {
-              }
-            }
-          } else {
-          }
+        if (response) {
+          this.cuponsCache[idCliente] = response;
         }
       }),
       catchError((error) => {
         console.error('[CupomService] Erro ao listar cupons:', error);
-        console.error('[CupomService] URL da requisição:', error.url);
-        console.error('[CupomService] Stack trace:', error.stack);
-        
         throw error;
       })
     );
+
+    if (this.cuponsCache[idCliente]) {
+      return new Observable<any>(observer => {
+        observer.next(this.cuponsCache[idCliente]);
+        request.subscribe({
+          next: (res) => observer.next(res),
+          error: (err) => console.error(err),
+          complete: () => observer.complete()
+        });
+      });
+    }
+
+    return request;
   }
   listarCuponsPorParceiro(idParceiro: string): Observable<any[]> {
     return this.http.get<any[]>(`${this.URL_API}/api/ofertaParceiro/ListarCuponsPorParceiro/${idParceiro}`);

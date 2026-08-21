@@ -22,6 +22,7 @@ export class AppComponent implements OnInit {
   public rotaAtiva: string = '';
   public isParceiro: boolean = false;
   public isDesktop: boolean = false;
+  private isCarregandoUsuario: boolean = false;
 
   public appPages = [
     {
@@ -99,8 +100,10 @@ export class AppComponent implements OnInit {
     // Escuta o evento customizado
     window.addEventListener('localStorageChange', (event: any) => {
       if (event.detail && event.detail.key === 'tamo_junto_user') {
-        console.log('[AppComponent] Evento customizado detectado, recarregando usuário...');
-        this.carregarUsuario();
+        if (!this.isCarregandoUsuario) {
+          console.log('[AppComponent] Evento customizado detectado, recarregando usuário...');
+          this.carregarUsuario();
+        }
       }
     });
   }
@@ -142,16 +145,20 @@ export class AppComponent implements OnInit {
   }
 
   async carregarUsuario() {
-    console.log('[AppComponent] ===== INICIANDO CARREGAMENTO DE USUÁRIO =====');
+    if (this.isCarregandoUsuario) return;
+    this.isCarregandoUsuario = true;
 
-    if (!this.authService.isTokenValid()) {
-      // Não redirecionar se estiver nas páginas de recuperação de senha ou confirmação de email
-      if (this.router.url.includes('recuperar-senha') || this.router.url.includes('confirmar-email')) {
+    try {
+      console.log('[AppComponent] ===== INICIANDO CARREGAMENTO DE USUÁRIO =====');
+
+      if (!this.authService.isTokenValid()) {
+        // Não redirecionar se estiver nas páginas de recuperação de senha ou confirmação de email
+        if (this.router.url.includes('recuperar-senha') || this.router.url.includes('confirmar-email')) {
+          return;
+        }
+        this.router.navigateByUrl('/');
         return;
       }
-      this.router.navigateByUrl('/');
-      return;
-    }
 
     // Tenta carregar o usuário do localStorage
     this.usuario = this.authService.getUserFromStorage();
@@ -207,16 +214,18 @@ export class AppComponent implements OnInit {
       this.usuarioService.setUsuarioLogado(this.usuario);
     }
 
-    if (this.usuario) {
-      this.verificarSeEParceiroSincrono();
+      if (this.usuario) {
+        this.verificarSeEParceiroSincrono();
 
-      // Força detecção de mudanças para atualizar a UI
-      setTimeout(() => {
-      }, 100);
-    } else {
-      console.log('Nenhum usuário encontrado');
+        // Força detecção de mudanças para atualizar a UI
+        setTimeout(() => {
+        }, 100);
+      } else {
+        console.log('Nenhum usuário encontrado');
+      }
+    } finally {
+      this.isCarregandoUsuario = false;
     }
-
   }
 
   verificarSeEParceiroSincrono() {

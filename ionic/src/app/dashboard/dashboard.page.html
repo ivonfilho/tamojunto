@@ -126,15 +126,13 @@
                (click)="verOferta(oferta.id)">
             
             <div class="compact-header">
-              <img
+              <!-- <img
                 class="compact-avatar"
                 *ngIf="oferta['idParceiroNavigation']?.['fotoPerfil'] || oferta['idParceiroNavigation']?.['FotoPerfil']; else defaultAvatar"
                 [src]="oferta['idParceiroNavigation']?.['fotoPerfil'] || oferta['idParceiroNavigation']?.['FotoPerfil']"
                 alt="Foto do parceiro"
-              />
-              <ng-template #defaultAvatar>
-                <img class="compact-avatar" alt="Avatar padrão" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
-              </ng-template>
+              /> -->
+              <img class="compact-avatar" alt="Avatar padrão" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
 
               <div class="compact-title-group">
                 <h3 class="compact-title">{{ oferta.nomeProduto }}</h3>

@@ -3,7 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApiConfig } from '../services/api/api.config';
 import { Parceiro, Empresa } from '../parceiros/parceiro.model';
-
+import { catchError, tap } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -14,11 +15,27 @@ export class ParceiroService {
 
   constructor(private http: HttpClient) {}
 
+  // Cache em memória para evitar requisições redundantes
+  private cacheParceiro: any = null;
+  private cacheIdUsuario: string | null = null;
+
   // Método para buscar parceiro por ID de usuário
   buscarParceiroPorUsuario(idUsuario: string): Observable<any> {
+    if (this.cacheParceiro && this.cacheIdUsuario === idUsuario) {
+      console.log('[ParceiroService] Retornando parceiro do cache em memória');
+      return of(this.cacheParceiro);
+    }
+
     const url = `${this.baseUrl}/ParceiroPorUsuario/${idUsuario}`;
     console.log('[ParceiroService] Fazendo requisição para:', url);
-    return this.http.get<any>(url);
+    return this.http.get<any>(url).pipe(
+      tap(res => {
+        if (res && res.idParceiro) {
+          this.cacheParceiro = res;
+          this.cacheIdUsuario = idUsuario;
+        }
+      })
+    );
   }
 
   listar(): Observable<Parceiro[]> {

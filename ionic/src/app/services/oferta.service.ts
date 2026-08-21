@@ -25,14 +25,32 @@ export class OfertaService extends ApiConfig {
     );
   }
 
+  private ofertasCache: Oferta[] | null = null;
+
   listarOfertas(): Observable<Oferta[]> {
-    return this.http.get<Oferta[]>(`${this.URL_API}/api/ofertaParceiro/Listar`).pipe(
-      tap((ofertas) => (this.ofertas = ofertas)),
+    const request = this.http.get<Oferta[]>(`${this.URL_API}/api/ofertaParceiro/Listar`).pipe(
+      tap((ofertas) => {
+        this.ofertas = ofertas;
+        this.ofertasCache = ofertas;
+      }),
       catchError((error) => {
         console.error(`Erro ao carregar ofertas:`, error);
         return of([]);
       })
     );
+
+    if (this.ofertasCache) {
+      return new Observable<Oferta[]>(observer => {
+        observer.next(this.ofertasCache!);
+        request.subscribe({
+          next: (res) => observer.next(res),
+          error: (err) => console.error(err),
+          complete: () => observer.complete()
+        });
+      });
+    }
+
+    return request;
   }
 
   listarOfertasPorParceiro(idParceiro: string): Observable<Oferta[]> {
@@ -83,12 +101,30 @@ export class OfertaService extends ApiConfig {
     );
   }
   
+  private analyticsCache: any[] | null = null;
+
   listarComDescontoECategoria(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.URL_API}/api/ofertaParceiro/ListarComDescontoECategoria`).pipe(
+    const request = this.http.get<any[]>(`${this.URL_API}/api/ofertaParceiro/ListarComDescontoECategoria`).pipe(
+      tap((data) => {
+        this.analyticsCache = data;
+      }),
       catchError((error) => {
         console.error('Erro ao carregar categorias e descontos:', error);
         return of([]);
       })
     );
+
+    if (this.analyticsCache) {
+      return new Observable<any[]>(observer => {
+        observer.next(this.analyticsCache!);
+        request.subscribe({
+          next: (res) => observer.next(res),
+          error: (err) => console.error(err),
+          complete: () => observer.complete()
+        });
+      });
+    }
+
+    return request;
   }
 }

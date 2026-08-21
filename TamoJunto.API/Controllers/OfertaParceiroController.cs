@@ -253,7 +253,7 @@ public async Task<IActionResult> ListarComDescontoECategoria()
         await InvalidarCacheListagemOfertasAsync();
     }
 
-    private async Task<(ILookup<Guid, Imagem> imagens, Dictionary<Guid, Parceiro> parceiros, Dictionary<Guid, Empresa> empresas, Dictionary<Guid, Usuario> usuarios)>
+    private async Task<(ILookup<Guid, Imagem> imagens, Dictionary<Guid, Parceiro> parceiros, Dictionary<Guid, Empresa> empresas)>
         CarregarDadosParaMontagemOfertasAsync()
     {
         var todasImagens = await _repositoryImagem.ListAsync(new GenericAllSpec<Imagem>());
@@ -265,29 +265,21 @@ public async Task<IActionResult> ListarComDescontoECategoria()
         var todasEmpresas = await _repositoryEmpresa.ListAsync(new GenericAllSpec<Empresa>());
         var empresas = todasEmpresas.ToDictionary(e => e.Id);
 
-        var todosUsuarios = await _repositoryUsuario.ListAsync(new GenericAllSpec<Usuario>());
-        var usuarios = todosUsuarios.ToDictionary(u => u.Id);
-
-        return (imagens, parceiros, empresas, usuarios);
+        return (imagens, parceiros, empresas);
     }
 
     private object MontarOfertaResposta(
         OfertaParceiro oferta,
         ILookup<Guid, Imagem> imagensPorOferta,
         IReadOnlyDictionary<Guid, Parceiro> parceiros,
-        IReadOnlyDictionary<Guid, Empresa> empresas,
-        IReadOnlyDictionary<Guid, Usuario> usuarios)
+        IReadOnlyDictionary<Guid, Empresa> empresas)
     {
         parceiros.TryGetValue(oferta.IdParceiro, out var parceiro);
         Empresa? empresa = null;
         if (parceiro != null)
             empresas.TryGetValue(parceiro.IdEmpresa, out empresa);
 
-        string? fotoPerfil = null;
-        if (parceiro != null && parceiro.IdUsuario != Guid.Empty
-            && usuarios.TryGetValue(parceiro.IdUsuario, out var usuario)
-            && !string.IsNullOrEmpty(usuario.UrlImagem))
-            fotoPerfil = usuario.UrlImagem;
+        string? fotoPerfil = null; // Removido para evitar estouro de memória no backend
 
         var imagensFiltradas = imagensPorOferta[oferta.Id].ToList();
 
@@ -353,13 +345,7 @@ public async Task<IActionResult> ListarComDescontoECategoria()
         var imagensFiltradas = todasImagens.Where(img => img.IdOfertaParceiro == id).ToList();
         var parceiro = await _repositoryParceiro.GetByIdAsync(oferta.IdParceiro);
         var empresa = parceiro != null ? await _repositoryEmpresa.GetByIdAsync(parceiro.IdEmpresa) : null;
-        string fotoPerfil = null;
-        if (parceiro != null && parceiro.IdUsuario != Guid.Empty)
-        {
-            var usuario = await _repositoryUsuario.GetByIdAsync(parceiro.IdUsuario);
-            if (usuario != null && !string.IsNullOrEmpty(usuario.UrlImagem))
-                fotoPerfil = usuario.UrlImagem;
-        }
+        string? fotoPerfil = null; // Desativado para economizar RAM do backend
 
         var payload = new
         {
@@ -414,11 +400,11 @@ public async Task<IActionResult> ListarComDescontoECategoria()
             }
 
             var result = await _repository.ListAsync(new GenericAllSpec<OfertaParceiro>());
-            var (imagensLookup, parceiros, empresas, usuarios) = await CarregarDadosParaMontagemOfertasAsync();
+            var (imagensLookup, parceiros, empresas) = await CarregarDadosParaMontagemOfertasAsync();
 
             var ofertas = new List<object>();
             foreach (var oferta in result.OrderByDescending(x => x.DataCriacao))
-                ofertas.Add(MontarOfertaResposta(oferta, imagensLookup, parceiros, empresas, usuarios));
+                ofertas.Add(MontarOfertaResposta(oferta, imagensLookup, parceiros, empresas));
 
             var json = JsonSerializer.Serialize(ofertas, JsonCacheOptions);
             await _distributedCache.SetAsync(
@@ -447,11 +433,11 @@ public async Task<IActionResult> ListarComDescontoECategoria()
             var result = await _repository.ListAsync(new GenericAllSpec<OfertaParceiro>());
             var ofertasFiltradas = result.Where(o => o.IdParceiro == idParceiro).ToList();
 
-            var (imagensLookup, parceiros, empresas, usuarios) = await CarregarDadosParaMontagemOfertasAsync();
+            var (imagensLookup, parceiros, empresas) = await CarregarDadosParaMontagemOfertasAsync();
 
             var ofertas = new List<object>();
             foreach (var oferta in ofertasFiltradas.OrderByDescending(x => x.DataCriacao))
-                ofertas.Add(MontarOfertaResposta(oferta, imagensLookup, parceiros, empresas, usuarios));
+                ofertas.Add(MontarOfertaResposta(oferta, imagensLookup, parceiros, empresas));
 
             Console.WriteLine($"[DEBUG] Ofertas encontradas para parceiro {idParceiro}: {ofertas.Count}");
             return Ok(ofertas);

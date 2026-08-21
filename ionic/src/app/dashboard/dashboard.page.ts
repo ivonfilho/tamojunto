@@ -160,8 +160,6 @@ export class DashboardPage implements OnInit {
   }
 
   async initializeDashboard() {
-    const loading = await this.showLoading('Carregando dashboard...');
-    
     try {
       // Usar o usuário que já foi carregado do localStorage no ngOnInit
       if (this.usuario && this.usuario.Id) {
@@ -172,22 +170,18 @@ export class DashboardPage implements OnInit {
             } else {
               this.carregarDashboardPadrao();
             }
-            loading.dismiss();
           },
           (error) => {
             console.error('[Dashboard] Erro ao buscar parceiro:', error);
             this.carregarDashboardPadrao();
-            loading.dismiss();
           }
         );
       } else {
         console.error('[Dashboard] Usuário não encontrado no localStorage ou ID não encontrado.');
         this.carregarDashboardPadrao();
-        loading.dismiss();
       }
     } catch (error) {
       console.error('[Dashboard] Erro na inicialização:', error);
-      loading.dismiss();
       this.showToast('Erro ao inicializar dashboard', 'danger');
     }
   }
@@ -219,7 +213,10 @@ export class DashboardPage implements OnInit {
       return;
     }
 
-    this.isLoading = true;
+    // Só exibe o spinner se realmente não tiver nada carregado em memória
+    if (this.oferta.length === 0 && this.cupons.length === 0 && this.chartData.length === 0) {
+      this.isLoading = true;
+    }
 
     try {
       // Carregar cupons primeiro para debug

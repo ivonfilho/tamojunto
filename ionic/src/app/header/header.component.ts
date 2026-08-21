@@ -181,6 +181,9 @@ export class HeaderComponent implements OnInit, OnChanges {
       aplicarCacheLocal(cached);
     }
 
+    // DESATIVADO PARA EVITAR QUOTA EXCEEDED E SOBRECARGA NO BACKEND
+    // DESATIVADO PARA EVITAR QUOTA EXCEEDED E SOBRECARGA NO BACKEND
+    /*
     this.fotoPerfilService.getFotoPerfil(userId).subscribe({
       next: (res) => {
         if (res && res.imagemUrl && res.imagemUrl.trim() !== '') {
@@ -215,6 +218,7 @@ export class HeaderComponent implements OnInit, OnChanges {
         }
       },
     });
+    */
   }
   
 

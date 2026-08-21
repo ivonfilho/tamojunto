@@ -68,8 +68,20 @@
 
           <!-- Linha 1: QR Code + Titulo + Status -->
           <div class="card-row row-topo">
-            <div class="qr-container">
-              <img *ngIf="cupom.qrCode" [src]="'data:image/png;base64,' + cupom.qrCode" alt="QR Code" />
+            <div class="qr-container" style="position: relative;">
+              <ion-skeleton-text 
+                animated 
+                style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 1;" 
+                *ngIf="cupom.qrCode && !cupom.qrLoaded">
+              </ion-skeleton-text>
+              <img 
+                *ngIf="cupom.qrCode" 
+                [src]="'data:image/png;base64,' + cupom.qrCode" 
+                alt="QR Code" 
+                (load)="cupom.qrLoaded = true"
+                [style.opacity]="cupom.qrLoaded ? 1 : 0"
+                style="transition: opacity 0.3s ease-in-out;"
+              />
               <div class="no-qr" *ngIf="!cupom.qrCode">
                 <ion-icon name="qr-code-outline"></ion-icon>
               </div>
