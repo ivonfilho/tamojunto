@@ -19,7 +19,6 @@ using System.Threading.Tasks;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp.Formats.Webp;
-using TamoJunto.Domain.Entities;
 
 namespace TamoJunto.API.Controllers;
 
